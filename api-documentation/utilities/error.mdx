@@ -1,0 +1,62 @@
+---
+title: Handling Errors
+---
+
+When interacting with our API, it's important to understand the different error codes that can occur during a request. These error codes help indicate what went wrong and can guide you in troubleshooting the issue.
+
+Below is a list of common error codes returned by the API, along with their descriptions and possible solutions.
+
+---
+
+## ❌ Common Error Codes
+
+| **Code** | **Description**                                      | **What to Do**                                                                                                                                                 |
+|----------|------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **400**  | Bad Request                                          | The request is malformed or contains invalid parameters. Check that all required parameters are included and correctly formatted.                              |
+| **402**  | Payment Required                                     | Your account has insufficient funds to process the request. Add funds or check your payment method to resolve this issue.                                      |
+| **403**  | Forbidden                                            | You do not have permission to access the requested resource. Ensure your API key has the correct permissions or check for potential authentication issues.     |
+| **404**  | Not Found                                            | The resource you are trying to access does not exist. Verify the endpoint and parameters for correctness, and ensure the resource is available.                 |
+| **409**  | Conflict                                             | There is a conflict with the current state of the resource, possibly due to an attempt to create a duplicate. Review the request and the state of the resource.  |
+| **422**  | Unprocessable Entity                                 | The server understands the request but is unable to process it, usually due to validation errors in the request body. Review the provided data for errors.       |
+| **429**  | Rate Limit Exceeded                                  | You have exceeded the allowed number of requests within a given time period. Wait for the rate limit to reset or adjust your request frequency.                |
+| **500**  | Internal Server Error                                | An unexpected server error occurred. This is typically a temporary issue. Try again later or contact support if the problem persists.                           |
+
+---
+
+## Error Handling Tips
+
+- **Check the Response Body**: In most cases, the response body will contain additional information regarding the error, such as error messages or codes that can help you pinpoint the issue.
+- **Rate Limits**: If you encounter a **429** error, avoid sending requests too frequently. Implement exponential backoff to retry requests after waiting for the rate limit to reset.
+- **Authentication**: A **403 Forbidden** error may be due to incorrect API key or insufficient permissions. Ensure that your key is valid and has the right scopes to access the resource.
+- **Testing**: Always test your API calls in a controlled environment to ensure that the request format and parameters are correct.
+
+> 📌 **Tip:** Always handle errors gracefully in your application. Proper error handling ensures that users have a better experience, even when things go wrong!
+
+---
+
+## How to Handle Errors in Your Code
+
+It's good practice to incorporate error-handling logic in your API requests. Here's an example in Python for handling different types of errors:
+
+### Python Example:
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/data"
+headers = {
+    "Authorization": "Bearer <your_api_key>"
+}
+
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    print("Request successful:", response.json())
+elif response.status_code == 400:
+    print("Bad Request: Check your input parameters.")
+elif response.status_code == 429:
+    print("Rate Limit Exceeded: Please try again later.")
+elif response.status_code == 500:
+    print("Internal Server Error: Try again later.")
+else:
+    print(f"Error {response.status_code}: {response.text}")

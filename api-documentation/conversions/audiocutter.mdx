@@ -1,0 +1,119 @@
+---
+title: 'Audio Cutter'
+openapi: 'POST /v1/audio_cutter'
+---
+
+**Audio Cutter** allows you to select specific sections of audio recordings, making it perfect for creating highlights, clips, ringtones, and more.
+
+- Easily extract the best parts of any audio
+- Supports multiple formats like MP3, WAV, FLAC, and more
+- Fast processing with high-quality output
+
+Audio Cutter ensures your trimmed audio sounds clean and professional.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/audio_cutter
+```
+
+Use this endpoint to trim a section from an existing audio file.
+
+---
+
+## Sample Output
+
+Listen to the trimmed audio:
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.mp3">Your browser does not support audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.wav" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Visit the [Audio Cutter Endpoint Explorer](/api-documentation/endpoint/audio_cutter) to cut and download trimmed audio segments instantly.
+
+---
+
+## Request Parameters
+
+| Parameter            | Type    | Required | Description                                                   |
+|----------------------|---------|----------|---------------------------------------------------------------|
+| `audio_file`   | `File` | Optional | Upload the audio file. Required if `audio_url` is not provided.        |
+| `audio_url`    | `String`     | Optional | URL to the audio file.   |
+| `start_time`         | Float   | Yes      | The start time (in milliseconds) of the audio to trim              |
+| `end_time`           | Float   | Yes      | The end time (in milliseconds) of the audio to trim                |
+| `output_extension`   | String  | Yes      | Output format: mp3, wav, flac, ogg, aac, or webm              |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+>**content-type:** multipart/form-data
+
+---
+
+## Sample Request
+
+### Python
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/audio_cutter"
+headers = {"Authorization": "<API_KEY>"}
+
+payload = {
+    "start_time": 10500,
+    "end_time": 45000,
+    "output_extension": "mp3"
+}
+
+# Option 1: audio_url
+payload["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=payload)
+
+# Option 2: File Upload
+# with open("input_audio.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=payload, files=files)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+```json
+{
+  "success":true,
+  "task_id":"b0ac9d46-64d7-4843-af48-a0b6effe3666",
+  "conversion_id":"fe19945b-d466-4183-b559-5d264bddd492",
+  "eta":66,
+  "credit_estimate":0.15,
+  "message":"Message published to queue",
+  "status":"IN_QUEUE"
+}
+```
+---
+
+## Webhook Response
+
+When audio cutter conversion completes, your webhook will receive:
+
+```json
+{
+  "success": true, 
+  "conversion_type": "Audio Cutter", 
+  "task_id": "8993b364-9141-4de7-ab38-5a4178618f0e", 
+  "conversion_id": "3f07f1ba-9eb5-4581-95ed-427eac1dda0c", 
+  "output_file": "https://lalals.s3.amazonaws.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.mp3", 
+  "message": "Audio cutter completed"
+} 
+```
+
+---
+
+## Payload and Request Formation

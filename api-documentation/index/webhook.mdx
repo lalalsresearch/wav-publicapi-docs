@@ -1,0 +1,72 @@
+---
+title: Webhook Integration
+---
+
+When working with asynchronous processes like music generation, voice cloning, or instrumental extraction, waiting for a task to complete can slow down your workflow. That’s where **webhooks** come in handy.
+
+Webhooks allow Musicgpt to notify your application the moment a task is completed. You’ll get all the necessary data including the audio URL without needing to constantly poll our API.
+
+---
+
+### How It Works
+
+1. **Set the `webhook_url`** when submitting your conversion request.
+2. Musicgpt will **send a POST request** to that URL when the task is completed.
+3. Your server can then parse the response and proceed with post-processing or user notifications.
+
+---
+
+### Sample Payload
+Here's what a typical webhook payload looks like:
+
+```json
+{
+  "task_id": "12345678-abcd-1234-efgh-567890abcdef",
+  "status": "COMPLETED",
+  "status_msg": "Conversion successful",
+  "conversion_type": "MUSIC_AI",
+  "audio_url": "https://musicgpt.s3.amazonaws.com/audiofile.mp3",
+  "title": "Generated Song",
+  "conversion_cost": 1.25,
+  "createdAt": "2025-01-01T12:00:00Z",
+  "updatedAt": "2025-01-01T12:05:00Z"
+}
+```
+
+> 🔗 Set the `webhook_url` to an endpoint on your server — this is where Musicgpt will notify you once the generation is done.
+
+---
+
+### Preliminary Response
+When you initiate a conversion request, Musicgpt will immediately respond with a **preliminary response** that includes:
+- `success`: whether the task was successfully initiated
+- `task_id`: a unique ID you can use to track the conversion
+
+Example:
+```json
+{
+  "success": true,
+  "task_id": "12345678-abcd-1234-efgh-567890abcdef"
+}
+```
+
+This response confirms that the request was accepted. However, the **final result** (like the downloadable file) will be sent **later** to your webhook URL.
+
+---
+
+### Can’t Use a Webhook?
+
+No problem — if you’re running code on a client device or you don’t have a public server, you can always check the conversion status manually using our helper endpoint:
+
+👉 [**Get Conversion by ID**](/api-documentation/endpoint/getById)
+
+---
+
+### Why Use Webhooks?
+- No need for polling or delays
+- Works in the background
+- Instantly delivers results
+- Ideal for automations and server workflows
+
+Set it once, and let Musicgpt notify you when the magic happens. 🎶
+

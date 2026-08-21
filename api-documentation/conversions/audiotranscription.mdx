@@ -1,0 +1,120 @@
+---
+title: 'Audio Transcribe'
+openapi: 'POST /v1/audio_transcribe'
+---
+
+Convert your audio recordings into high-accuracy text using AI.
+
+**Audio Transcribe** enables seamless transcription for podcasts, interviews, lectures, meetings, and more.
+
+- Fast and accurate speech-to-text conversion
+- Supports multiple languages
+- Instant or asynchronous transcription with webhook support
+
+Audio Transcribe ensures reliable, professional-grade transcripts for your audio content.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/audio_transcribe
+```
+
+Use this endpoint to transcribe audio recordings into text.
+
+---
+
+## Sample Output
+
+Transcript Output of Charlie Puth and Wiz Khalifa's See You Again:
+
+> "It's been a long day without you, my friend, and I'll tell you all about it when I see you again. We've come a long way from where we began. Oh, I'll tell you all about it when I see you again, when I see you again. Damn, you know, all the planes we flew, good things we've been through. And I'll be standing right here talking to you about another pap. I know we love to hit the road and laugh, but something told me that it wouldn't last. Had to switch up, looking things different, see the bigger picture. Those were the days, hard work for ever pays. Now I see you in a better place. See you in a better place. Oh, after we not talk about family, we family is all that we got. Everything I would do, you would stand in there by my side. And now you've got me with me for the last ride. It's been a long day without you, my friend, and I'll tell you all about it when I see you again. We've come a long way from where we began. Oh, I'll tell you all about it when I see you again, when I see you again. First you both go out your way and the vibe is feeling stronger. It was small, turned to a friendship, but friendship turned to a bond. And that bond will never be broken. The love will never get lost. And when brotherhood comes first, then the land will never be crossed. It's never stood on our own when that land had to be drawn. And that land is where we reach. So remember me when I'm gone. How can we not talk about family, we family is all that we got. Everything I would do, you would stand in there by my side. And now you've got me with me for the last ride. Let the light go on your way. Hold every memory as you go. And every road you take will always be true. Oh, it's been a long day without you, my friend. And I'll tell you all about it when I see you again. We've come a long way from where we began. Oh, I'll tell you all about it when I see you again. When I see you again. Oh, I'll tell you all about it when I see you again. Oh, I'll tell you all about it when I see you again."
+
+---
+
+## Try it Yourself
+
+Visit the [Audio Transcribe Endpoint Explorer](/api-documentation/endpoint/audiotranscribe) to upload audio files and get instant transcripts.
+
+---
+
+## Request Parameters
+
+| Parameter        | Type    | Required | Description                                                  |
+|------------------|---------|----------|--------------------------------------------------------------|
+| `audio_url`      | String  | Yes      | URL to the audio file you want to transcribe.                 |
+| `audio_file`  | `File` | Optional     | Upload the audio file directly. Required if `audio_url` is not provided.  |
+| `language`       | String  | Optional | Language code (e.g., `en`, `es`, `fr`) for targeted accuracy |
+| `webhook_url`    | String  | Optional | Webhook URL to receive the transcription asynchronously     |
+
+> **content-type:** multipart/form-data
+---
+
+## Sample Request
+
+### Python
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/audio_transcribe"
+headers = {"Authorization": "<API_KEY>"}
+
+payload = {
+    "language": "en",
+    "translate": True,
+    "transcription_format": "plain_text",
+    "word_timestamps": True
+}
+
+# Option 1: audio_url
+payload["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=payload)
+
+# Option 2: File Upload
+# with open("audio.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=payload, files=files)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+```json
+{
+    "success":true,
+    "task_id":"cade1dea-a9fb-49d3-a5b2-52f786ea5ad3",
+    "conversion_id":"1c5a2543-5b99-499c-8bb4-28424497e60f",
+    "eta":46,
+    "credit_estimate":0.04,
+    "message":"",
+    "status":"IN_QUEUE"
+}
+```
+
+---
+
+## Webhook Response
+
+When transcription completes, your webhook will receive:
+
+```json
+{
+    "success": true, 
+    "conversion_type": "Audio Transcription", 
+    "task_id": "cade1dea-a9fb-49d3-a5b2-52f786ea5ad3", 
+    "conversion_id": "1c5a2543-5b99-499c-8bb4-28424497e60f", 
+    "transcription": "It's been a long day without you, my friend, and I'll tell you all about it when I see you again. We've come a long way from where we began. Oh, I'll tell you all about it when I see you again, when I see you again. Damn, you know, all the planes we flew, good things we've been through. And I'll be standing right here talking to you about another pap. I know we love to hit the road and laugh, but something told me that it wouldn't last.", 
+    "translation": null, 
+    "detected_language": "en", 
+    "word_timestamps": [...]
+}
+```
+
+---
+
+## Payload and Request Formation

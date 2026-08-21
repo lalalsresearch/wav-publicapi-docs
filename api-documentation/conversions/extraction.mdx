@@ -1,0 +1,204 @@
+---
+title: 'Extraction'
+openapi: 'POST /v2/Extraction'
+---
+
+<Warning>
+   **Deprecation Notice:** Extraction v1 is still functional but has been deprecated. We recommend switching to the v2 endpoint for improved response times and better quality.
+</Warning>
+
+Extract vocals, instrumentals, or other stems from an audio file or URL, with optional preprocessing. 
+
+---
+## Endpoint
+
+```http
+POST /v2/Extraction
+```
+
+Use this endpoint to extract stems like vocals, drums, guitar, or more from an audio source.
+
+---
+
+## Request Parameters
+
+| Parameter               | Type         | Required | Description                                                                                 |
+| ----------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------- |
+| `audio_url`             | `string`     | Optional | URL of the audio file to extract from. Either `audio_url` or `audio_file` must be provided. |
+| `audio_file`            | `File` | Optional | Audio file to upload and process. Either `audio_url` or `audio_file` must be provided.      |
+| `stems`                 | `string`     | Optional | JSON string list of required stems. e.g., `["vocals", "drums"]`. See all options below.     |
+| `preprocessing_options` | `string`     | Optional | JSON string list of preprocessing options. e.g., `["Denoise"]`. See all options below.      |
+| `eco_mode`              | `boolean` | Optional     | Enable eco mode for faster parallel extraction. Default: `false`. |
+| `webhook_url`           | `string`     | Optional | Callback URL to receive async processing results.                                           |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+>**content-type:** multipart/form-data
+
+---
+
+## Available Stems
+
+The following audio stems can be extracted. They are grouped into categories based on instrument type or function:
+
+### Vocals
+
+- `vocals` — All vocal content (combined)
+- `male_vocal` — Male vocals only
+- `female_vocal` — Female vocals only
+- `lead_vocal` — Lead singer’s voice
+- `back_vocal` — Backing vocals
+
+### Guitar
+
+- `guitar` — All guitar sounds
+- `acoustic_guitar` — Acoustic guitar
+- `electric_guitar` — Electric guitar
+- `rhythm_guitar` — Rhythm guitar parts
+- `solo_guitar` — Solo guitar parts
+
+### Drums
+
+- `drums` — All drum elements
+- `kick_drum` — Kick or bass drum
+- `snare_drum` — Snare drum
+- `toms` — Tom drums
+- `hi_hat` — Hi-hat cymbals
+- `ride` — Ride cymbal
+- `crash` — Crash cymbal
+
+### Keys and Piano
+
+- `piano` — Piano only
+- `keys` — Keyboard instruments (includes synths, organs, etc.)
+
+### Strings and Winds
+
+- `strings` — String instruments (e.g., violin, cello)
+- `winds` — Wind instruments (e.g., saxophone, flute)
+
+### Other Instruments
+
+- `bass` — Bassline instruments
+- `instrumental` — All non-vocal content (used to get instrumental version)
+
+### Full Band (Composite)
+
+- `drums`, `bass`, `piano`, `guitar` — Common full-band instrumentation
+
+> **Note:** If the `stems` parameter is omitted or an empty list is supplied, this full band composite (`["drums", "bass", "piano", "guitar"]`) is used as the default.
+
+---
+
+## Preprocessing Options
+
+These preprocessing steps can be applied to the input audio before stem extraction:
+
+- `Denoise` — Reduces ambient or background noise
+- `Deecho` — Removes echo and early reflections
+- `Dereverb` — Reduces late reverberation from recordings
+
+---
+## Sample Output
+
+Sample Output : Vocals
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.mp3">Your browser does not support the audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.wav" target="_blank">Download Audio</a>
+
+
+Sample Output : instrumentals
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.mp3">Your browser does not support the audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.wav" target="_blank">Download Audio</a>
+
+---
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/Extraction" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "audio_file=@path_to_audio.mp3" \
+-F "stems=[\"vocals\",\"drums\"]" \
+-F "preprocessing_options=[\"Denoise\"]" \
+-F "webhook_url=http://webhook.musicgpt.com"
+```
+
+### Python
+
+```python
+import requests
+import json
+
+url = "https://api.musicgpt.com/api/public/v2/Extraction"
+
+headers = {
+    "Authorization": "<API_KEY>"
+}
+
+data = {
+    "stems": json.dumps(["vocals", "drums"]),
+    "preprocessing_options": json.dumps(["Denoise"]),
+    "webhook_url": "https://example.com/my-webhook"
+}
+
+# Option 1: audio_url
+data["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File Upload
+# with open("song.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+print(response.json())
+```
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success":true,
+  "task_id":"1683c35d-3990-4aac-98da-6847a6893893",
+  "conversion_id":"dded3f43-4715-4564-88e0-b66ebc00c466",
+  "eta":147,
+  "credit_estimate":5.55,
+  "message":"Message published to queue",
+  "status":"IN_QUEUE"
+}
+```
+
+---
+
+## Webhook Response
+
+```json
+{
+  "success": true, 
+  "conversion_type": "Extraction", 
+  "task_id": "1683c35d-3990-4aac-98da-6847a6893893", 
+  "conversion_id": "dded3f43-4715-4564-88e0-b66ebc00c466", 
+  "audio_url": "{\"vocals\": \"https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.mp3\", 
+                \"instrumental\": \"https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.mp3\", 
+                \"solo_guitar\": \"https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_solo_guitar.mp3\"}", 
+  "conversion_cost": "5.55", 
+  "conversion_duration": 136.83045351473922
+}
+```
+
+---
+
+## Common Errors
+
+* **422 Unprocessable Entity**: When neither `audio_url` nor `audio_file` is provided.
+* **500 Internal Server Error**: A server-side error occurred.
+
+---
+
+## Payload and Request Formation

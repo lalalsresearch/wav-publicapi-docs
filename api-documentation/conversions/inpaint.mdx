@@ -1,0 +1,217 @@
+---
+title: 'Inpaint'
+openapi: 'POST /v1/inpaint'
+---
+
+Replace a specific segment of an audio file using a prompt and optional lyrics.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/inpaint
+```
+
+This endpoint processes an input audio file along with a prompt, timestamp range, and optional lyrics to perform inpainting (replacement) in the specified segment.
+
+---
+
+## Request Parameters
+
+| Parameter          | Type         | Required | Description                                                                                                 |
+| ------------------ | ------------ | -------- | ----------------------------------------------------------------------------------------------------------- |
+| `audio_file`       | `File` | Optional | Upload the input audio file. Required if `audio_url` is not provided.                                       |
+| `title`             | `String`  | Optional |  Title of the generated music                    |
+| `audio_url`        | `String`     | Optional | URL to the audio file.                         |
+| `prompt`           | `String`     | Required | Prompt describing how the replacement should sound. Example: "Replace this part with an opera-style vocal." |
+| `replace_start_at` | `Float`      | Required | Start time (in seconds) of the segment to replace.                                                          |
+| `replace_end_at`   | `Float`      | Required | End time (in seconds) of the segment to replace.                                                            |
+| `lyrics`           | `String`     | Optional | Original lyrics of song.                                                                      |
+| `lyrics_section_to_replace`      | `String`     | Optional     | Lyrics to be used for the replaced portion(optional, max 3000 characters)           |
+| `gender`           | `String`     | Optional | Voice style for vocal generation. One of: `male`, `female`, `neutral`. 
+| `num_outputs`     | `int`  | Optional |The number of outputs to generate (1 or 2 only default : 2).         |
+| `generate_album_cover` | Boolean | Optional | false | If `true`, generate an album cover for the generated audio |
+| `lyrics_timestamps`  | Boolean | Optional | false | If true, generates lyric timestamps for the output track |                                    |
+| `webhook_url`      | `String`     | Optional | Callback URL for async response.                                                                            |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+> **content-type:** multipart/form-data
+
+
+---
+
+## Sample Output
+
+Listen to a real output:
+
+Prompt: inpaint from 60 to 120 seconds in classical slow vibe - audio input : Moana How Far We will Go.
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/2104a105-2572-4412-b6fb-f67b0382582a.mp3">Your browser does not support the audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/conversions/2104a105-2572-4412-b6fb-f67b0382582a.wav" target="_blank">Download Audio</a>
+
+---
+
+
+## Try it Yourself
+
+Visit the [Inpaint Endpoint Explorer](/api-documentation/endpoint/inpaint) to test the endpoint - set your payload, hit send, and view the generated results.
+
+---
+
+## Webhook Delivery
+
+Once the generation is complete, **webhooks** will be triggered to deliver the following:
+
+## Standard Requests:
+
+* 2 (webhooks) x Inpaint conversion details (one per version)
+* 2 (webhooks) x Lyrics with timestamp data
+* 1 Album Cover Image
+
+> Webhook responses include detailed metadata including task\_id, conversion\_id, audio files (conversion\_path), lyrics etc.
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/inpaint" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "audio_file=@/path/to/audio.mp3" \
+-F "prompt=Add a soft guitar solo here" \
+-F "replace_start_at=12.5" \
+-F "replace_end_at=20.0" \
+-F "lyrics=This is where my story begins" \
+-F "gender=male" \
+-F "webhook_url=https://example.com/webhook"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/inpaint"
+headers = {"Authorization": "<API_KEY>"}
+data = {
+  "prompt": "Add a soft guitar solo here",
+  "replace_start_at": 12.5,
+  "replace_end_at": 20.0,
+  "lyrics": "This is where my story begins",
+  "lyrics_section_to_replace": "New lyrics",
+  "gender": "male",
+  "num_outputs": 2,
+  "generate_album_cover": True,
+  “lyrics_timestamps": True,
+  "title": "My Generated Track",
+  "webhook_url": "https://example.com/webhook"
+}
+
+# Option 1: audio_url
+data["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File Upload
+# with open("song.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+ print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "Inpaint request submitted successfully",
+  "task_id": "070093dd-f1e9-4d7e-a6b3-ab6ecd237e38",
+  "conversion_id_1": "7cac10af-9007-449f-b3ab-f60b05d23309",
+  "conversion_id_2": "e85848c9-8feb-4cd8-85ef-456651a697b5",
+  "is_flagged": false,
+  "reason": "",
+  "eta": 123,
+  "status": "IN_QUEUE",
+  "credit_estimate": 0.12,
+  "error_message": "",
+  "error_message_detail": "",
+  "missing_input_fields": "",
+  "predicted_user_intent": ""
+}
+```
+
+---
+
+## Webhook Sample Payload
+
+Inpaint Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Inpaint",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
+  "conversion_path_wav": "https://cdn1.musicgpt.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
+  "conversion_duration": 155.95,
+  "is_flagged": false,
+  "reason": "",
+  "lyrics": "[Verse]\nTurn up the sound\nLet the rhythm take control\nFeel every beat\nMoving through my soul\nLights are shining bright\nAnd we lose track of time\n\n[Chorus]\nMusic in the air\nDancing through the night\nEvery beat we share\nMakes everything feel right\nTurn it up again\nLet the whole world sing",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]",
+  "title": "Rhythm Take Control",
+  "subtype": "remix"
+}
+```
+
+
+Album Cover Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Inpaint",
+  "task_id": "5254c422-0fab-53f0-b5e3-36abb69dd111",
+  "image_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
+  ],
+  "thumbnail_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
+  ],
+  "image_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
+  "thumbnail_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
+  "conversion_id_1": "eba76eae-9c77-5b09-9f2b-96a8bdef0f36",
+  "conversion_id_2": "1cf119ce-a78c-500b-ad43-4b1f598507cb",
+  "album_cover_generator_output": true,
+  "subtype": "album_cover_generation",
+}
+```
+
+Lyrics Timestamp Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Inpaint",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "subtype": "lyrics_timestamped",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]"
+}
+```
+
+
+## Common Errors
+
+* **422 Unprocessable Entity**: Missing required fields like `prompt`, `replace_start_at`, or `replace_end_at`, or neither `audio_file` nor `audio_url` provided.
+* **500 Internal Server Error**: An unexpected error occurred during processing.
+
+---
+
+## Payload and Request Formation

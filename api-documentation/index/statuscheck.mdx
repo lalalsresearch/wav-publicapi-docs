@@ -1,0 +1,76 @@
+---
+title: Status Check
+---
+After performing a conversion via one of our API endpoints, you may want to check the progress or retrieve the final result. You can do this easily by calling our [**Get Conversion by ID**](/api-documentation/endpoint/getById) endpoint.
+
+---
+
+### Example Request
+Use the following code to check the status of any conversion using its `task_id`:
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/byId"
+
+querystring = {
+  "conversionType": "MUSIC_AI",
+  "task_id": "12345678-abcd-1234-efgh-567890abcdef"
+}
+
+headers = {
+  "Authorization": "<api-key>"
+}
+
+response = requests.request("GET", url, headers=headers, params=querystring)
+print(response.text)
+```
+ 
+> Select one among the following values for conversionType: <br /> <br />
+MUSIC_AI, TEXT_TO_SPEECH, VOICE_CONVERSION, <br />
+COVER, EXTRACTION, DENOISING, DEECHO, DEREVERB, <br />
+SOUND_GENERATOR, AUDIO_TRANSCRIPTION, AUDIO_SPEED_CHANGER, <br />
+AUDIO_MASTERING, AUDIO_CUTTER, REMIX, FILE_CONVERT, <br />
+KEY_BPM_EXTRACTION, AUDIO_TO_MIDI, EXTEND, INPAINT, <br />
+SING_OVER_INSTRUMENTAL, LYRICS_GENERATOR, STEMS_SEPARATION, VOCAL_EXTRACTION
+
+---
+
+### Example Response
+```json
+{
+  "success": true,
+  "conversion": {
+    "task_id": "12345678-abcd-1234-efgh-567890abcdef",
+    "conversion_id": "87654321-dcba-4321-hgfe-098765fedcba",
+    "status": "COMPLETED",
+    "status_msg": "Conversion successful",
+    "audio_url": "https://lalals.s3.amazonaws.com/audiofile.mp3",
+    "conversion_cost": 1.25,
+    "title": "Generated Song",
+    "lyrics": "[Verse 1]...",
+    "music_style": "Pop",
+    "createdAt": "2025-01-01T12:00:00Z",
+    "updatedAt": "2025-01-01T12:05:00Z"
+  }
+}
+```
+
+You’ll receive details including:
+- `status`: Whether the conversion is **IN_QUEUE**, **ERROR**, **COMPLETED**, or **FAILED**.
+- `status_msg`: A message describing the state.
+- `audio_url`: A direct link to your generated audio file if the status is completed.
+- Additional metadata such as title, lyrics, style, timestamps, and cost.
+
+---
+
+### Where to Start
+1. First, perform a conversion via the [Conversion Endpoints](/api-documentation/conversions/musicai).
+2. Save the `task_id` you receive in the response.
+3. Use the **Get By ID** endpoint to check the progress.
+
+---
+
+### Still Unsure?
+No worries — head over to the [**Get Conversion by ID**](/api-documentation/endpoint/getById) endpoint and try it for yourself with your own `task_id`. It's the easiest way to confirm conversion status and get direct download access to your audio output!
+

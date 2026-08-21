@@ -1,0 +1,145 @@
+---
+title: 'Voice Changer'
+openapi: 'POST /v1/VoiceChanger'
+---
+
+Convert the voice from an audio file or URL to a different voice using AI voice models.
+
+The **VoiceChanger** endpoint provides real-time voice transformation by modifying the pitch, removing background noise, and converting the voice using a selected model. Ideal for creative content, dubbing, or personalized audio experiences.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/VoiceChanger
+```
+
+This is the primary endpoint for initiating voice conversion tasks.
+
+
+---
+
+## Sample Output
+
+Listen to a real sample output:
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/projects/67092f68-045d-4e3c-8006-532f144dd610.mp3">Your browser does not support the audio playback.</audio>
+
+Output File:
+<a href="https://lalals.s3.amazonaws.com/projects/67092f68-045d-4e3c-8006-532f144dd610.wav" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Visit the [VoiceChanger Endpoint Explorer](/api-documentation/endpoint/voicetovoice) to test it live. Upload a sample, pick a voice, and experience real-time voice transformation.
+
+---
+
+## Request Parameters
+
+| Parameter           | Type        | Required | Description                                                                 |
+|--------------------|-------------|----------|-----------------------------------------------------------------------------|
+| `audio_url`        | `String`    | Optional | URL of the audio file. Either `audio_url` or `audio_file` must be provided. |
+| `audio_file`       | `File`| Optional | Upload the audio file directly. Either `audio_url` or `audio_file` must be provided. |
+| `voice_id`         | `String`    | ✅ Yes   | Voice model to convert the audio into.                                      |
+| `remove_background`| `Integer`   | Optional | Set to `1` to remove background noise. Default is `0`.                      |
+| `pitch`            | `Integer`   | Optional | Adjust pitch between -12 and 12 semitones. Default is `0`.                  |
+| `webhook_url`      | `String`    | Optional | Callback URL for async response.                                            |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+>**content-type:** multipart/form-data
+
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/VoiceChanger" \
+  -H "Authorization: <API_KEY>" \
+  -F "voice_id=e0bb585f-b798-4bac-ac4e-de7fff38f9d75" \
+  -F "remove_background=1" \
+  -F "pitch=0" \
+  -F "webhook_url=https://example.com/my-webhook" \
+  -F "audio_url=<YOUR_AUDIO_URL>"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/VoiceChanger"
+
+headers = {
+    "Authorization": "<API_KEY>"
+}
+
+data = {
+    "voice_id": "e0bb585f-b798-4bac-ac4e-de7fff38f9d75",
+    "remove_background": 1,
+    "pitch": 0,
+    "webhook_url": "https://example.com/my-webhook"
+}
+
+# Option 1: audio_url
+data["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File Upload
+# with open("song.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success":true,
+  "task_id": "fdcca59e-9788-43fc-9ee6-e9983064c432",  
+  "conversion_id":"3b8dd3e8-104a-4a2f-86ba-3ed722f5190a",
+  "eta":16,
+  "credit_estimate":1.07,
+  "message":"",
+  "status":"IN_QUEUE"
+}
+```
+
+---
+## Webhook Response
+
+```json
+{
+  "success": true, 
+  "conversion_type": "Voice Conversion", 
+  "task_id": "fdcca59e-9788-43fc-9ee6-e9983064c432", 
+  "conversion_id": "67092f68-045d-4e3c-8006-532f144dd610", 
+  "conversion_path": "https://cdn1.musicgpt.com/projects/standard/ffa2da3a-af79-4cbd-9cf6-ea178c9b2f90.mp3",
+  "conversion_cost": "0.78", 
+  "conversion_duration": 272.44,
+  "message": "Conversion Completed",
+}
+```
+---
+
+## Common Errors
+
+- **400 Bad Request**: Invalid or missing input file.
+- **402 Payment Required**: Your credit balance is insufficient.
+- **422 Unprocessable Entity**: No `audio_url` or `audio_file` provided.
+- **500 Internal Server Error**: Something went wrong on our end.
+
+---
+
+## Payload and Request Formation

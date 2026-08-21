@@ -1,0 +1,128 @@
+---
+title: 'Text To Speech'
+openapi: 'POST /v1/TextToSpeech'
+---
+
+Convert any given text into realistic speech using your chosen voice and gender.
+
+**TextToSpeech** enables you to instantly bring written content to life. Perfect for:
+
+- Creating dynamic audio narrations or voiceovers
+- Choosing gender-specific voice stylings for different contexts
+- Using webhooks for real-time integration with your workflows
+
+---
+
+## Endpoint
+
+```http
+POST /v1/TextToSpeech
+```
+
+Use this endpoint to initiate a new text-to-speech audio generation.
+
+---
+
+## Sample Output
+
+Prompt: When I think of superheroes I think of super humans. I think of Superman, Wolverine and Wonder Woman. Usually they have a cape, or a mask to hide their face just in case. They have X-ray vision and super-human strength. Some can even breathe in outer space. They fly around a while, but always come back to keep our cities safe. They’re here to save humanity from itself. It’s a metaphor for how we look outside ourselves for help, and while the fantasies are fun, I choose to look for me and you.
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/projects/f1970224-ab06-4aa6-a832-0f3fd23212b7.mp3">Your browser does not support the audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/projects/f1970224-ab06-4aa6-a832-0f3fd23212b7.wav" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Visit the [TextToSpeech Endpoint Explorer](/api-documentation/endpoint/TextToSpeech) to try your own text samples.
+
+---
+
+## Request Parameters
+
+| Parameter      | Type    | Required | Description                                      |
+|----------------|---------|----------|--------------------------------------------------|
+| `text`         | String  | Yes      | The text content to convert to speech            |
+| `voice_id`     | String  | Optional      | Voice ID of the artist. Visit [Get Voices by Name](/api-documentation/endpoint/searchVoices) to get voice_id.   |
+| `sample_audio_url`  | String  | Optional       | URL of Voice you want.   |
+| `gender`       | String  | Yes      | Gender of the voice ("male", "female")           |
+| `webhook_url`  | String  | No       | URL to receive a callback with generated audio   |
+
+> **content-type:** application/json
+
+
+
+---
+
+## Sample Request
+
+### Python
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/TextToSpeech"
+
+headers = {
+    "Authorization": "<API_KEY>",
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "text": "Welcome to MusicGPT! This is a sample text-to-speech generation.",
+    "sample_audio_url": "<YOUR_AUDIO_URL>",
+    "voice_id": "e1cb7380-e3db-433a-b186-a996d7545986",
+    "gender": "female",
+    "webhook_url": "https://example.com/my-webhook"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+```json
+{
+  "success":true,
+  "task_id":"0a65cbb6-2ab8-4949-9ee0-0e8c138ac2cf",
+  "conversion_id":"6542baa6-d61f-4d90-b832-ed929d9c0996",
+  "eta":17,
+  "credit_estimate":0.68,
+  "message":"",
+  "status":"IN_QUEUE"
+}
+```
+
+---
+
+## Webhook Response
+
+Once audio is ready, your webhook will receive:
+
+```json
+{
+  "success": true, 
+  "conversion_type": "Text To Speech", 
+  "task_id": "037a9a09-3fc6-4a90-8748-d3406ff712eb", 
+  "conversion_id": "f1970224-ab06-4aa6-a832-0f3fd23212b7", 
+  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/tts/195e5815-b871-4ea0-86a2-7f5eb1c696d2/195e5815-b871-4ea0-86a2-7f5eb1c696d2.mp3",
+  "message": "Conversion Completed",
+  "conversion_cost": "0.68", 
+  "conversion_duration": 27.78
+}
+```
+---
+
+## Error Codes
+
+- **402 Payment Required**: Not enough credits to process the request
+- **422 Unprocessable Entity**: Invalid or missing fields
+- **500 Internal Server Error**: Server-side failure during processing
+
+---
+
+## Payload and Request Formation

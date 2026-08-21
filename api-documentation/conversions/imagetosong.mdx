@@ -1,0 +1,142 @@
+---
+title: 'Image to Song'
+openapi: 'POST /v1/image_to_song'
+---
+
+Generate a song from an image by analyzing its content and creating music based on visual cues. Users can optionally provide custom lyrics, select a musical key, adjust tempo, or request instrumental/vocal-only outputs.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/image_to_song
+```
+
+
+This endpoint processes an image (uploaded or via URL) to generate a song. The image is analyzed to create a descriptive prompt, which is then used to generate AI-driven music.
+
+## Request Parameters
+
+| Parameter           | Type         | Required | Description                                                                                       |
+| ------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------- |
+| `image_file`        | `File` | Optional | Upload the image to analyze. Required if `image_url` is not provided.                             |
+| `image_url`         | `String`     | Optional | URL to the audio file. Required if `image_file` is not provided.                    |
+| `prompt`            | `String`     | Optional | Additional text to guide the song generation (max 300 characters).                                 |
+| `lyrics`            | `String`     | Optional | Custom lyrics to include in the generated audio (max 3000 characters).                             |
+| `negative_tags`     | `String`     | Optional | Tags or themes to avoid in the song.                                                              |
+| `make_instrumental` | `Boolean`    | Optional | If true, generates an instrumental version. Defaults to false.                                     |
+| `vocal_only`        | `Boolean`    | Optional | If true, generates a vocal-only version. Defaults to false.                                        |
+| `key`               | `String`     | Optional | Musical key for the song (e.g., "C major", "A minor").                                             |
+| `bpm`               | `Integer`    | Optional | Tempo in beats per minute. Defaults to 0 (auto-selected).                                         |
+| `webhook_url`       | `String`     | Optional | Callback URL for async result delivery.                                                           |
+| `voice_id`          | `String`     | Optional | Voice ID for converting generated audio. Cannot be used with `vocal_only` mode.                   |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+>**content-type:** multipart/form-data
+
+
+---
+
+
+## Try it Yourself
+
+Visit the [image_to_song Endpoint Explorer](/api-documentation/endpoint/imagetosong) to play around — set your payload, hit send, and listen to the generated results live.
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/image_to_song" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "image_file=@/path/to/image.png" \
+-F "prompt=Generate a relaxing acoustic track inspired by this scene." \
+-F "lyrics=Let the colors of the sunset fill your heart." \
+-F "make_instrumental=false" \
+-F "vocal_only=false" \
+-F "key=C major" \
+-F "bpm=120" \
+-F "webhook_url=https://example.com/webhook" \
+-F "voice_id=voice_123"
+```
+
+### Python
+
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/image_to_song"
+headers = {"Authorization": "<API_KEY>"}
+data = {
+    "prompt": "Generate a relaxing acoustic track inspired by this scene.",
+    "lyrics": "Let the colors of the sunset fill your heart.",
+    "make_instrumental": False,
+    "vocal_only": False,
+    "key": "C major",
+    "bpm": 120,
+    "webhook_url": "https://example.com/webhook",
+    "voice_id": "voice_123"
+}
+
+# Option 1: image_url
+files = {}
+data["image_url"] = "https://mybucket.s3.amazonaws.com/image.png"
+response = requests.post(url, headers=headers, data=data, files=files)
+
+# Option 2: File Upload
+# with open("image.png", "rb") as f:
+#     files = {"image_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "Message Published To Queue",
+  "task_id": "task-xyz-123",
+  "conversion_id_1": "image-abc",
+  "conversion_id_2": "image-def",
+  "eta": 40,
+  "credit_estimate": 45
+}
+```
+
+---
+
+## Webhook Delivery
+
+Once the generation is complete, **webhooks** will be triggered to deliver the following:
+
+#### Standard Requests :
+
+* 2 (webhooks) x conversion details (one per version)
+* 2 (webhooks) x Lyrics with timestamp data
+* 1 Album Cover Image
+
+> Webhook responses include detailed metadata including task\_id, conversion\_id, audio files (conversion\_path), lyrics etc.
+
+---
+
+## Common Errors
+
+* **422 Unprocessable Entity**: Missing required fields like `prompt`, `replace_start_at`, or `replace_end_at`, or neither `audio_file` nor `audio_url` provided.
+* **500 Internal Server Error**: An unexpected error occurred during processing.
+
+---
+
+The response provides a downloadable audio file.
+
+---
+

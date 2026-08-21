@@ -1,0 +1,209 @@
+---
+title: 'Sing Over Instrumental'
+openapi: 'POST /v1/sing_over_instrumental'
+---
+
+Generate a sung vocal performance over an instrumental audio track using a style prompt and lyrics.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/sing_over_instrumental
+```
+
+This endpoint enables you to overlay vocals onto an instrumental audio using a textual description of the singing style and provided lyrics. Input can be either a file upload or a URL.
+
+---
+
+## Request Parameters
+
+| Parameter     | Type         | Required | Description                                                                         |
+| ------------- | ------------ | -------- | ----------------------------------------------------------------------------------- |
+| `title`             | `String`  | Optional| Title of the generated music                    |
+| `audio_file`  | `UploadFile` | Optional | Upload the instrumental audio file. Required if `audio_url` is not provided.        |
+| `audio_url`   | `String`     | Optional | URL to the audio file. |
+| `prompt`      | `String`     | Required | Text describing the desired singing style. Example: "Sing in soft jazz style"       |
+| `lyrics`      | `String`     | Required | The lyrics to be sung over the instrumental. Max 2000 characters.                   |
+| `gender`      | `String`     | Optional | Voice style. Options: `male`, `female`, `neutral`.                                  |
+| `generate_album_cover` | Boolean | Optional | false | If `true`, generate an album cover for the generated audio |
+| `lyrics_timestamps`  | Boolean | Optional | false | If true, generates lyric timestamps for the output track |
+| `webhook_url` | `String`     | Optional | Callback URL to receive processing results.                                         |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+> **content-type:** multipart/form-data
+
+
+---
+
+
+## Sample Output
+
+Listen to a real output:
+
+Prompt: sing over instrumental in classical slow vibe - audio input : Moana How Far We will Go.
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/2104a105-2572-4412-b6fb-f67b0382582a.mp3">Your browser does not support the audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/conversions/2104a105-2572-4412-b6fb-f67b0382582a.wav" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Use the [Sing Over Insturmental Endpoint Explorer](/api-documentation/endpoint/sing_over_instrumental) to test this endpoint live with your own inputs.
+
+---
+
+
+## Webhook Delivery
+
+Once the generation is complete, **webhooks** will be triggered to deliver the following:
+
+#### Standard Requests (non-instrumental):
+* 2 (webhooks) x Sing Over conversion details (one per version)
+* 2 (webhooks) x Lyrics with timestamp data
+* 1 Album Cover Image
+
+
+> Webhook responses include detailed metadata including task_id, conversion_id, audio files (conversion_path), lyrics etc.
+
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/sing_over_instrumental" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "audio_url=https://youtube.com/audio.mp3" \
+-F "prompt=Sing like Adele in a soulful tone" \
+-F "lyrics=Never mind I'll find someone like you..." \
+-F "gender=female" \
+-F "webhook_url=https://yourdomain.com/webhook"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/sing_over_instrumental"
+headers = {"Authorization": "<API_KEY>"}
+data = {
+  "prompt": "Sing emotional vocals over a soft piano instrumental",
+  "lyrics": "Never mind I'll find someone like you...",
+  "gender": "female",
+  "webhook_url": "https://yourdomain.com/webhook"
+}
+
+# Option 1: Use audio_url
+data["audio_url"] = "https://youtube.com/audio.mp3"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File upload
+# with open("audio.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+# print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "Sing Over Instrumental request submitted successfully",
+  "task_id": "653c5108-c827-4568-9671-9259fd6b44cc",
+  "conversion_id_1": "1d712957-00d9-493a-a6aa-8497ccaea9bc",
+  "conversion_id_2": "7d6fa7a2-292c-4a95-8bda-df8ccce44bef",
+  "is_flagged": false,
+  "reason": "",
+  "eta": 258,
+  "status": "IN_QUEUE",
+  "credit_estimate": 0.1,
+  "error_message": "",
+  "error_message_detail": "",
+  "missing_input_fields": "",
+  "predicted_user_intent": ""
+}
+```
+
+---
+
+## Webhook Sample Payload
+
+
+Sing Over Instrumental Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Sing Over Instrumental",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
+  "conversion_path_wav": "https://cdn1.musicgpt.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
+  "conversion_duration": 155.95,
+  "is_flagged": false,
+  "reason": "",
+  "lyrics": "[Verse]\nTurn up the sound\nLet the rhythm take control\nFeel every beat\nMoving through my soul\nLights are shining bright\nAnd we lose track of time\n\n[Chorus]\nMusic in the air\nDancing through the night\nEvery beat we share\nMakes everything feel right\nTurn it up again\nLet the whole world sing",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]",
+  "title": "Rhythm Take Control",
+  "subtype": "remix"
+}
+```
+
+
+Album Cover Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Sing Over Instrumental",
+  "task_id": "5254c422-0fab-53f0-b5e3-36abb69dd111",
+  "image_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
+  ],
+  "thumbnail_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
+  ],
+  "image_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
+  "thumbnail_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
+  "conversion_id_1": "eba76eae-9c77-5b09-9f2b-96a8bdef0f36",
+  "conversion_id_2": "1cf119ce-a78c-500b-ad43-4b1f598507cb",
+  "album_cover_generator_output": true,
+  "subtype": "album_cover_generation",
+}
+```
+
+Lyrics Timestamp Webhook
+
+```json
+{
+  "success": true,
+  "conversion_type": "Sing Over Instrumental",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "subtype": "lyrics_timestamped",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]"
+}
+```
+---
+
+
+
+
+## Common Errors
+
+* **422 Unprocessable Entity**: Missing required fields like `prompt` or `lyrics`, or no audio input provided.
+* **500 Internal Server Error**: Unexpected error during processing.
+
+---
