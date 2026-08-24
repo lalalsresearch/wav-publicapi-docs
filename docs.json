@@ -1,20 +1,128 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Musicgpt API Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "logo/MusicGPT Icon.svg",
   "navigation": {
-    "pages": [
+    "tabs": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
+        "tab": "API Documentation",
+        "groups": [
+          {
+            "group": "API Documentation",
+            "pages": [
+                "api-documentation/index/introduction",
+                "api-documentation/index/createapiaccount",
+                "api-documentation/index/keystocastle",
+                "api-documentation/index/yourfirstrequest",
+                "api-documentation/index/FAQs"
+              ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api-documentation/index/authentication",
+              "api-documentation/index/pricing",
+              "api-documentation/index/statuscheck",
+              "api-documentation/index/webhook",
+              "api-documentation/index/changelog"
+
+            ]
+          },
+          {
+          "group": "Resources",
+            "pages": [
+              "api-documentation/index/sdk"
+            ]
+          },
+          {
+            "group": "Keep in mind",
+            "pages": [
+              "api-documentation/utilities/error",
+              "api-documentation/utilities/prompt_guideline",
+              "api-documentation/utilities/ratelimits",
+              "api-documentation/utilities/finalnotes"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "api-documentation/conversions/musicaiv2",
+              "api-documentation/conversions/musicai",
+              "api-documentation/conversions/remix",
+              "api-documentation/conversions/inpaint",
+              "api-documentation/conversions/extend",
+              "api-documentation/conversions/texttospeech",
+              "api-documentation/conversions/soundgenerator",
+              "api-documentation/conversions/extraction",
+              "api-documentation/conversions/voicechanger",
+              "api-documentation/conversions/sing_over_instrumental",
+              "api-documentation/conversions/lyrics_generator",              
+              "api-documentation/conversions/audiotomidi",
+              "api-documentation/conversions/audiocutter",
+              "api-documentation/conversions/audiospeedchanger",
+              "api-documentation/conversions/audiotranscription",
+              "api-documentation/conversions/cover",
+              "api-documentation/conversions/deecho",  
+              "api-documentation/conversions/denoise",
+              "api-documentation/conversions/dereverb",
+              "api-documentation/conversions/extractkeybpm",
+              "api-documentation/conversions/fileconvert",
+              "api-documentation/conversions/audiomastering",
+              "api-documentation/conversions/imagetosong"
+  
+            ]
+          },
+          {
+            "group": "Sample Request Endpoints",
+            "pages": [
+              "api-documentation/sample-post-request",
+              "api-documentation/sample-get-request"
+            ] 
+          },
+          {
+            "group": "Helper Endpoints",
+            "pages": [
+              "api-documentation/endpoint/getById",
+              "api-documentation/endpoint/searchVoices",
+              "api-documentation/endpoint/getAllVoices"
+
+            ]
+          },
+          {
+            "group": "Conversion Endpoints",
+            "pages": [
+              "api-documentation/endpoint/Musicaiv2",
+              "api-documentation/endpoint/MusicAI",
+              "api-documentation/endpoint/cover",
+              "api-documentation/endpoint/voicetovoice",
+              "api-documentation/endpoint/TextToSpeech",
+              "api-documentation/endpoint/extraction",
+              "api-documentation/endpoint/soundgenerator",
+              "api-documentation/endpoint/denoise",
+              "api-documentation/endpoint/deecho",
+              "api-documentation/endpoint/dereverb",
+              "api-documentation/endpoint/fileconvert",
+              "api-documentation/endpoint/audiotranscribe",
+              "api-documentation/endpoint/extract_key_bpm",
+              "api-documentation/endpoint/audio_to_midi",
+              "api-documentation/endpoint/audio_cutter",
+              "api-documentation/endpoint/audio_speed_changer",
+              "api-documentation/endpoint/audio_mastering",
+              "api-documentation/endpoint/remix",
+              "api-documentation/endpoint/extend",
+              "api-documentation/endpoint/inpaint",
+              "api-documentation/endpoint/sing_over_instrumental",
+              "api-documentation/endpoint/lyrics_generator",
+              "api-documentation/endpoint/imagetosong"
+              
+            ]
+          }
         ]
       }
     ],
@@ -22,51 +130,33 @@
       "anchors": [
         {
           "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "href": "https://docs.musicgpt.com",          
           "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "https://lalals.s3.us-east-1.amazonaws.com/ApiDocumentationFiles/MusicGPT+Logo+Black.svg",
+    "dark": "https://lalals.s3.us-east-1.amazonaws.com/ApiDocumentationFiles/MusicGPT+Logo+White.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+  "links": [
+    {
+      "label": "MusicGPT",
+      "href": "https://musicgpt.com"
+    },
+    {
+      "label": "Contact Support",
+      "href": "mailto:api@musicgpt.com",
+      "icon": "envelope",
+      "title": "api@musicgpt.com"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+  ],
+  "primary": {
+    "type": "button",
+    "label": "API Key",
+    "href": "https://musicgpt.com/api-dashboard"
   }
+}
 }

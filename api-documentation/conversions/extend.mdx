@@ -1,0 +1,215 @@
+---
+title: 'Extend'
+openapi: 'POST /v1/extend'
+---
+
+Extend an existing audio file by generating new content after a specific timestamp.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/extend
+```
+
+This endpoint allows users to extend an existing audio file or stream by appending new audio content after a specific timestamp. The new content is generated using a prompt and optional lyrics.
+
+---
+
+## Request Parameters
+
+| Parameter      | Type         | Required | Description                                                                      |
+| -------------- | ------------ | -------- | -------------------------------------------------------------------------------- |
+| `audio_file`   | `File` | Optional | Upload the audio file to extend. Required if `audio_url` is not provided.        |
+| `audio_url`    | `String`     | Optional | URL to the audio file.   |
+| `extend_after` | `Float`      | Required | Time (in seconds) after which new audio is generated.                            |
+| `prompt`       | `String`     | Optional | Describes the desired extension sound. Example: "Add a melodic flute section"    |
+| `title`        | `String`     | Optional | Title of the generated music                    |
+| `lyrics`       | `String`     | Optional | Original lyrics of song. Max 2000 characters.                   |
+| `lyrics_section_to_extend`       | `String`     | Optional | Optional lyrics for the extended segment. Max 3000 characters.                   |
+| `gender`       | `String`     | Optional | Voice style if vocals are generated. Must be one of `male`, `female`, `neutral`. |
+| `num_outputs`     | `int`  | Optional | The number of outputs to generate (1 or 2 only, default : 2).         |
+| `generate_album_cover` | Boolean | Optional | false | If `true`, generate an album cover for the generated audio |
+| `lyrics_timestamps`  | Boolean | Optional | false | If true, generates lyric timestamps for the output track |
+| `webhook_url`  | `String`     | Optional | Callback URL for async result delivery.                                          |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+> **content-type:** multipart/form-data
+
+
+---
+
+## Sample Output
+
+Listen to the extended audio. 
+
+Prompt: loud drums sound - audio input : Rose and Bruno Mars - APT 
+extend after: 6
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/standard/a48b9cf8-5cf0-4b55-8f50-d10007ff930b.mp3">Your browser does not support audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/conversions/standard/a48b9cf8-5cf0-4b55-8f50-d10007ff930b.mp3" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Visit the [Extend Endpoint Explorer](/api-documentation/endpoint/extend) to play around - set your payload, hit send, and listen to the generated results live.
+
+---
+
+## Webhook Delivery
+
+Once the generation is complete, **webhooks** will be triggered to deliver the following:
+
+#### Standard Requests (non-instrumental):
+
+* 2 (webhooks) x Extend conversion details (one per version)
+* 2 (webhooks) x Lyrics with timestamp data
+* 1 Album Cover Image
+
+> Webhook responses include detailed metadata including task\_id, conversion\_id, audio files (conversion\_path), lyrics etc.
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/extend" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "audio_file=@/path/to/audio.mp3" \
+-F "extend_after=35.0" \
+-F "prompt=Add a calming piano outro" \
+-F "lyrics=Let the journey fade away" \
+-F "gender=neutral" \
+-F "webhook_url=https://example.com/webhook"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/extend"
+headers = {"Authorization": "<API_KEY>"}
+data = {
+  "extend_after": 35.0,
+  "prompt": "Add a calming piano outro",
+  "lyrics": "Let the journey fade away",
+  "gender": "neutral", 
+  "lyrics_section_to_extend": "New_lyrics",
+  "num_outputs": 2,
+  "generate_album_cover": True,
+  "lyrics_timestamps": True,
+  "title": "My Generated Track",
+  "webhook_url": "https://example.com/webhook"
+}
+
+# Option 1: audio_url
+data["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File Upload
+# with open("song.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+print(response.json())
+```
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+ "success": true,
+  "message": "Extend request submitted successfully",
+  "task_id": "a39f781f-e87e-4cbd-b923-aebf4aa451e6",
+  "conversion_id_1": "f4ecf063-6ddd-43df-bc81-9eccea5b5042",
+  "conversion_id_2": "49e99636-2ae7-4b5f-a907-e85a8fae95ad",
+  "is_flagged": false,
+  "reason": "",
+  "eta": 199,
+  "status": "IN_QUEUE",
+  "credit_estimate": 0.12,
+  "error_message": "",
+  "error_message_detail": "",
+  "missing_input_fields": "",
+  "predicted_user_intent": ""
+}
+```
+
+---
+
+## Webhook Sample Payload
+ 
+Extend Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Extend",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
+  "conversion_path_wav": "https://cdn1.musicgpt.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
+  "conversion_duration": 155.95,
+  "is_flagged": false,
+  "reason": "",
+  "lyrics": "[Verse]\nTurn up the sound\nLet the rhythm take control\nFeel every beat\nMoving through my soul\nLights are shining bright\nAnd we lose track of time\n\n[Chorus]\nMusic in the air\nDancing through the night\nEvery beat we share\nMakes everything feel right\nTurn it up again\nLet the whole world sing",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]",
+  "title": "Rhythm Take Control",
+  "subtype": "remix"
+}
+```
+
+
+Album Cover Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Extend",
+  "task_id": "5254c422-0fab-53f0-b5e3-36abb69dd111",
+  "image_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
+  ],
+  "thumbnail_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
+  ],
+  "image_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
+  "thumbnail_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
+  "conversion_id_1": "eba76eae-9c77-5b09-9f2b-96a8bdef0f36",
+  "conversion_id_2": "1cf119ce-a78c-500b-ad43-4b1f598507cb",
+  "album_cover_generator_output": true,
+  "subtype": "album_cover_generation",
+}
+```
+
+Lyrics Timestamp Webhook
+
+```json
+{
+  "success": true,
+  "conversion_type": "Extend",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "subtype": "lyrics_timestamped",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]"
+}
+```
+
+---
+
+
+## Common Errors
+
+* **422 Unprocessable Entity**: Missing required fields like `extend_after`, or neither `audio_file` nor `audio_url` provided.
+* **500 Internal Server Error**: An unexpected error occurred during processing.
+
+---
+
+The response provides a downloadable or streamable extended audio file.

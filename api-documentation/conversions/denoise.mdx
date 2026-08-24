@@ -1,0 +1,136 @@
+---
+title: 'Denoise'
+openapi: 'POST /v1/denoise'
+---
+
+Remove background noise from an input audio file with optional webhook callback for asynchronous updates.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/denoise
+```
+
+This endpoint removes noise from an uploaded or linked audio file. A `webhook_url` can be provided for asynchronous task status updates.
+
+---
+
+## Sample Output
+
+Listen to a real sample output:
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.mp3">Your browser does not support the audio playback.</audio>
+
+<a href="https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.wav" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Visit the [Denoise Endpoint Explorer](/api-documentation/endpoint/denoise) to try your own text samples.
+
+---
+
+## Request Parameters
+
+| Parameter        | Type         | Required | Description                                                                 |
+|------------------|--------------|----------|-----------------------------------------------------------------------------|
+| `audio_url`      | `String`     | Optional | The URL of an audio file to clean. Either `audio_url` or `audio_file` must be provided. |
+| `audio_file`     | `File` | Optional | Upload the audio file directly. Either `audio_url` or `audio_file` must be provided. |
+| `webhook_url`    | `String`     | Optional | Callback URL for async response.                                           |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+>**content-type:** multipart/form-data
+
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/denoise" \
+  -H "Authorization: <API_KEY>" \
+  -F "audio_url=<YOUR_AUDIO_URL>" \
+  -F "webhook_url=https://example.com/my-webhook"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/denoise"
+
+headers = {
+    "Authorization": "<API_KEY>"
+}
+
+data = {
+    "webhook_url": "https://example.com/my-webhook"
+}
+
+# Option 1: audio_url
+data["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File Upload
+# with open("song.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+print(response.json())
+
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success":true,
+  "task_id":"01e88c6d-5006-4ad9-b7c4-80360ca37860",
+  "conversion_id":"c3f08613-998d-4ef9-80a9-9c05891e5237",
+  "eta":71,
+  "credit_estimate":0.48,
+  "message":"",
+  "status":"IN_QUEUE"
+}
+```
+---
+
+## Webhook Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true, 
+  "conversion_type": "Denoise", 
+  "task_id": "01e88c6d-5006-4ad9-b7c4-80360ca37860", 
+  "conversion_id": "c3f08613-998d-4ef9-80a9-9c05891e5237", 
+  "audio_path": "files/2e7c373c-aef9-4dda-8e70-2ff50ad18169.wav", 
+  "no_noise": "https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.mp3", 
+  "noise": "https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_noise.mp3", 
+  "noise_wav": "", 
+  "message": "de_noising conversion Completed", 
+  "conversion_duration": 136.82721088435375, 
+  "conversion_cost": "0.48"
+}
+```
+---
+
+## Common Errors
+
+- **422 Unprocessable Entity**: Both `audio_url` and `audio_file` cannot be `None`.
+- **500 Internal Server Error**: A server error occurred during processing.
+
+---
+
+## Payload and Request Formation

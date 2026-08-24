@@ -1,0 +1,118 @@
+---
+title: 'Audio Speed Changer'
+openapi: 'POST /v1/audio_speed_changer'
+---
+
+Change the speed of your audio files without affecting quality.
+
+**Audio Speed Changer** allows you to easily speed up or slow down any audio file, perfect for creating remixes, practicing music, or adjusting spoken content.
+
+- Speed up or slow down audio effortlessly
+- Supports multiple formats like MP3, WAV, FLAC, and more
+- Fast processing with high-quality output
+
+---
+
+## Endpoint
+
+```http
+POST /v1/audio_speed_changer
+```
+
+Use this endpoint to adjust the speed of an audio file.
+
+---
+
+## Sample Output
+
+Listen to the speed-changed audio:
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/FileConversions/b0ac9d46-64d7-4843-af48-a0b6effe3666.wav">Your browser does not support audio playback.</audio>
+
+---
+
+## Try it Yourself
+
+Visit the [Audio Speed Changer Endpoint Explorer](/api-documentation/endpoint/audio_speed_changer) to upload audio files and adjust their playback speed.
+
+> ⏩ Try different speed factors like 1.5x or 0.75x to test quality!
+
+---
+
+## Request Parameters
+
+| Parameter              | Type    | Required | Description                                                                 |
+|------------------------|---------|----------|-----------------------------------------------------------------------------|
+| `audio_file`  | `File` | Optional     | Upload the audio file directly. Required if `audio_url` is not provided.  |
+| `audio_url`   | `String`     | Optional     | URL to the audio file. |
+| `speed_change_factor`  | Number  | Yes      | Factor to change speed (e.g., 2.0 = double speed, 0.5 = half speed) (min: 0.25, max: 4.0) |
+| `output_extension`     | String  | Yes      | Desired output format (`mp3`, `wav`, `flac`, `ogg`, `aac`, `webm`)          |
+| `webhook_url`          | String  | Optional | URL to receive callback notification when processing completes             |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+> **content-type:** multipart/form-data
+
+
+---
+
+## Sample Request
+
+### Python
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/audio_speed_changer"
+headers = {"Authorization": "<API_KEY>"}
+
+payload = {
+    "speed_change_factor": 1.5,
+    "output_extension": "mp3"
+}
+
+# Option 1: audio_url
+payload["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=payload)
+
+# Option 2: File Upload
+# with open("input_audio.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=payload, files=files)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+```json
+{
+  "success":true,
+  "task_id":"b0ac9d46-64d7-4843-af48-a0b6effe3666",
+  "conversion_id":"fe19945b-d466-4183-b559-5d264bddd492",
+  "eta":66,
+  "credit_estimate":0.15,
+  "message":"Message published to queue",
+  "status":"IN_QUEUE"
+}
+```
+---
+## Webhook Response
+
+When transcription completes, your webhook will receive:
+
+```json
+{
+  "success": true, 
+  "conversion_type": "Audio Speed Changer", 
+  "task_id": "b0ac9d46-64d7-4843-af48-a0b6effe3666", 
+  "conversion_id": "fe19945b-d466-4183-b559-5d264bddd492", 
+  "output_file": "https://lalals.s3.amazonaws.com/FileConversions/b0ac9d46-64d7-4843-af48-a0b6effe3666.mp3", 
+  "message": "Audio speed changer completed"
+}
+```
+
+---
+
+## Payload and Request Formation

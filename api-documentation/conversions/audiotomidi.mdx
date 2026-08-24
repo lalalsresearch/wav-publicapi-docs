@@ -1,0 +1,140 @@
+---
+title: 'Audio to MIDI'
+openapi: 'POST /v1/audio_to_midi'
+---
+
+Convert an audio file into a MIDI file using AI-driven audio analysis and transcription.
+
+The **Audio to MIDI** endpoint processes audio files to generate MIDI sequences. It can optionally create a sonified `.wav` file of the MIDI output and export note events into a `.csv` file for further analysis or editing.
+Ideal for music production, remixing, and advanced audio content creation.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/audio_to_midi
+```
+
+This is the primary endpoint for initiating audio-to-MIDI conversion tasks.
+
+---
+
+## Sample Output
+
+Generated MIDI and optional outputs from a sample audio file:
+
+<a href="https://lalals.s3.amazonaws.com/AudioToMidi/f5b563e5-e414-47ec-989b-255c74d90119.mid" target="_blank">Download MIDI(.mid)</a>
+
+<a href="https://lalals.s3.amazonaws.com/AudioToMidi/f5b563e5-e414-47ec-989b-255c74d90119.wav" target="_blank">Download Sonified MIDI(.wav)</a>
+
+---
+
+## Try it Yourself
+
+Visit the [Audio to MIDI Endpoint Explorer](/api-documentation/endpoint/audio_to_midi) to test it live. Upload an audio file, and get back the MIDI version!
+
+---
+
+## 🛠️ Request Parameters
+
+| Parameter         | Type      | Required | Default  | Description                                                                  |
+|-------------------|-----------|----------|----------|------------------------------------------------------------------------------|
+| `audio_file`  | `File` | Optional     | Upload the audio file directly. Required if `audio_url` is not provided.  |
+| `audio_url`   | `String`     | Optional     | URL to the audio file. |
+| `sonify_midi`     | `Boolean` | Optional | `true`   | If `true`, generates a `.wav` file that plays the MIDI output.                |
+| `save_note_events`| `Boolean` | Optional | `true`   | If `true`, saves predicted note events as a `.csv` file.                     |
+| `webhook_url`     | `String`  | Optional | `""`     | Callback URL for asynchronous result delivery.                               |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+> **content-type:** multipart/form-data
+
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/audio_to_midi" \
+  -H "Authorization: <API_KEY>" \
+  -F "audio_url=<YOUR_AUDIO_URL>" \
+  -F "sonify_midi=true" \
+  -F "save_note_events=true" \
+  -F "webhook_url=https://your-webhook-url.com/callback"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/audio_to_midi"
+headers = {"Authorization": "<API_KEY>"}
+
+payload = {
+    "sonify_midi": True,
+    "save_note_events": True,
+    "webhook_url": "https://your-webhook-url.com/callback"
+}
+
+# Option 1: audio_url
+payload["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=payload)
+
+# Option 2: File Upload
+# with open("audio.wav", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=payload, files=files)
+
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+ "success": true,
+  "task_id": "cf34f4e0-3273-41e4-95e5-05dc745b9852",
+  "conversion_id": "0b0b59e5-4c71-49ec-8ca5-5cd05142d5ab",
+  "eta": 37,
+  "credit_estimate": 0.016,
+  "message": "Message published to queue",
+  "status": "IN_QUEUE"
+}
+```
+
+---
+### Webhook Response
+
+```json
+{
+  "success": true,
+  "conversion_type": "Audio To MIDI",
+  "task_id": "cf34f4e0-3273-41e4-95e5-05dc745b9852",
+  "conversion_id": "0b0b59e5-4c71-49ec-8ca5-5cd05142d5ab",
+  "midi_file_path": "",
+  "sonify_file_path": "",
+  "notes_file_path": "",
+  "message": "Audio To MIDI Completed",
+}
+```
+
+---
+
+## Common Errors
+
+- **400 Bad Request**: Invalid `audio_path` or missing required parameters.
+- **404 Not Found**: Provided audio file not found in S3.
+- **422 Unprocessable Entity**: Unsupported audio format.
+- **500 Internal Server Error**: An unexpected error occurred while processing.
+
+---
+
+## Payload and Request Formation

@@ -1,0 +1,178 @@
+---
+title: Sing Over Vocal
+openapi: 'POST /v1/sing_over_vocal'
+---
+
+Generate a brand-new vocal performance over an existing vocal recording using AI.
+
+**Sing Over a Vocal** lets you transform an existing vocal track into a completely new performance by providing lyrics, a singing style prompt, and optional voice controls. Perfect for creating covers, experimenting with different vocal styles, or generating new performances from existing recordings.
+
+- Generate a new vocal performance from an existing vocal
+- Control singing style with prompts
+- Apply voice conversion with custom voice IDs
+- Generate album artwork automatically
+- Receive results via webhook or retrieve them asynchronously
+
+---
+
+## Endpoint
+
+```http
+POST /v1/sing_over_vocal
+```
+
+Use this endpoint to generate a new vocal performance over a provided vocal track.
+
+---
+
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+|----------|------|----------|-------------|
+| `audio_url` | String | Optional | URL to the audio file. |
+| `audio_file` | File | Optional | Upload a vocal audio file. Either `audio_url` or `audio_file` is required. |
+| `lyrics` | String | Yes | Lyrics to be sung over the provided vocal track. |
+| `prompt` | String | Optional | Describe the desired vocal tone, genre, or singing style. |
+| `gender` | String | Optional | One of `male`, `female`, or `neutral`. |
+| `make_instrumental` | Boolean | Optional | Generate an instrumental-only output. Default: `false`. |
+| `title` | String | Optional | Optional title for the generated song. |
+| `webhook_url` | String | Optional | Webhook URL to receive the completed result. |
+| `generate_album_cover` | Boolean | Optional | Whether to generate an album cover. Default: `false`. |
+| `lyrics_timestamps` | Boolean | Optional | Whether to generate timestamps for the output lyrics. Default: `false`. Automatically set to `false` when `make_instrumental=true`. |
+
+>**Note:** Either audio_file or audio_url must be provided.
+
+>**content-type:** multipart/form-data
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/sing_over_vocal" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "audio_url=https://example.com/vocal.mp3" \
+-F "lyrics=We're dancing through the night..." \
+-F "prompt=Energetic pop vocal with female singer" \
+-F "gender=female" \
+-F "webhook_url=https://yourdomain.com/webhook"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/sing_over_vocal"
+headers = {"Authorization": "<API_KEY>"}
+
+data = {
+    "lyrics": "We're dancing through the night...",
+    "prompt": "Energetic pop vocal with female singer",
+    "gender": "female",
+    "webhook_url": "https://yourdomain.com/webhook"
+}
+
+# Option 1: Use audio_url
+data["audio_url"] = "https://example.com/vocal.mp3"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File upload
+# with open("vocal.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+# print(response.json())
+```
+
+> 🔐 Be sure to replace the placeholders like `<api_key>` and file paths with your actual values.
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "message": "",
+  "task_id": "0af8567f-6156-4bb2-9adc-99b0c8792700",
+  "conversion_id_1": "9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8",
+  "conversion_id_2": "83c0d3ab-67f6-4309-9ca2-5cbe754ce9d4",
+  "is_flagged": false,
+  "reason": "",
+  "eta": 85,
+  "credit_estimate": 1.2
+}
+```
+
+---
+## Webhook Sample Payload
+
+
+Sing Over Vocal Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Sing Over Vocal",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
+  "conversion_path_wav": "https://cdn1.musicgpt.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
+  "conversion_duration": 155.95,
+  "is_flagged": false,
+  "reason": "",
+  "lyrics": "[Verse]\nTurn up the sound\nLet the rhythm take control\nFeel every beat\nMoving through my soul\nLights are shining bright\nAnd we lose track of time\n\n[Chorus]\nMusic in the air\nDancing through the night\nEvery beat we share\nMakes everything feel right\nTurn it up again\nLet the whole world sing",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]",
+  "title": "Rhythm Take Control",
+  "subtype": "remix"
+}
+```
+Album Cover Webhook
+```json
+{
+  "success": true,
+  "conversion_type": "Sing Over Instrumental",
+  "task_id": "5254c422-0fab-53f0-b5e3-36abb69dd111",
+  "image_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
+  ],
+  "thumbnail_paths": [
+    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
+  ],
+  "image_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
+  "thumbnail_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
+  "conversion_id_1": "eba76eae-9c77-5b09-9f2b-96a8bdef0f36",
+  "conversion_id_2": "1cf119ce-a78c-500b-ad43-4b1f598507cb",
+  "album_cover_generator_output": true,
+  "subtype": "album_cover_generation",
+}
+```
+
+Lyrics Timestamp Webhook
+
+```json
+{
+  "success": true,
+  "conversion_type": "Sing Over Instrumental",
+  "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
+  "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
+  "subtype": "lyrics_timestamped",
+  "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]"
+}
+```
+---
+
+## Webhook Delivery
+
+Once the generation is complete, your webhook will receive the generated audio files and metadata.
+
+> **Note:** If a `webhook_url` is provided, the completed result will be delivered automatically. Otherwise, retrieve the output later using the returned `task_id` or `conversion_id`.
+
+---
+
+## Payload and Request Formation

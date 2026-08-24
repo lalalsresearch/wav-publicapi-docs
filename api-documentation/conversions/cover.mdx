@@ -1,0 +1,144 @@
+---
+title: Cover Song
+openapi: 'POST /v1/Cover'
+---
+
+Convert an audio file or URL into a cover song using a different voice model.
+
+The **Cover Song** endpoint recreates a vocal track using AI voice models, allowing for pitch manipulation and background audio transformation. Perfect for covers, remixes, or experimenting with different vocal styles.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/Cover
+```
+This is the primary endpoint for initiating cover song conversion tasks.
+
+---
+
+## Sample Output
+
+Listen to a real sample output:
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.mp3">Your browser does not support the audio playback.</audio>
+
+Output File:
+<a href="https://lalals.s3.amazonaws.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.wav" target="_blank">Download Audio</a>
+
+---
+
+## Try it Yourself
+
+Visit the [Cover Endpoint Explorer](/api-documentation/endpoint/cover) to test it live. Upload your audio, select a voice model, and hear the transformation.
+
+---
+
+## Request Parameters
+
+| Parameter     | Type         | Required | Description                                                                            |
+| ------------- | ------------ | -------- | -------------------------------------------------------------------------------------- |
+| `audio_url`   | `String`     | Optional | URL of the audio file to convert. Either `audio_url` or `audio_file` must be provided. |
+| `audio_file`  | `UploadFile` | Optional | Upload the audio file directly. Either `audio_url` or `audio_file` must be provided.   |
+| `voice_id`    | `String`     | Yes      | Voice model to convert the audio into.                                                 |
+| `pitch`       | `Integer`    | Optional | Adjust pitch between -12 and 12 semitones. Default is `0`.                             |
+| `webhook_url` | `String`     | Optional | Callback URL for async response.                                                       |
+
+> **content-type:** multipart/form-data
+
+
+---
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X POST "https://api.musicgpt.com/api/public/v1/Cover" \
+-H "accept: multipart/form-data" \
+-H "Authorization: <api_key>" \
+-F "audio_url=https://www.youtube.com/watch?v=jGflUbPQfW8" \
+-F "voice_id=Drake" \
+-F "pitch=0" \
+-F "webhook_url=http://webhook.musicgpt.com"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/Cover"
+
+headers = {
+    "Authorization": "<API_KEY>"
+}
+
+data = {
+    "voice_id": "e0bb585f-b798-4bac-ac4e-de7fff38f9d7",
+    "pitch": 0,
+    "webhook_url": "https://example.com/my-webhook"
+}
+
+# Option 1: audio_url
+data["audio_url"] = "<YOUR_AUDIO_URL>"
+response = requests.post(url, headers=headers, data=data)
+
+# Option 2: File Upload
+# with open("song.mp3", "rb") as f:
+#     files = {"audio_file": f}
+#     response = requests.post(url, headers=headers, data=data, files=files)
+
+print(response.json())
+```
+
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "task_id": "3d137437-4911-4669-b639-9e5701107c25",
+  "conversion_id": "b764b4f6-a842-42dd-a55b-818eb8251dc7",
+  "eta": 71,
+  "credit_estimate": 1.27,
+  "message": "Message published to queue",
+  "status": "IN_QUEUE"
+}
+```
+
+---
+
+## Webhook Response
+
+When the cover conversion completes, the webhook receives:
+
+```json
+{
+  "success": true,
+  "conversion_type": "Cover",
+  "task_id": "0ec93bdd-6132-40db-a873-676dc314919c",
+  "conversion_id": "acff300f-1c96-498d-99fe-929b985c5c55",
+  "conversion_path": "https://lalals.s3.amazonaws.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.mp3",
+  "conversion_duration": 272.44,
+  "message": "Conversion Completed",
+}
+```
+
+---
+
+## Common Errors
+
+* **400 Bad Request**: The file could not be downloaded from the provided URL.
+* **402 Payment Required**: Your credit balance is insufficient.
+* **422 Unprocessable Entity**: No `audio_url` or `audio_file` provided.
+* **500 Internal Server Error**: Something went wrong on our end.
+
+---
+
+## Payload and Request Formation
+

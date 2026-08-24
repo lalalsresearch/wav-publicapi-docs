@@ -1,0 +1,118 @@
+---
+title: Image Generator
+openapi: 'POST /v1/image_generator'
+---
+
+Generate high-quality AI images from text prompts with optional style presets.
+
+**Image Generator** transforms your ideas into stunning visuals using advanced AI. Simply provide a prompt, choose a style, and generate professional-quality images for creative, marketing, design, or development projects.
+
+- Generate images from natural language prompts
+- Choose from multiple artistic style presets
+- Control image dimensions and generation seed
+- Receive results instantly via webhook or retrieve them asynchronously
+
+Image Generator is built for flexibility, creativity, and production-ready image generation.
+
+---
+
+## Endpoint
+
+```http
+POST /v1/image_generator
+```
+
+Use this endpoint to generate an image from a text prompt and optional style settings.
+
+
+---
+
+## Try it Yourself
+
+Visit the [Image Generator Endpoint Explorer](/api-documentation/endpoint/imagegenerator) to generate AI images in real time.
+
+> 🚀 Experiment with different prompts and styles—from realistic landscapes to anime artwork, abstract concepts, and minimalist illustrations.
+
+---
+
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+|----------|------|----------|-------------|
+| `style_preset` | String | Optional | Image style preset. Default: `standard`. Examples: `Standard`, `Anime`, `Nature`, `Abstract`, `Minimal`, `Dark`. |
+| `prompt` | String | Optional | Text description used to generate the image. |
+| `height` | Integer | Optional | Image height in pixels. Default: `960`. Must be a multiple of `16`. |
+| `width` | Integer | Optional | Image width in pixels. Default: `544`. Must be a multiple of `16`. |
+| `seed` | Integer | Optional | Deterministic generation seed. Randomized if omitted. |
+| `webhook_url` | String | Optional | Webhook URL to receive the generated image when complete. |
+
+> **content-type:** application/x-www-form-urlencoded
+
+---
+
+## Sample Request
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/ImageGenerator"
+
+headers = {
+    "Authorization": "<api_key>"
+}
+
+payload = {
+    "prompt": "A futuristic cyberpunk city at sunset with flying cars",
+    "style_preset": "Anime",
+    "height": 960,
+    "width": 544,
+    "seed": 12345,
+    "webhook_url": "https://abcd.requestcatcher.com/"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "task_id": "0af8567f-6156-4bb2-9adc-99b0c8792700",
+  "conversion_id": "9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8",
+  "status": "IN_QUEUE",
+  "message": "",
+  "eta": 45,
+  "credit_estimate": 0.5
+}
+```
+
+---
+
+## Webhook Response
+
+Once image generation is complete, your webhook will receive:
+
+```json
+{
+  "success": true,
+  "conversion_type": "Image Generator",
+  "task_id": "0af8567f-6156-4bb2-9adc-99b0c8792700",
+  "conversion_id": "9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8",
+  "conversion_path": "https://cdn.example.com/generated-images/image.png",
+  "message": "Image generated successfully"
+}
+```
+
+> **Note:** If a `webhook_url` is provided, the generated image will be delivered automatically. Otherwise, you can retrieve the result later using the `task_id` or `conversion_id`.
+
+---
+
+## Payload and Request Formation

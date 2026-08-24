@@ -1,0 +1,108 @@
+---
+title: 'Lyrics Generator'
+openapi: 'GET /v1/prompt_to_lyrics'
+---
+
+## Endpoint
+
+```http
+GET /v1/prompt_to_lyrics
+```
+
+---
+
+## Request Parameters
+
+| Parameter | Type     | Required | Description                                        |
+| --------- | -------- | -------- | -------------------------------------------------- |
+| `prompt`  | `String` | ✅ Yes    | The theme or idea you'd like lyrics generated for. |
+|           |          |          | e.g., "A hopeful song about starting over"         |
+
+>**Note:** The prompt must be between 1 and 300 characters.
+
+---
+
+
+## Sample Request
+
+### cURL
+
+```bash
+curl -X GET "https://api.musicgpt.com/api/public/v1/prompt_to_lyrics?prompt=A hopeful song about starting over" \
+  -H "Authorization: <API_KEY>" \
+  -H "accept: application/json"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.musicgpt.com/api/public/v1/prompt_to_lyrics"
+
+querystring = {"prompt":"<input_prompt>"}
+
+headers = {"Authorization": "<API KEY>"}
+
+response = requests.request("GET", url, headers=headers, params=querystring)
+
+print(response.text)
+```
+
+---
+
+## Sample Response
+
+### Success (200 OK)
+
+```json
+{
+  "success": true,
+  "task_id": "task-lyrics-2345",
+  "message": "Lyrics generated successfully",
+  "lyrics": "Under the silver moonlight we sway...\n...\n",
+  "credit_estimate": 0.01
+}
+```
+
+---
+
+## Error Responses
+
+### 400 Bad Request
+
+```json
+{
+  "success": false,
+  "error": "Prompt must be between 1 and 300 characters."
+}
+```
+
+### 500 Internal Server Error
+
+```json
+{
+  "success": false,
+  "error": "Internal Server Error"
+}
+```
+
+---
+
+## Use Case Examples
+
+* "A romantic song under the stars"
+* "A pop song about achieving your dreams"
+* "Grunge-style lyrics reflecting heartbreak"
+
+---
+
+## Output
+
+Generated lyrics are returned directly in the `lyrics` field of the response.
+They may be multi-paragraph and suited for use with vocal synthesis or songwriting tools.
+
+---
+
+
+The `/prompt_to_lyrics` endpoint is ideal for songwriting, music composition tools, or creative text generation workflows.

@@ -1,0 +1,128 @@
+---
+title: "Introduction"
+description: "MusicGPT Public API let's you turn any idea into production-ready audio with the world's most advanced AI models, through one simple API."
+---
+
+
+<div className="mg-hero">
+  <span className="mg-live"><span className="mg-live-dot" /> Live now</span>
+  <p className="mg-hero-title">MusicGPT v7 and v7 Pro is here</p>
+  <p className="mg-hero-sub">Choose your model from v6, v6-pro, v7, and v7-pro</p>
+  <div className="mg-pills">
+    <span className="mg-pill">⊞ One endpoint, four models</span>
+    <span className="mg-pill">〜 Real-time streaming</span>
+    <span className="mg-pill">♛ v7 Pro - our flagship</span>
+  </div>
+  <div className="mg-hero-actions">
+    <a href="/api-documentation/conversions/musicaiv2" className="mg-btn mg-btn-primary">Explore Music AI V2 →</a>
+       <a href="/api-documentation/index/pricing" className="mg-btn mg-btn-ghost"><Icon icon="gift" iconType="solid" /> Try for free →</a>
+
+  </div>
+ 
+</div>
+
+## MusicGPT Public API Documentation
+
+Welcome to **MusicGPT**! Your **all-in-one AI-powered** music and audio platform. Our API lets you generate, remix, enhance, convert, and manipulate audio effortlessly, turning creative ideas into production-ready music.
+
+We offer:
+
+<div className="mg-chips">
+  <a className="mg-chip" href="/api-documentation/conversions/musicaiv2">Music AI</a>
+  <a className="mg-chip" href="/api-documentation/conversions/remix">Remix</a>
+  <a className="mg-chip" href="/api-documentation/conversions/texttospeech">Text to Speech</a>
+  <a className="mg-chip" href="/api-documentation/conversions/extend">Extend</a>
+  <a className="mg-chip" href="/api-documentation/conversions/soundgenerator">Sound Generator</a>
+  <a className="mg-chip" href="/api-documentation">+20 features</a>
+</div>
+
+Whether you're building AI music applications, creating content at scale, or developing professional audio workflows, Music AI V2 delivers enterprise-grade music generation and advanced audio capabilities through a simple API. Generate songs, transform voices, edit audio, extract stems, and more with ease.
+
+---
+
+## One endpoint, four models 🎛️
+
+**Music AI V2** introduces **model-based versioning**: every generation request can name the model it runs on, so you choose the exact balance of speed, quality, and cost and upgrade on your own schedule as new models ship.
+
+<CardGroup cols={2}>
+  <Card title="v6" icon="music" href="/api-documentation/conversions/musicaiv2">
+    Studio-quality tracks in seconds, reliable, fast, and the most economical choice for everyday creation.
+  </Card>
+
+  <Card title="v6-pro" icon="tower-broadcast" href="/api-documentation/conversions/musicaiv2">
+    Everything in v6, plus real-time streaming so listeners hear the track as it's composed.
+  </Card>
+
+  <Card title="v7" icon="wand-magic-sparkles" href="/api-documentation/conversions/musicaiv2">
+    Our best-sounding model yet, richer detail, more texture, state-of-the-art quality.
+  </Card>
+
+  <Card title="v7-pro" icon="crown" cta="Recommended" arrow="true" href="/api-documentation/conversions/musicaiv2">
+    The full power of v7 with real-time streaming and advanced creative controls. Our flagship.
+  </Card>
+</CardGroup>
+
+Pick a model by passing the `model` parameter on [Music AI v2](/api-documentation/conversions/musicaiv2):
+
+```json
+{
+  "prompt": "a song about greenery, nature and forest",
+  "model": "v7-pro"
+}
+```
+
+<Tip>
+  New here? Reach for **v7-pro** for the best quality, or drop to **v6** for the fastest, most economical generations. Streaming is available on the `pro` models for all paid users.
+</Tip>
+
+
+---
+
+## Features Highlights
+
+MusicGPT is a comprehensive AI audio platform offering a wide range of features including:
+
+- **Music Generation** (Music AI): Turn text prompts into full-length songs.
+- **Remixing and Editing Tools**: Cut, master, change pitch/speed, remix, inpaint and more.
+- **Text-to-Speech (TTS)**: Convert text to expressive voice using custom voice profiles.
+- **Voice Changing**: Convert any voice into a new one, ideal for character work, privacy, or creativity.
+- **Cover Song Generation**: Recreate any song with a new voice or style.
+- **Vocal, Instrumental and Stems Extraction**: Isolate or remove vocals, instruments, or stems.
+- **Audio Cleaning**: De-noise, de-echo, and de-reverb your recordings.
+- **Key/BPM Detection**: Instantly extract musical key and tempo.
+- **Transcription**: Get accurate text from speech.
+- **File Format Conversion**: Seamlessly convert between audio formats.
+
+---
+
+## Why Developers Love MusicGPT
+
+- **Model selection** - pick the exact speed/quality/cost trade-off per request
+- **Powerful & easy-to-use API**
+- **Webhook support for async jobs**
+- **Flexible pricing with free tier and yearly rate lock**
+- **Fast processing & global CDN delivery**
+- **Real-time status monitoring**
+- **Secure & scalable infrastructure**
+
+---
+
+## Real-World Use Cases
+
+- Content creators auto-dubbing podcasts or YouTube videos
+- Music producers generating and remixing audio at scale
+- Developers building music-based apps or smart audio tools
+- Researchers experimenting with generative audio AI
+
+---
+
+## Helpful Links 🔗
+
+- [API Dashboard](https://musicgpt.com/api-dashboard)
+- [MusicGPT](https://musicgpt.com)
+- [Music AI v2](/api-documentation/conversions/musicaiv2)
+- [Pricing & yearly plans](/api-documentation/index/pricing)
+
+---
+
+Now let's dive into how you can get started in minutes 👇

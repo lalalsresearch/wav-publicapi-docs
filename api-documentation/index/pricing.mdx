@@ -1,0 +1,173 @@
+---
+title: Pricing Plans
+description: "Flexible plans that lower your per-request rates, now with yearly billing that locks in current pricing."
+---
+
+Discover our flexible pricing options designed to scale with your creativity. Start free and upgrade anytime for more features, faster processing, and priority support. All paid plans include **commercial use**, **high-speed processing**, **studio-quality audio**, and **dedicated support**.
+
+<Note>
+  **Plans don't give you credits**, they lower the cost of each API call. You are still billed per request based on your plan's rate.
+</Note>
+
+
+<a href="https://musicgpt.com/api-dashboard" className="mg-ratelock">
+  <div>
+    <p className="mg-ratelock-title"><Icon icon="gift" iconType="solid" />  Get upto 10 free song generations </p>
+    <p className="mg-ratelock-body">
+      1. Activate your API account.
+      2. Get your API key.
+      3. Start creating for free.
+    </p>
+  </div>
+</a>
+
+
+## Plans
+
+export const PlansSection = () => {
+  const [billing, setBilling] = useState('monthly');
+  const isYearly = billing === 'yearly';
+  const plusPrice = isYearly ? '$14.99' : '$19';
+  const plusUnit = isYearly ? ' /mo' : ' /month';
+  const plusDesc = isYearly
+    ? 'Lower per-call rates for growing projects and side products. Billed annually.'
+    : 'Lower per-call rates for growing projects and side products.';
+  const proPrice = isYearly ? '$49.99' : '$69';
+  const proUnit = isYearly ? ' /mo' : ' /month';
+  const proDesc = isYearly
+    ? 'Our lowest per-call rates, priority processing, and higher limits. Billed annually.'
+    : 'Our lowest per-call rates, priority processing, and higher limits.';
+
+  return (
+    <>
+      <div className="mg-toggle">
+        <button
+          className={billing === 'yearly' ? 'mg-toggle-btn mg-toggle-active' : 'mg-toggle-btn'}
+          onClick={() => setBilling('yearly')}
+        >
+          Yearly
+        </button>
+        <button
+          className={billing === 'monthly' ? 'mg-toggle-btn mg-toggle-active' : 'mg-toggle-btn'}
+          onClick={() => setBilling('monthly')}
+        >
+          Monthly
+        </button>
+      
+      </div>
+
+      <div className="mg-plans">
+        <a href="https://musicgpt.com/api-dashboard" className="mg-plan">
+            <p className="mg-plan-name">Pay as you go</p>
+            <p className="mg-plan-desc">Add credits and pay as you go, only for what you generate.</p>
+        </a>
+
+        <a href="https://musicgpt.com/api-dashboard" className="mg-plan">
+          <p className="mg-plan-name">API Plus</p>
+          <p className="mg-plan-price">{plusPrice}<span>{plusUnit}</span></p>
+          <p className="mg-plan-desc">{plusDesc}</p>
+        </a>
+
+        <a href="https://musicgpt.com/api-dashboard" className="mg-plan mg-plan-featured">
+          <span className="mg-plan-tag">Most popular</span>
+          <p className="mg-plan-name">API Pro</p>
+          <p className="mg-plan-price">{proPrice}<span>{proUnit}</span></p>
+          <p className="mg-plan-desc">{proDesc}</p>
+        </a>
+
+        <a href="mailto:api@musicgpt.com" className="mg-plan">
+          <p className="mg-plan-name">Enterprise</p>
+          <p className="mg-plan-price">Contact Us</p>
+          <p className="mg-plan-desc">Volume pricing, custom limits, and dedicated support for teams at scale.</p>
+        </a>
+      </div>
+    </>
+  );
+};
+
+<PlansSection />
+
+<Tip>
+The pricing structure for the **AI Music Generator** has been updated effective **August 1**.
+</Tip>
+
+
+| Feature | Model | Pro Plan | Plus Plan | Pay as You Go |
+|---------|:-----:|---------:|----------:|--------------:|
+| [AI Music Generator](/api-documentation/conversions/musicaiv2)<br />Generate AI music from prompt | `v7-pro` | \$0.06 /song | Not available | Not available |
+|  | `v7` | \$0.05 /song | Not available | Not available |
+|  | `v6-pro` | \$0.045 /song | \$0.06 /song | Not available |
+|  | `v6` | \$0.035 /song | \$0.05 /song | \$0.10 /song |
+| [Custom Voice Music Generator](/api-documentation/conversions/musicaiv2)<br />Generate AI song with voice you like | `v6` | \$0.052 /song | \$0.075 /song | \$0.15 /song |
+| [Remix](/api-documentation/conversions/remix)<br />Remix audio into a new music style | `v6` | \$0.05 /song | \$0.07 /song | \$0.14 /song |
+| [Inpaint](/api-documentation/conversions/inpaint)<br />Replace Audio Section | `v6` | \$0.06 /song | \$0.10 /song | \$0.20 /song |
+| [Extend](/api-documentation/conversions/extend)<br />Extend the input audio | `v6` | \$0.06 /song | \$0.10 /song | \$0.20 /song |
+| [Sing Over Instrumental](/api-documentation/conversions/sing_over_instrumental)<br />Blend Lyrics with Instrumental | `v6` | \$0.05 /song | \$0.07 /song | \$0.14 /song |
+
+<Note>
+  AI Music, Custom Voice Music, Remix, Inpaint, Extend, and Sing Over Instrumental generate 2 output versions by default. All features use 60-second increments (except Text-to-Speech, which uses 100 words).
+</Note>
+
+## Voice & Audio Features
+
+| Feature | Pro Plan | Plus Plan | Pay as You Go |
+|--------|----------|-----------|--------------:|
+| [Text to Speech](/api-documentation/conversions/texttospeech)<br />Convert text into speech | \$0.026/100 words | \$0.035/100 words | \$0.07/100 words |
+| [Sound Generator](/api-documentation/conversions/soundgenerator)<br />Generate sounds from prompt | \$0.037 /generation | \$0.0496 /generation | \$0.0992 /generation |
+| [Lyrics Generator](/api-documentation/conversions/lyrics_generator)<br />Generate Lyrics from prompt | \$0.005 /generation | \$0.005 /generation | \$0.01 /generation |
+| [Voice Changer](/api-documentation/conversions/voicechanger)<br />Transform voice in audio | \$0.016 + \$0.0022/min | \$0.022 + \$0.003/min | \$0.044 + \$0.006/min |
+| [Cover Song](/api-documentation/conversions/cover)<br />Create AI-generated cover songs | \$0.0235 + \$0.0037/min | \$0.0315 + \$0.005/min | \$0.063 + \$0.01/min |
+
+## Stem Splitter Features Pricing
+
+| Feature | Pro Plan | Plus Plan | Pay as You Go |
+|--------|----------|-----------|--------------:|
+| [Vocal Extraction](/api-documentation/conversions/extraction)<br />Isolate vocals from track | \$0.0115 + \$0.0022/min | \$0.0155 + \$0.003/min | \$0.031 + \$0.006/min |
+| [Gender-Based Vocal Extraction](/api-documentation/conversions/extraction)<br />Split male and female vocals | \$0.0186 + \$0.003/min | \$0.0248 + \$0.0045/min | \$0.0496 + \$0.009/min |
+| [Lead/Back Vocals Separation](/api-documentation/conversions/extraction)<br />Split lead and backing vocals | \$0.0242 + \$0.0037/min | \$0.0322 + \$0.005/min | \$0.0644 + \$0.01/min |
+| [Instrumental Extraction](/api-documentation/conversions/extraction)<br />Extract instrumental parts | \$0.0576 + \$0.0089/min | \$0.0768 + \$0.012/min | \$0.1536 + \$0.024/min |
+| [Guitar Type Stems](/api-documentation/conversions/extraction)<br />Split acoustic/electric guitars | \$0.0576 + \$0.1289/min | \$0.0768 + \$0.1319/min | \$0.1536 + \$0.2638/min |
+| [Guitar Part Stems](/api-documentation/conversions/extraction)<br />Separate rhythm & solo guitar | \$0.0576 + \$0.1289/min | \$0.0768 + \$0.1319/min | \$0.1536 + \$0.2638/min |
+| [Strings Stems](/api-documentation/conversions/extraction)<br />Separate string instruments | \$0.0576 + \$0.0989/min | \$0.0768 + \$0.1019/min | \$0.1536 + \$0.2038/min |
+| [Keys Extraction](/api-documentation/conversions/extraction)<br />Extract piano & keys | \$0.067 + \$0.0104/min | \$0.089 + \$0.0134/min | \$0.178 + \$0.0268/min |
+| [Winds Splitter](/api-documentation/conversions/extraction)<br />Split wind instruments | \$0.0727 + \$0.0119/min | \$0.097 + \$0.0149/min | \$0.194 + \$0.0298/min |
+| [Band Parts Splitter](/api-documentation/conversions/extraction)<br />Extract drums, bass, piano, guitar | \$0.1078 + \$0.0179/min | \$0.1438 + \$0.0238/min | \$0.2876 + \$0.0476/min |
+| [Premium Bass/Drums Split](/api-documentation/conversions/extraction)<br />High-accuracy drums/bass isolation | \$0.2455 + \$0.0372/min | \$0.3273 + \$0.0521/min | \$0.6546 + \$0.1042/min |
+| [Drum Stems Separation](/api-documentation/conversions/extraction)<br />Separate Drum Stems | \$0.1078 + \$0.0179/min | \$0.1438 + \$0.0238/min | \$0.2876 + \$0.0476/min |
+
+> **Example** : For Vocal Extraction Pro plan, a 3-minute song costs 0.0115+(0.0022×3).
+
+## Audio Enhancement Features Pricing
+
+| Feature | Pro Plan | Plus Plan | Pay as You Go |
+|--------|----------|-----------|--------------:|
+| [Voice Cleaner](/api-documentation/conversions/denoise)<br />Remove background noise | \$0.0223 + \$0.0037/min | \$0.0298 + \$0.0045/min | \$0.0596 + \$0.009/min |
+| [DeEcho](/api-documentation/conversions/deecho)<br />Remove echo | \$0.0171 + \$0.003/min | \$0.0228 + \$0.0037/min | \$0.0456 + \$0.0074/min |
+| [DeReverb](/api-documentation/conversions/dereverb)<br />Remove reverb | \$0.0145 + \$0.0022/min | \$0.0193 + \$0.003/min | \$0.0386 + \$0.006/min |
+| [Audio Cutter](/api-documentation/conversions/audiocutter)<br />Trim specific parts of audio | \$0.003 + \$0.003/min | \$0.004 + \$0.004/min | \$0.008 + \$0.008/min |
+| [Speed Changer](/api-documentation/conversions/audiospeedchanger)<br />Adjust audio speed | \$0.003 + \$0.003/min | \$0.004 + \$0.004/min | \$0.008 + \$0.008/min |
+| [Audio Mastering](/api-documentation/conversions/audiomastering)<br />Master audio based on reference track | \$0.003 + \$0.003/min | \$0.004 + \$0.004/min | \$0.008 + \$0.008/min |
+| [File Converter](/api-documentation/conversions/fileconvert)<br />Convert audio formats | \$0.002 + \$0.0008/min | \$0.003 + \$0.0011/min | \$0.006 + \$0.0022/min |
+
+## Audio Analysis Features Pricing
+
+| Feature | Pro Plan | Plus Plan | Pay as You Go |
+|--------|----------|-----------|--------------:|
+| [Key & BPM Detector](/api-documentation/conversions/extractkeybpm)<br />Detect BPM and musical key | \$0.00186 + \$0.0002/min | \$0.00248 + \$0.0003/min | \$0.00496 + \$0.0006/min |
+| [Audio Transcription](/api-documentation/conversions/audiotranscription)<br />Convert speech to text & translate | \$0.0223 + \$0.0037/min | \$0.0298 + \$0.0045/min | \$0.0596 + \$0.009/min |
+| [Audio to MIDI](/api-documentation/conversions/audiotomidi)<br />Generate MIDI from audio | \$0.005 + \$0.0037/min | \$0.007 + \$0.005/min | \$0.014 + \$0.01/min |
+
+### Pricing Summary
+
+- **Base Cost**: One-time charge per request
+- **+/min**: Additional cost per minute (60s increments)
+- **Text-to-Speech**: Only feature using word count (per 100 words)
+- **Multiple Outputs**: AI Music, Custom Voice Music & Remix deliver 2 versions and its cost is based on per each song.
+
+> For custom plans, contact us at [api@musicgpt.com](mailto:api@musicgpt.com).
+
+
+### API Usage Limits
+Visit the [Rate Limits](/api-documentation/utilities/ratelimits) page to learn about API usage limits.
+
+---
