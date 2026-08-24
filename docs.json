@@ -90,8 +90,7 @@
             "pages": [
               "api-documentation/endpoint/getById",
               "api-documentation/endpoint/searchVoices",
-              "api-documentation/endpoint/getAllVoices",
-              "api-documentation/endpoint/getByStreaming"
+              "api-documentation/endpoint/getAllVoices"
 
             ]
           },
