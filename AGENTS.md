@@ -1,25 +1,26 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
-
 # Documentation project instructions
 
 ## About this project
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
+- This is the WAV Public API documentation site, built on [Mintlify](https://mintlify.com)
 - Pages are MDX files with YAML frontmatter
 - Configuration lives in `docs.json`
+- Shared component styles live in `styles.css`, using the `wav-` class prefix
+- Brand assets live in `wav-logo/`
 - Use the Mintlify MCP server, `https://mcp.mintlify.com`, to edit content and settings via MCP
 - Use the Mintlify docs MCP server, `https://www.mintlify.com/docs/mcp`, to query information about using Mintlify via MCP
 
 ## Terminology
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
+- The product is **WAV** (wav.com). Write it as `WAV` in prose, headings, and frontmatter.
+- Never rewrite these to the WAV brand — they are live infrastructure, not branding:
+  - API request host `api.musicgpt.com`
+  - CDN output host `cdn1.musicgpt.com`
+  - S3 sample-output buckets (`musicgpt.s3...`, `lalals.s3...`)
+  - Published SDK package names on npm, PyPI, and Zapier (`musicgpt`)
+- Say "conversion" for an API job, "API Key" (capitalized) for credentials.
 
 ## Style preferences
-
-{/* Add any project-specific style rules below */}
 
 - Use active voice and second person ("you")
 - Keep sentences concise — one idea per sentence
@@ -29,5 +30,5 @@
 
 ## Content boundaries
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- Document the public API only — no internal endpoints, admin tooling, or unreleased models.
+- Keep sample request/response payloads consistent with `api-documentation/openapi.json`.

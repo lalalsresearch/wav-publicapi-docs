@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",  
   "info": {
-    "title": "Musicgpt API",
+    "title": "WAV API",
     "version": "1.0.0",
     "description": "API for retrieving conversion details by ID."
   },
@@ -1244,7 +1244,7 @@
                 "webhook_url": {
                   "type": "string",
                   "description": "Callback URL for async processing.",
-                  "example": "http://webhook.musicgpt.com"
+                  "example": "http://webhook.wav.com"
                 }
               },
               "anyOf": [

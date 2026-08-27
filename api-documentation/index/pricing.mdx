@@ -10,10 +10,10 @@ Discover our flexible pricing options designed to scale with your creativity. St
 </Note>
 
 
-<a href="https://musicgpt.com/api-dashboard" className="mg-ratelock">
+<a href="https://wav.com/api-dashboard" className="wav-ratelock">
   <div>
-    <p className="mg-ratelock-title"><Icon icon="gift" iconType="solid" />  Get upto 10 free song generations </p>
-    <p className="mg-ratelock-body">
+    <p className="wav-ratelock-title"><Icon icon="gift" iconType="solid" />  Get upto 10 free song generations </p>
+    <p className="wav-ratelock-body">
       1. Activate your API account.
       2. Get your API key.
       3. Start creating for free.
@@ -40,15 +40,15 @@ export const PlansSection = () => {
 
   return (
     <>
-      <div className="mg-toggle">
+      <div className="wav-toggle">
         <button
-          className={billing === 'yearly' ? 'mg-toggle-btn mg-toggle-active' : 'mg-toggle-btn'}
+          className={billing === 'yearly' ? 'wav-toggle-btn wav-toggle-active' : 'wav-toggle-btn'}
           onClick={() => setBilling('yearly')}
         >
           Yearly
         </button>
         <button
-          className={billing === 'monthly' ? 'mg-toggle-btn mg-toggle-active' : 'mg-toggle-btn'}
+          className={billing === 'monthly' ? 'wav-toggle-btn wav-toggle-active' : 'wav-toggle-btn'}
           onClick={() => setBilling('monthly')}
         >
           Monthly
@@ -56,29 +56,29 @@ export const PlansSection = () => {
       
       </div>
 
-      <div className="mg-plans">
-        <a href="https://musicgpt.com/api-dashboard" className="mg-plan">
-            <p className="mg-plan-name">Pay as you go</p>
-            <p className="mg-plan-desc">Add credits and pay as you go, only for what you generate.</p>
+      <div className="wav-plans">
+        <a href="https://wav.com/api-dashboard" className="wav-plan">
+            <p className="wav-plan-name">Pay as you go</p>
+            <p className="wav-plan-desc">Add credits and pay as you go, only for what you generate.</p>
         </a>
 
-        <a href="https://musicgpt.com/api-dashboard" className="mg-plan">
-          <p className="mg-plan-name">API Plus</p>
-          <p className="mg-plan-price">{plusPrice}<span>{plusUnit}</span></p>
-          <p className="mg-plan-desc">{plusDesc}</p>
+        <a href="https://wav.com/api-dashboard" className="wav-plan">
+          <p className="wav-plan-name">API Plus</p>
+          <p className="wav-plan-price">{plusPrice}<span>{plusUnit}</span></p>
+          <p className="wav-plan-desc">{plusDesc}</p>
         </a>
 
-        <a href="https://musicgpt.com/api-dashboard" className="mg-plan mg-plan-featured">
-          <span className="mg-plan-tag">Most popular</span>
-          <p className="mg-plan-name">API Pro</p>
-          <p className="mg-plan-price">{proPrice}<span>{proUnit}</span></p>
-          <p className="mg-plan-desc">{proDesc}</p>
+        <a href="https://wav.com/api-dashboard" className="wav-plan wav-plan-featured">
+          <span className="wav-plan-tag">Most popular</span>
+          <p className="wav-plan-name">API Pro</p>
+          <p className="wav-plan-price">{proPrice}<span>{proUnit}</span></p>
+          <p className="wav-plan-desc">{proDesc}</p>
         </a>
 
-        <a href="mailto:api@musicgpt.com" className="mg-plan">
-          <p className="mg-plan-name">Enterprise</p>
-          <p className="mg-plan-price">Contact Us</p>
-          <p className="mg-plan-desc">Volume pricing, custom limits, and dedicated support for teams at scale.</p>
+        <a href="mailto:api@wav.com" className="wav-plan">
+          <p className="wav-plan-name">Enterprise</p>
+          <p className="wav-plan-price">Contact Us</p>
+          <p className="wav-plan-desc">Volume pricing, custom limits, and dedicated support for teams at scale.</p>
         </a>
       </div>
     </>
@@ -164,7 +164,7 @@ The pricing structure for the **AI Music Generator** has been updated effective 
 - **Text-to-Speech**: Only feature using word count (per 100 words)
 - **Multiple Outputs**: AI Music, Custom Voice Music & Remix deliver 2 versions and its cost is based on per each song.
 
-> For custom plans, contact us at [api@musicgpt.com](mailto:api@musicgpt.com).
+> For custom plans, contact us at [api@wav.com](mailto:api@wav.com).
 
 
 ### API Usage Limits

@@ -1,13 +1,16 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Musicgpt API Documentation",
+  "name": "WAV API Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "logo/MusicGPT Icon.svg",
+  "favicon": {
+    "light": "/wav-logo/app-icon-black.png",
+    "dark": "/wav-logo/app-icon-white.png"
+  },
   "navigation": {
     "tabs": [
       {
@@ -130,33 +133,34 @@
       "anchors": [
         {
           "anchor": "Documentation",
-          "href": "https://docs.musicgpt.com",          
+          "href": "https://docs.wav.com",          
           "icon": "book-open-cover"
         }
       ]
     }
   },
   "logo": {
-    "light": "https://lalals.s3.us-east-1.amazonaws.com/ApiDocumentationFiles/MusicGPT+Logo+Black.svg",
-    "dark": "https://lalals.s3.us-east-1.amazonaws.com/ApiDocumentationFiles/MusicGPT+Logo+White.svg"
+    "light": "/wav-logo/wordmark-black.png",
+    "dark": "/wav-logo/wordmark-white.png",
+    "href": "https://wav.com"
   },
   "navbar": {
   "links": [
     {
-      "label": "MusicGPT",
-      "href": "https://musicgpt.com"
+      "label": "WAV",
+      "href": "https://wav.com"
     },
     {
       "label": "Contact Support",
-      "href": "mailto:api@musicgpt.com",
+      "href": "mailto:api@wav.com",
       "icon": "envelope",
-      "title": "api@musicgpt.com"
+      "title": "api@wav.com"
     }
   ],
   "primary": {
     "type": "button",
     "label": "API Key",
-    "href": "https://musicgpt.com/api-dashboard"
+    "href": "https://wav.com/api-dashboard"
   }
 }
 }
