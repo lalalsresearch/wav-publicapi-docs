@@ -18,9 +18,10 @@ The source for the [WAV](https://wav.com) Public API documentation, published wi
 ## Branding
 
 - The product is **WAV**. Write it as `WAV` in prose and headings.
-- API request URLs stay on the `api.musicgpt.com` host — do not rewrite them.
-- Sample outputs, CDN links (`cdn1.musicgpt.com`), and S3 paths in examples are real
-  artifacts and are also left unchanged.
+- All hosts live on `wav.com`: `api.wav.com` for requests, `cdn1.wav.com` for generated
+  output and sample audio, `docs.wav.com` for this site.
+- Placeholder buckets in request examples (`mybucket.s3.amazonaws.com`) belong to the
+  caller, not to us — leave them generic.
 
 ## Development
 

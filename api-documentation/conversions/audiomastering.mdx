@@ -26,7 +26,7 @@ Use this endpoint to master an audio file based on a reference track.
 
 Listen to the mastered audio:
 
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://musicgpt.s3.us-east-1.amazonaws.com/conversions/sample-mastered.mp3">Your browser does not support audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/sample-mastered.mp3">Your browser does not support audio playback.</audio>
 
 ---
 
@@ -60,7 +60,7 @@ Visit the [Audio Mastering Endpoint Explorer](/api-documentation/endpoint/audio_
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/audio_mastering"
+url = "https://api.wav.com/api/public/v1/audio_mastering"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -114,7 +114,7 @@ print(response.json())
   "conversion_type": "Audio Mastering",
   "task_id": "0d12ef34-5678-4abc-9123-456def7890ab",
   "conversion_id": "de7b2225-9a75-4315-b761-6dcc4357a8de",
-  "output_file": "https://musicgpt.s3.us-east-1.amazonaws.com/conversions/sample-mastered.mp3",
+  "output_file": "https://cdn1.wav.com/conversions/sample-mastered.mp3",
   "message": "Audio Mastering Completed"
 
 }

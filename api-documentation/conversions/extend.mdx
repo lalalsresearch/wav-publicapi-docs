@@ -47,9 +47,9 @@ Listen to the extended audio.
 
 Prompt: loud drums sound - audio input : Rose and Bruno Mars - APT 
 extend after: 6
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/standard/a48b9cf8-5cf0-4b55-8f50-d10007ff930b.mp3">Your browser does not support audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/standard/a48b9cf8-5cf0-4b55-8f50-d10007ff930b.mp3">Your browser does not support audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/standard/a48b9cf8-5cf0-4b55-8f50-d10007ff930b.mp3" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/standard/a48b9cf8-5cf0-4b55-8f50-d10007ff930b.mp3" target="_blank">Download Audio</a>
 
 ---
 
@@ -78,7 +78,7 @@ Once the generation is complete, **webhooks** will be triggered to deliver the f
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/extend" \
+curl -X POST "https://api.wav.com/api/public/v1/extend" \
 -H "accept: application/json" \
 -H "Authorization: <api_key>" \
 -F "audio_file=@/path/to/audio.mp3" \
@@ -94,7 +94,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/extend" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/extend"
+url = "https://api.wav.com/api/public/v1/extend"
 headers = {"Authorization": "<API_KEY>"}
 data = {
   "extend_after": 35.0,
@@ -155,8 +155,8 @@ Extend Webhook
   "conversion_type": "Extend",
   "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
   "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
-  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
-  "conversion_path_wav": "https://cdn1.musicgpt.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
+  "conversion_path": "https://cdn1.wav.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
+  "conversion_path_wav": "https://cdn1.wav.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
   "conversion_duration": 155.95,
   "is_flagged": false,
   "reason": "",
@@ -175,13 +175,13 @@ Album Cover Webhook
   "conversion_type": "Extend",
   "task_id": "5254c422-0fab-53f0-b5e3-36abb69dd111",
   "image_paths": [
-    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
+    "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
   ],
   "thumbnail_paths": [
-    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
+    "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
   ],
-  "image_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
-  "thumbnail_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
+  "image_path": "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
+  "thumbnail_path": "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
   "conversion_id_1": "eba76eae-9c77-5b09-9f2b-96a8bdef0f36",
   "conversion_id_2": "1cf119ce-a78c-500b-ad43-4b1f598507cb",
   "album_cover_generator_output": true,

@@ -30,9 +30,9 @@ Use this endpoint to generate sounds based on a text description.
 Listen to an actual sample:
 
 Prompt: sound of waves crashing at the sea shore.
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/0af8567f-6156-4bb2-9adc-99b0c8792700_sound.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/0af8567f-6156-4bb2-9adc-99b0c8792700_sound.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/0af8567f-6156-4bb2-9adc-99b0c8792700_sound.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/0af8567f-6156-4bb2-9adc-99b0c8792700_sound.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -63,7 +63,7 @@ Visit the [Sound Generator Endpoint Explorer](/api-documentation/endpoint/soundg
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/sound_generator"
+url = "https://api.wav.com/api/public/v1/sound_generator"
 
 payload = {
     "prompt": "Generate a soothing ambient soundscape.",
@@ -112,7 +112,7 @@ Once the sound is ready, your webhook will receive:
   "conversion_id": "9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8", 
   "conversion_duration": 2.089795918367347, 
   "message": "Audio Generation Completed Successfully", 
-  "conversion_paths": {"9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8": "https://lalals.s3.amazonaws.com/https://lalals.s3.amazonaws.com/conversions/0af8567f-6156-4bb2-9adc-99b0c8792700_sound.mp3"}, 
+  "conversion_paths": {"9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8": "https://cdn1.wav.com/https://cdn1.wav.com/conversions/0af8567f-6156-4bb2-9adc-99b0c8792700_sound.mp3"}, 
   "conversion_durations": {"9e6ac90d-c09e-4ea6-8c39-d9f4e39bbbc8": 2.089795918367347}
 }
 ```

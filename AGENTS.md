@@ -13,12 +13,15 @@
 ## Terminology
 
 - The product is **WAV** (wav.com). Write it as `WAV` in prose, headings, and frontmatter.
-- Never rewrite these to the WAV brand — they are live infrastructure, not branding:
-  - API request host `api.musicgpt.com`
-  - CDN output host `cdn1.musicgpt.com`
-  - S3 sample-output buckets (`musicgpt.s3...`, `lalals.s3...`)
-  - Published SDK package names on npm, PyPI, and Zapier (`musicgpt`)
+- Hosts, all on `wav.com` — keep them consistent and do not invent new ones:
+  - `api.wav.com` — API request host, used in every curl and SDK sample
+  - `cdn1.wav.com` — delivery host for all generated output and sample audio
+  - `docs.wav.com` — this site; prefer root-relative links (`/api-documentation/...`) internally
+- `mybucket.s3.amazonaws.com` and similar in request examples are placeholders for the
+  *caller's* own storage. Leave them generic — they are not our infrastructure.
 - Say "conversion" for an API job, "API Key" (capitalized) for credentials.
+- SDK and integration links are withheld until those packages are republished under the
+  WAV name; see `api-documentation/index/sdk.mdx`.
 
 ## Style preferences
 

@@ -21,10 +21,10 @@ This is the primary endpoint for initiating cover song conversion tasks.
 ## Sample Output
 
 Listen to a real sample output:
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.mp3">Your browser does not support the audio playback.</audio>
 
 Output File:
-<a href="https://lalals.s3.amazonaws.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -54,7 +54,7 @@ Visit the [Cover Endpoint Explorer](/api-documentation/endpoint/cover) to test i
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/Cover" \
+curl -X POST "https://api.wav.com/api/public/v1/Cover" \
 -H "accept: multipart/form-data" \
 -H "Authorization: <api_key>" \
 -F "audio_url=https://www.youtube.com/watch?v=jGflUbPQfW8" \
@@ -68,7 +68,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/Cover" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/Cover"
+url = "https://api.wav.com/api/public/v1/Cover"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -123,7 +123,7 @@ When the cover conversion completes, the webhook receives:
   "conversion_type": "Cover",
   "task_id": "0ec93bdd-6132-40db-a873-676dc314919c",
   "conversion_id": "acff300f-1c96-498d-99fe-929b985c5c55",
-  "conversion_path": "https://lalals.s3.amazonaws.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.mp3",
+  "conversion_path": "https://cdn1.wav.com/projects/acff300f-1c96-498d-99fe-929b985c5c55.mp3",
   "conversion_duration": 272.44,
   "message": "Conversion Completed",
 }

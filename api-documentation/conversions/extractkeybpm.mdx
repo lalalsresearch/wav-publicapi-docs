@@ -37,7 +37,7 @@ This endpoint analyzes an audio file to determine its musical key and BPM. You c
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/KeyBpmExtract" \
+curl -X POST "https://api.wav.com/api/public/v1/KeyBpmExtract" \
 -H "accept: application/json" \
 -H "Authorization: <api_key>" \
 -F "audio_url=https://www.youtube.com/watch?v=jGflUbPQfW8" \
@@ -49,7 +49,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/KeyBpmExtract" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/extract_key_bpm"
+url = "https://api.wav.com/api/public/v1/extract_key_bpm"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -101,7 +101,7 @@ Once key and BPM extraction is completed, the webhook receives:
   "success": true, 
   "task_id": "69ec90f0-a00a-48f8-bdb3-8728a635e057", 
   "conversion_id": "8be8c439-dbc9-4ae6-8fe3-3fcb95f5a60a", 
-  "audio_path": "https://cdn1.musicgpt.com/files/153ea693-aa7e-42cc-9e35-9a09cc011c4d.mp3",
+  "audio_path": "https://cdn1.wav.com/files/153ea693-aa7e-42cc-9e35-9a09cc011c4d.mp3",
   "conversion_duration": "0", 
   "key_changes": {"0-120": ["A# major"], "120-140": ["D# major", "G minor"], "140-220": ["A# major", "A# minor"]}, 
   "dominant_key": "A# major", 

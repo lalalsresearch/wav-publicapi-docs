@@ -23,10 +23,10 @@ This is the primary endpoint for initiating voice conversion tasks.
 ## Sample Output
 
 Listen to a real sample output:
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/projects/67092f68-045d-4e3c-8006-532f144dd610.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/projects/67092f68-045d-4e3c-8006-532f144dd610.mp3">Your browser does not support the audio playback.</audio>
 
 Output File:
-<a href="https://lalals.s3.amazonaws.com/projects/67092f68-045d-4e3c-8006-532f144dd610.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/projects/67092f68-045d-4e3c-8006-532f144dd610.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -59,7 +59,7 @@ Visit the [VoiceChanger Endpoint Explorer](/api-documentation/endpoint/voicetovo
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/VoiceChanger" \
+curl -X POST "https://api.wav.com/api/public/v1/VoiceChanger" \
   -H "Authorization: <API_KEY>" \
   -F "voice_id=e0bb585f-b798-4bac-ac4e-de7fff38f9d75" \
   -F "remove_background=1" \
@@ -73,7 +73,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/VoiceChanger" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/VoiceChanger"
+url = "https://api.wav.com/api/public/v1/VoiceChanger"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -125,7 +125,7 @@ print(response.json())
   "conversion_type": "Voice Conversion", 
   "task_id": "fdcca59e-9788-43fc-9ee6-e9983064c432", 
   "conversion_id": "67092f68-045d-4e3c-8006-532f144dd610", 
-  "conversion_path": "https://cdn1.musicgpt.com/projects/standard/ffa2da3a-af79-4cbd-9cf6-ea178c9b2f90.mp3",
+  "conversion_path": "https://cdn1.wav.com/projects/standard/ffa2da3a-af79-4cbd-9cf6-ea178c9b2f90.mp3",
   "conversion_cost": "0.78", 
   "conversion_duration": 272.44,
   "message": "Conversion Completed",

@@ -26,9 +26,9 @@ Use this endpoint to initiate a new text-to-speech audio generation.
 ## Sample Output
 
 Prompt: When I think of superheroes I think of super humans. I think of Superman, Wolverine and Wonder Woman. Usually they have a cape, or a mask to hide their face just in case. They have X-ray vision and super-human strength. Some can even breathe in outer space. They fly around a while, but always come back to keep our cities safe. They’re here to save humanity from itself. It’s a metaphor for how we look outside ourselves for help, and while the fantasies are fun, I choose to look for me and you.
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/projects/f1970224-ab06-4aa6-a832-0f3fd23212b7.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/projects/f1970224-ab06-4aa6-a832-0f3fd23212b7.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/projects/f1970224-ab06-4aa6-a832-0f3fd23212b7.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/projects/f1970224-ab06-4aa6-a832-0f3fd23212b7.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -60,7 +60,7 @@ Visit the [TextToSpeech Endpoint Explorer](/api-documentation/endpoint/TextToSpe
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/TextToSpeech"
+url = "https://api.wav.com/api/public/v1/TextToSpeech"
 
 headers = {
     "Authorization": "<API_KEY>",
@@ -109,7 +109,7 @@ Once audio is ready, your webhook will receive:
   "conversion_type": "Text To Speech", 
   "task_id": "037a9a09-3fc6-4a90-8748-d3406ff712eb", 
   "conversion_id": "f1970224-ab06-4aa6-a832-0f3fd23212b7", 
-  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/tts/195e5815-b871-4ea0-86a2-7f5eb1c696d2/195e5815-b871-4ea0-86a2-7f5eb1c696d2.mp3",
+  "conversion_path": "https://cdn1.wav.com/conversions/api/tts/195e5815-b871-4ea0-86a2-7f5eb1c696d2/195e5815-b871-4ea0-86a2-7f5eb1c696d2.mp3",
   "message": "Conversion Completed",
   "conversion_cost": "0.68", 
   "conversion_duration": 27.78

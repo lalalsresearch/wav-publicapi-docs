@@ -11,7 +11,7 @@ Use the following code to check the status of any conversion using its `task_id`
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/byId"
+url = "https://api.wav.com/api/public/v1/byId"
 
 querystring = {
   "conversionType": "MUSIC_AI",
@@ -45,7 +45,7 @@ SING_OVER_INSTRUMENTAL, LYRICS_GENERATOR, STEMS_SEPARATION, VOCAL_EXTRACTION
     "conversion_id": "87654321-dcba-4321-hgfe-098765fedcba",
     "status": "COMPLETED",
     "status_msg": "Conversion successful",
-    "audio_url": "https://lalals.s3.amazonaws.com/audiofile.mp3",
+    "audio_url": "https://cdn1.wav.com/audiofile.mp3",
     "conversion_cost": 1.25,
     "title": "Generated Song",
     "lyrics": "[Verse 1]...",
