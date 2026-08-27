@@ -27,13 +27,13 @@ The source for the [WAV](https://wav.com) Public API documentation, published wi
 
 Install the [Mintlify CLI](https://www.npmjs.com/package/mint):
 
-```
+```bash
 npm i -g mint
 ```
 
 Run from the root of the repo, where `docs.json` lives:
 
-```
+```bash
 mint dev
 ```
 

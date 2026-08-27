@@ -1244,7 +1244,7 @@
                 "webhook_url": {
                   "type": "string",
                   "description": "Callback URL for async processing.",
-                  "example": "http://webhook.wav.com"
+                  "example": "https://example.com/webhook"
                 }
               },
               "anyOf": [
