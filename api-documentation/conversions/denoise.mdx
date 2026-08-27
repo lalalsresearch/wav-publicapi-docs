@@ -20,9 +20,9 @@ This endpoint removes noise from an uploaded or linked audio file. A `webhook_ur
 ## Sample Output
 
 Listen to a real sample output:
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -52,7 +52,7 @@ Visit the [Denoise Endpoint Explorer](/api-documentation/endpoint/denoise) to tr
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/denoise" \
+curl -X POST "https://api.wav.com/api/public/v1/denoise" \
   -H "Authorization: <API_KEY>" \
   -F "audio_url=<YOUR_AUDIO_URL>" \
   -F "webhook_url=https://example.com/my-webhook"
@@ -63,7 +63,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/denoise" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/denoise"
+url = "https://api.wav.com/api/public/v1/denoise"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -116,8 +116,8 @@ print(response.json())
   "task_id": "01e88c6d-5006-4ad9-b7c4-80360ca37860", 
   "conversion_id": "c3f08613-998d-4ef9-80a9-9c05891e5237", 
   "audio_path": "files/2e7c373c-aef9-4dda-8e70-2ff50ad18169.wav", 
-  "no_noise": "https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.mp3", 
-  "noise": "https://lalals.s3.amazonaws.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_noise.mp3", 
+  "no_noise": "https://cdn1.wav.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_nonoise.mp3", 
+  "noise": "https://cdn1.wav.com/conversions/01e88c6d-5006-4ad9-b7c4-80360ca37860_noise.mp3", 
   "noise_wav": "", 
   "message": "de_noising conversion Completed", 
   "conversion_duration": 136.82721088435375, 

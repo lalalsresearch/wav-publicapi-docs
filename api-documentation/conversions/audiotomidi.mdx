@@ -24,9 +24,9 @@ This is the primary endpoint for initiating audio-to-MIDI conversion tasks.
 
 Generated MIDI and optional outputs from a sample audio file:
 
-<a href="https://lalals.s3.amazonaws.com/AudioToMidi/f5b563e5-e414-47ec-989b-255c74d90119.mid" target="_blank">Download MIDI(.mid)</a>
+<a href="https://cdn1.wav.com/AudioToMidi/f5b563e5-e414-47ec-989b-255c74d90119.mid" target="_blank">Download MIDI(.mid)</a>
 
-<a href="https://lalals.s3.amazonaws.com/AudioToMidi/f5b563e5-e414-47ec-989b-255c74d90119.wav" target="_blank">Download Sonified MIDI(.wav)</a>
+<a href="https://cdn1.wav.com/AudioToMidi/f5b563e5-e414-47ec-989b-255c74d90119.wav" target="_blank">Download Sonified MIDI(.wav)</a>
 
 ---
 
@@ -58,7 +58,7 @@ Visit the [Audio to MIDI Endpoint Explorer](/api-documentation/endpoint/audio_to
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/audio_to_midi" \
+curl -X POST "https://api.wav.com/api/public/v1/audio_to_midi" \
   -H "Authorization: <API_KEY>" \
   -F "audio_url=<YOUR_AUDIO_URL>" \
   -F "sonify_midi=true" \
@@ -71,7 +71,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/audio_to_midi" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/audio_to_midi"
+url = "https://api.wav.com/api/public/v1/audio_to_midi"
 headers = {"Authorization": "<API_KEY>"}
 
 payload = {

@@ -75,9 +75,9 @@ This is the primary endpoint for initiating music generation.
 Listen to a real sample output:
 
 Prompt: a song about greenery, nature and forest.
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/2872d9a6-4abe-4a8f-a04f-5540c4ef0a1a.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/2872d9a6-4abe-4a8f-a04f-5540c4ef0a1a.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/2872d9a6-4abe-4a8f-a04f-5540c4ef0a1a.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/2872d9a6-4abe-4a8f-a04f-5540c4ef0a1a.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -152,7 +152,7 @@ Once the generation is complete, **webhooks** will be triggered to deliver the f
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v2/MusicAI"
+url = "https://api.wav.com/api/public/v2/MusicAI"
 
 headers = {
     "Authorization": "<API_KEY>",
@@ -209,15 +209,15 @@ Music AI Webhook
   "conversion_type": "Music AI",
   "task_id": "c287cca4-c03a-5074-b16a-b8da9d6a124c",
   "conversion_id": "8725079f-bf68-5098-a6c8-6dcba44dcaa2",
-  "conversion_path": "https://cdn1.musicgpt.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
-  "conversion_path_wav": "https://cdn1.musicgpt.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
+  "conversion_path": "https://cdn1.wav.com/conversions/api/standard/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.mp3",
+  "conversion_path_wav": "https://cdn1.wav.com/conversions/api/hq/8725079f-bf68-5098-a6c8-6dcba44dcaa2/8725079f-bf68-5098-a6c8-6dcba44dcaa2.wav",
   "conversion_duration": 155.95,
   "is_flagged": false,
   "reason": "",
   "lyrics": "[Verse]\nTurn up the sound\nLet the rhythm take control\nFeel every beat\nMoving through my soul\nLights are shining bright\nAnd we lose track of time\n\n[Chorus]\nMusic in the air\nDancing through the night\nEvery beat we share\nMakes everything feel right\nTurn it up again\nLet the whole world sing",
   "lyrics_timestamped": "[{\"start\": 9880, \"end\": 35120, \"text\": \"[Verse]\", \"index\": 0}, {\"start\": 9880, \"end\": 10720, \"text\": \"Turn up the sound\", \"index\": 1}, {\"start\": 13720, \"end\": 15600, \"text\": \"Let the rhythm take control\", \"index\": 2}, {\"start\": 19200, \"end\": 20400, \"text\": \"Feel every beat\", \"index\": 3}, {\"start\": 23480, \"end\": 25400, \"text\": \"Moving through my soul\", \"index\": 4}, {\"start\": 29520, \"end\": 31440, \"text\": \"Lights are shining bright\", \"index\": 5}, {\"start\": 33320, \"end\": 35120, \"text\": \"And we lose track of time\", \"index\": 6}, {\"start\": 39640, \"end\": 54320, \"text\": \"[Chorus]\", \"index\": 7}, {\"start\": 39640, \"end\": 40120, \"text\": \"Music in the air\", \"index\": 8}, {\"start\": 41800, \"end\": 42560, \"text\": \"Dancing through the night\", \"index\": 9}, {\"start\": 44320, \"end\": 45280, \"text\": \"Every beat we share\", \"index\": 10}, {\"start\": 45600, \"end\": 47440, \"text\": \"Makes everything feel right\", \"index\": 11}, {\"start\": 49240, \"end\": 49920, \"text\": \"Turn it up again\", \"index\": 12}, {\"start\": 51720, \"end\": 54320, \"text\": \"Let the whole world sing\", \"index\": 13}]",
   "title": "Rhythm Take Control",
-  "album_cover_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/c287cca4-c03a-5074-b16a-b8da9d6a124c.jpg",
+  "album_cover_path": "https://cdn1.wav.com/img-gen-pipeline/api/c287cca4-c03a-5074-b16a-b8da9d6a124c.jpg",
   "subtype": "music_ai"
 }
 ```
@@ -231,7 +231,7 @@ Audio Streaming Webhook
   "subtype": "audio_streaming",
   "task_id": "80659560-54e7-5e59-a0a0-86320e92701b",
   "conversion_id": "10cfbe38-572a-5218-8981-5aa9a73aa8a5",
-  "streaming_url": "https://cdn1.musicgpt.com/streams/22e4efb8-c8e7-42d7-a2f1-b094a9a92d24/index.m3u8"
+  "streaming_url": "https://cdn1.wav.com/streams/22e4efb8-c8e7-42d7-a2f1-b094a9a92d24/index.m3u8"
 }
 ```
 
@@ -242,13 +242,13 @@ Album Cover Webhook
   "conversion_type": "Music AI",
   "task_id": "5254c422-0fab-53f0-b5e3-36abb69dd111",
   "image_paths": [
-    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
+    "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg"
   ],
   "thumbnail_paths": [
-    "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
+    "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg"
   ],
-  "image_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
-  "thumbnail_path": "https://cdn1.musicgpt.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
+  "image_path": "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111.jpg",
+  "thumbnail_path": "https://cdn1.wav.com/img-gen-pipeline/api/5254c422-0fab-53f0-b5e3-36abb69dd111_thumb.jpg",
   "conversion_id_1": "eba76eae-9c77-5b09-9f2b-96a8bdef0f36",
   "conversion_id_2": "1cf119ce-a78c-500b-ad43-4b1f598507cb",
   "album_cover_generator_output": true,

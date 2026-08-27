@@ -26,9 +26,9 @@ Use this endpoint to trim a section from an existing audio file.
 ## Sample Output
 
 Listen to the trimmed audio:
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.mp3">Your browser does not support audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.mp3">Your browser does not support audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -60,7 +60,7 @@ Visit the [Audio Cutter Endpoint Explorer](/api-documentation/endpoint/audio_cut
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/audio_cutter"
+url = "https://api.wav.com/api/public/v1/audio_cutter"
 headers = {"Authorization": "<API_KEY>"}
 
 payload = {
@@ -109,7 +109,7 @@ When audio cutter conversion completes, your webhook will receive:
   "conversion_type": "Audio Cutter", 
   "task_id": "8993b364-9141-4de7-ab38-5a4178618f0e", 
   "conversion_id": "3f07f1ba-9eb5-4581-95ed-427eac1dda0c", 
-  "output_file": "https://lalals.s3.amazonaws.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.mp3", 
+  "output_file": "https://cdn1.wav.com/FileConversions/8993b364-9141-4de7-ab38-5a4178618f0e.mp3", 
   "message": "Audio cutter completed"
 } 
 ```

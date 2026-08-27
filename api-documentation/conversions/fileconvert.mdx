@@ -34,9 +34,9 @@ This endpoint processes an uploaded or linked audio file and converts it to a sp
 ## Sample Output
 
 Listen to a real sample output:
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.us-east-1.amazonaws.com/FileConversions/059ab1ef-c92d-4be4-b2f3-4fe57d26ae87.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/FileConversions/059ab1ef-c92d-4be4-b2f3-4fe57d26ae87.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.us-east-1.amazonaws.com/FileConversions/059ab1ef-c92d-4be4-b2f3-4fe57d26ae87.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/FileConversions/059ab1ef-c92d-4be4-b2f3-4fe57d26ae87.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -56,7 +56,7 @@ curl -X POST \
   -F "target_format=wav" \
   -F "target_sr=44100" \
   -F "webhook_url=https://yourdomain.com/webhook" \
-  https://api.musicgpt.com/api/public/v1/convert
+  https://api.wav.com/api/public/v1/convert
 ```
 
 ### Python
@@ -64,7 +64,7 @@ curl -X POST \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/file_convert"
+url = "https://api.wav.com/api/public/v1/file_convert"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -114,7 +114,7 @@ print(response.json())
 {
   "success": true, 
   "conversion_id": "a1286a84-d886-47d9-a717-77af15894cb9", 
-  "output_file_path": "https://cdn1.musicgpt.com/FileConversions/standard/3567f876-a196-467f-8538-f12ef1ba318e.mp3", 
+  "output_file_path": "https://cdn1.wav.com/FileConversions/standard/3567f876-a196-467f-8538-f12ef1ba318e.mp3", 
   "conversion_type": "File Conversion", 
   "task_id": "7024eac0-02e2-4811-96e3-7031f007f97f",
   "message": "File conversion completed"

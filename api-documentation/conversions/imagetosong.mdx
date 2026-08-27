@@ -49,7 +49,7 @@ Visit the [image_to_song Endpoint Explorer](/api-documentation/endpoint/imagetos
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/image_to_song" \
+curl -X POST "https://api.wav.com/api/public/v1/image_to_song" \
 -H "accept: application/json" \
 -H "Authorization: <api_key>" \
 -F "image_file=@/path/to/image.png" \
@@ -69,7 +69,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/image_to_song" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/image_to_song"
+url = "https://api.wav.com/api/public/v1/image_to_song"
 headers = {"Authorization": "<API_KEY>"}
 data = {
     "prompt": "Generate a relaxing acoustic track inspired by this scene.",

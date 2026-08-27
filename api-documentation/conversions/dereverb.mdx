@@ -34,9 +34,9 @@ This endpoint removes reverberation (echo) from an uploaded or linked audio file
 ## Sample Output
 
 Listen to a real sample output:
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_reverb.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_reverb.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_reverb.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_reverb.wav" target="_blank">Download Audio</a>
 
 ---
 
@@ -51,7 +51,7 @@ Visit the [Dereverb Endpoint Explorer](/api-documentation/endpoint/dereverb) to 
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/dereverb" \
+curl -X POST "https://api.wav.com/api/public/v1/dereverb" \
   -H "Authorization: <API_KEY>" \
   -F "audio_url=<YOUR_AUDIO_URL>" \
   -F "webhook_url=https://example.com/my-webhook"
@@ -62,7 +62,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/dereverb" \
 ```python
 import requests
 
-url = "https://api.musicgpt.com/api/public/v1/dereverb"
+url = "https://api.wav.com/api/public/v1/dereverb"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -114,8 +114,8 @@ print(response.json())
   "task_id": "e99d00bb-2ddf-4279-a15e-6e22801ee575", 
   "conversion_id": "fbcf0c40-a33d-40aa-8c1d-7bb6f9df0b0f", 
   "audio_path": "files/4efbdeff-48a2-401c-a9e6-8a2ffe465487.wav", 
-  "noreverb": "https://lalals.s3.amazonaws.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_reverb.mp3", 
-  "reverb": "https://lalals.s3.amazonaws.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_noreverb.mp3", 
+  "noreverb": "https://cdn1.wav.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_reverb.mp3", 
+  "reverb": "https://cdn1.wav.com/conversions/e99d00bb-2ddf-4279-a15e-6e22801ee575_noreverb.mp3", 
   "reverb_wav": "", 
   "message": "de_reverb conversion Completed", 
   "conversion_duration": 136.83045351473922, 

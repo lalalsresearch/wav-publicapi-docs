@@ -102,15 +102,15 @@ These preprocessing steps can be applied to the input audio before stem extracti
 ## Sample Output
 
 Sample Output : Vocals
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.wav" target="_blank">Download Audio</a>
 
 
 Sample Output : instrumentals
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.wav" target="_blank">Download Audio</a>
 
 ---
 ## Sample Request
@@ -118,13 +118,13 @@ Sample Output : instrumentals
 ### cURL
 
 ```bash
-curl -X POST "https://api.musicgpt.com/api/public/v1/Extraction" \
+curl -X POST "https://api.wav.com/api/public/v1/Extraction" \
 -H "accept: application/json" \
 -H "Authorization: <api_key>" \
 -F "audio_file=@path_to_audio.mp3" \
 -F "stems=[\"vocals\",\"drums\"]" \
 -F "preprocessing_options=[\"Denoise\"]" \
--F "webhook_url=http://webhook.musicgpt.com"
+-F "webhook_url=https://example.com/webhook"
 ```
 
 ### Python
@@ -133,7 +133,7 @@ curl -X POST "https://api.musicgpt.com/api/public/v1/Extraction" \
 import requests
 import json
 
-url = "https://api.musicgpt.com/api/public/v2/Extraction"
+url = "https://api.wav.com/api/public/v2/Extraction"
 
 headers = {
     "Authorization": "<API_KEY>"
@@ -184,9 +184,9 @@ print(response.json())
   "conversion_type": "Extraction", 
   "task_id": "1683c35d-3990-4aac-98da-6847a6893893", 
   "conversion_id": "dded3f43-4715-4564-88e0-b66ebc00c466", 
-  "audio_url": "{\"vocals\": \"https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.mp3\", 
-                \"instrumental\": \"https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.mp3\", 
-                \"solo_guitar\": \"https://lalals.s3.amazonaws.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_solo_guitar.mp3\"}", 
+  "audio_url": "{\"vocals\": \"https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_vocals.mp3\", 
+                \"instrumental\": \"https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_instrumental.mp3\", 
+                \"solo_guitar\": \"https://cdn1.wav.com/conversions/1683c35d-3990-4aac-98da-6847a6893893_solo_guitar.mp3\"}", 
   "conversion_cost": "5.55", 
   "conversion_duration": 136.83045351473922
 }
