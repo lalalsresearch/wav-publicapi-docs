@@ -37,12 +37,7 @@
 
             ]
           },
-          {
-          "group": "Resources",
-            "pages": [
-              "api-documentation/index/sdk"
-            ]
-          },
+        
           {
             "group": "Keep in mind",
             "pages": [
