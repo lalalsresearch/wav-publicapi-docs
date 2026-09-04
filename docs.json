@@ -8,8 +8,8 @@
     "dark": "#15803D"
   },
   "favicon": {
-    "light": "/wav-logo/app-icon-black.png",
-    "dark": "/wav-logo/app-icon-white.png"
+    "light": "/wav-logo/wav-icon-rounded.png",
+    "dark": "/wav-logo/wav-icon-rounded.png"
   },
   "navigation": {
     "tabs": [
@@ -37,12 +37,7 @@
 
             ]
           },
-          {
-          "group": "Resources",
-            "pages": [
-              "api-documentation/index/sdk"
-            ]
-          },
+        
           {
             "group": "Keep in mind",
             "pages": [
@@ -140,8 +135,8 @@
     }
   },
   "logo": {
-    "light": "/wav-logo/wordmark-black.png",
-    "dark": "/wav-logo/wordmark-white.png",
+    "light": "/wav-logo/wav-logo-black.png",
+    "dark": "/wav-logo/wav-logo-white.png",
     "href": "https://wav.com"
   },
   "navbar": {
