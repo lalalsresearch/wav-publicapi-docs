@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",  
   "info": {
-    "title": "WAV API",
+    "title": "wav API",
     "version": "1.0.0",
     "description": "API for retrieving conversion details by ID."
   },
@@ -741,8 +741,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/audio.wav"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -751,8 +750,8 @@
               },
               "voice_id": {
                 "type": "string",
-                "description": "Voice model ID",
-                "example": "demo-voice-id"
+                "description": "Voice model ID"
+               
               },
               "remove_background": {
                 "type": "integer",
@@ -894,18 +893,6 @@
   {
     "lang": "Python",
     "source": "import requests\n\nurl = \"https://api.wav.com/api/public/v1/VoiceChanger\"\n\nheaders = {\n    \"Authorization\": \"<API_KEY>\"\n}\n\ndata = {\n    \"voice_id\": \"e0bb585f-b798-4bac-ac4e-de7fff38f9d75\",\n    \"remove_background\": 1,\n    \"pitch\": 0,\n    \"webhook_url\": \"https://example.com/my-webhook\"\n}\n\n# Option 1: audio_url\ndata[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=data)\n\n# Option 2: File Upload\n# with open(\"song.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=data, files=files)\n\nprint(response.json())"
-  },
-  {
-    "lang": "PHP",
-    "source": "<?php\n$url = \"https://api.wav.com/api/public/v1/VoiceChanger\";\n$apiKey = \"<API_KEY>\";\n\n$data = [\n    \"voice_id\" => \"voice_12345\",\n    \"remove_background\" => 1,\n    \"pitch\" => 0,\n    \"webhook_url\" => \"https://example.com/my-webhook\"\n];\n\n// Option 1: audio_url\n$data[\"audio_url\"] = \"<YOUR_AUDIO_URL>\";\n\n// Option 2: File Upload\n// $data[\"audio_file\"] = new CURLFile(\"song.mp3\");\n\n$headers = [\n    \"Authorization: \" . $apiKey\n];\n\n$ch = curl_init();\ncurl_setopt($ch, CURLOPT_URL, $url);\ncurl_setopt($ch, CURLOPT_POST, true);\ncurl_setopt($ch, CURLOPT_POSTFIELDS, $data);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, $headers);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n\necho $response;\n?>"
-  },
-  {
-    "lang": "Go",
-    "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"fmt\"\n\t\"io\"\n\t\"mime/multipart\"\n\t\"net/http\"\n\t\"os\"\n)\n\nfunc main() {\n\turl := \"https://api.wav.com/api/public/v1/VoiceChanger\"\n\tapiKey := \"<API_KEY>\"\n\n\tpayload := map[string]string{\n\t\t\"voice_id\": \"voice_12345\",\n\t\t\"remove_background\": \"1\",\n\t\t\"pitch\": \"0\",\n\t\t\"webhook_url\": \"https://example.com/my-webhook\",\n\t}\n\n\tbody := &bytes.Buffer{}\n\twriter := multipart.NewWriter(body)\n\n\tfor key, val := range payload {\n\t\t_ = writer.WriteField(key, val)\n\t}\n\n\t// Option 1: audio_url\n\twriter.WriteField(\"audio_url\", \"<YOUR_AUDIO_URL>\")\n\n\t// Option 2: File Upload\n\t// file, _ := os.Open(\"song.mp3\")\n\t// defer file.Close()\n\t// part, _ := writer.CreateFormFile(\"audio_file\", \"song.mp3\")\n\t// io.Copy(part, file)\n\n\twriter.Close()\n\n\treq, _ := http.NewRequest(\"POST\", url, body)\n\treq.Header.Set(\"Authorization\", apiKey)\n\treq.Header.Set(\"Content-Type\", writer.FormDataContentType())\n\n\tclient := &http.Client{}\n\tresp, err := client.Do(req)\n\tif err != nil {\n\t\tfmt.Println(err)\n\t\treturn\n\t}\n\tdefer resp.Body.Close()\n\n\tresponse, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(response))\n}"
-  },
-  {
-    "lang": "Java",
-    "source": "import okhttp3.*;\n\nimport java.io.File;\nimport java.io.IOException;\n\npublic class VoiceChanger {\n    public static void main(String[] args) throws IOException {\n        String url = \"https://api.wav.com/api/public/v1/VoiceChanger\";\n        String apiKey = \"<API_KEY>\";\n\n        // Option 1: audio_url\n        RequestBody requestBody = new FormBody.Builder()\n                .add(\"audio_url\", \"<YOUR_AUDIO_URL>\")\n                .add(\"voice_id\", \"voice_12345\")\n                .add(\"remove_background\", \"1\")\n                .add(\"pitch\", \"0\")\n                .add(\"webhook_url\", \"https://example.com/my-webhook\")\n                .build();\n\n        // Option 2: File Upload\n        // File audioFile = new File(\"song.mp3\");\n        // RequestBody requestBody = new MultipartBody.Builder()\n        //         .setType(MultipartBody.FORM)\n        //         .addFormDataPart(\"voice_id\", \"voice_12345\")\n        //         .addFormDataPart(\"remove_background\", \"1\")\n        //         .addFormDataPart(\"pitch\", \"0\")\n        //         .addFormDataPart(\"webhook_url\", \"https://example.com/my-webhook\")\n        //         .addFormDataPart(\"audio_file\", audioFile.getName(),\n        //                 RequestBody.create(audioFile, MediaType.parse(\"audio/mpeg\")))\n        //         .build();\n\n        Request request = new Request.Builder()\n                .url(url)\n                .post(requestBody)\n                .header(\"Authorization\", apiKey)\n                .build();\n\n        OkHttpClient client = new OkHttpClient();\n        try (Response response = client.newCall(request).execute()) {\n            System.out.println(response.body().string());\n        }\n    }\n}"
   }
 ]
   }
@@ -923,8 +910,8 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/audio.wav"
+                "description": "Input audio URL (supported format: YouTube URL)."
+              
               },
               "audio_file": {
                 "type": "string",
@@ -933,8 +920,8 @@
               },
               "voice_id": {
                 "type": "string",
-                "description": "The ID of the voice model to use for voice transformation.",
-                "example": "demo-voice-id"
+                "description": "The ID of the voice model to use for voice transformation."
+             
               },
               "pitch": {
                 "type": "integer",
@@ -1216,8 +1203,7 @@
               "properties": {
                 "audio_url": {
                   "type": "string",
-                  "description": "Input audio URL (supported format: YouTube URL).",
-                  "example": "https://www.youtube.com/watch?v=example123"
+                  "description": "Input audio URL (supported format: YouTube URL)."
                 },
                 "audio_file": {
                   "type": "string",
@@ -1339,8 +1325,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://www.youtube.com/watch?v=example123"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -1443,8 +1428,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://www.youtube.com/watch?v=example123"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -1547,8 +1531,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://www.youtube.com/watch?v=example123"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -1651,8 +1634,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://www.youtube.com/watch?v=example123"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -1755,8 +1737,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -1855,18 +1836,6 @@
   {
     "lang": "Python",
     "source": "import requests\n\nurl = \"https://api.wav.com/api/public/v1/audio_transcribe\"\nheaders = {\"Authorization\": \"<API_KEY>\"}\n\npayload = {\n    \"language\": \"en\",\n    \"translate\": True,\n    \"transcription_format\": \"plain_text\",\n    \"word_timestamps\": True\n}\n\n# Option 1: audio_url\npayload[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=payload)\n\n# Option 2: File Upload\n# with open(\"audio.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=payload, files=files)\n\nprint(response.json())"
-  },
-  {
-    "lang": "PHP",
-    "source": "<?php\n$url = 'https://api.wav.com/api/public/v1/audio_transcribe';\n$headers = ['Authorization: <API_KEY>'];\n\n$data = [\n    'language' => 'en',\n    'translate' => true,\n    'transcription_format' => 'srt',\n    'word_timestamps' => true\n];\n\n// Option 1: audio_url\n$data['audio_url'] = '<YOUR_AUDIO_URL>';\n\n// Option 2: File Upload\n// $data['audio_file'] = new CURLFile('audio.mp3');\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_POST, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, $headers);\ncurl_setopt($ch, CURLOPT_POSTFIELDS, $data);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n$response = curl_exec($ch);\ncurl_close($ch);\necho $response;"
-  },
-  {
-    "lang": "Go",
-    "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"fmt\"\n\t\"io\"\n\t\"mime/multipart\"\n\t\"net/http\"\n\t\"os\"\n)\n\nfunc main() {\n\turl := \"https://api.wav.com/api/public/v1/audio_transcribe\"\n\tapiKey := \"<API_KEY>\"\n\n\tbody := &bytes.Buffer{}\n\twriter := multipart.NewWriter(body)\n\n\twriter.WriteField(\"language\", \"en\")\n\twriter.WriteField(\"translate\", \"true\")\n\twriter.WriteField(\"transcription_format\", \"srt\")\n\twriter.WriteField(\"word_timestamps\", \"true\")\n\n\t// Option 1: audio_url\n\twriter.WriteField(\"audio_url\", \"<YOUR_AUDIO_URL>\")\n\n\t// Option 2: File Upload\n\t// file, _ := os.Open(\"audio.mp3\")\n\t// defer file.Close()\n\t// part, _ := writer.CreateFormFile(\"audio_file\", \"audio.mp3\")\n\t// io.Copy(part, file)\n\n\twriter.Close()\n\n\treq, _ := http.NewRequest(\"POST\", url, body)\n\treq.Header.Add(\"Authorization\", apiKey)\n\treq.Header.Add(\"Content-Type\", writer.FormDataContentType())\n\n\tresp, _ := http.DefaultClient.Do(req)\n\tdefer resp.Body.Close()\n\n\tresponse, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(response))\n}"
-  },
-  {
-    "lang": "Java",
-    "source": "// Java example omitted for brevity. Request if needed."
   }
 ]
   }
@@ -1988,8 +1957,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/input_audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -1998,8 +1966,7 @@
               },
               "reference_audio_url": {
                 "type": "string",
-                "description": "URL of the reference audio file to match.",
-                "example": "https://example.com/reference_track.wav"
+                "description": "URL of the reference audio file to match."
               },
               "reference_audio_file": {
                 "type": "string",
@@ -2153,8 +2120,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/input_audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -2303,19 +2269,8 @@
   {
     "lang": "Python",
     "source": "import requests\n\nurl = \"https://api.wav.com/api/public/v1/audio_cutter\"\nheaders = {\"Authorization\": \"<API_KEY>\"}\n\npayload = {\n    \"start_time\": 10500,\n    \"end_time\": 45000,\n    \"output_extension\": \"mp3\"\n}\n\n# Option 1: audio_url\npayload[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=payload)\n\n# Option 2: File Upload\n# with open(\"input_audio.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=payload, files=files)\n\nprint(response.json())"
-  },
-  {
-    "lang": "PHP",
-    "source": "<?php\n$url = 'https://api.wav.com/api/public/v1/audio_cutter';\n$headers = ['Authorization: <API_KEY>'];\n\n$data = [\n    'start_time' => 10500,\n    'end_time' => 45000,\n    'output_extension' => 'mp3'\n];\n\n// Option 1: audio_url\n$data['audio_url'] = 'https://example.com/input_audio.mp3';\n\n// Option 2: File Upload\n// $data['audio_file'] = new CURLFile('input_audio.mp3');\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_POST, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, $headers);\ncurl_setopt($ch, CURLOPT_POSTFIELDS, $data);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n$response = curl_exec($ch);\ncurl_close($ch);\necho $response;"
-  },
-  {
-    "lang": "Go",
-    "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"fmt\"\n\t\"io\"\n\t\"mime/multipart\"\n\t\"net/http\"\n\t\"os\"\n)\n\nfunc main() {\n\turl := \"https://api.wav.com/api/public/v1/audio_cutter\"\n\tapiKey := \"<API_KEY>\"\n\n\tbody := &bytes.Buffer{}\n\twriter := multipart.NewWriter(body)\n\n\twriter.WriteField(\"start_time\", \"10500\")\n\twriter.WriteField(\"end_time\", \"45000\")\n\twriter.WriteField(\"output_extension\", \"mp3\")\n\n\t// Option 1: audio_url\n\twriter.WriteField(\"audio_url\", \"https://example.com/input_audio.mp3\")\n\n\t// Option 2: File Upload\n\t// file, _ := os.Open(\"input_audio.mp3\")\n\t// defer file.Close()\n\t// part, _ := writer.CreateFormFile(\"audio_file\", \"input_audio.mp3\")\n\t// io.Copy(part, file)\n\n\twriter.Close()\n\n\treq, _ := http.NewRequest(\"POST\", url, body)\n\treq.Header.Add(\"Authorization\", apiKey)\n\treq.Header.Add(\"Content-Type\", writer.FormDataContentType())\n\n\tresp, _ := http.DefaultClient.Do(req)\n\tdefer resp.Body.Close()\n\tresponse, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(response))\n}"
-  },
-  {
-    "lang": "Java",
-    "source": "// Java version omitted for brevity; request if needed."
   }
+  
 ]
   }
 },
@@ -2332,8 +2287,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/input_audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -2477,18 +2431,6 @@
   {
     "lang": "Python",
     "source": "import requests\n\nurl = \"https://api.wav.com/api/public/v1/audio_speed_changer\"\nheaders = {\"Authorization\": \"<API_KEY>\"}\n\npayload = {\n    \"speed_change_factor\": 1.5,\n    \"output_extension\": \"mp3\"\n}\n\n# Option 1: audio_url\npayload[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=payload)\n\n# Option 2: File Upload\n# with open(\"input_audio.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=payload, files=files)\n\nprint(response.json())"
-  },
-  {
-    "lang": "PHP",
-    "source": "<?php\n$url = 'https://api.wav.com/api/public/v1/audio_speed_changer';\n$headers = ['Authorization: <API_KEY>'];\n\n$data = [\n    'speed_change_factor' => 1.5,\n    'output_extension' => 'mp3'\n];\n\n// Option 1: audio_url\n$data['audio_url'] = '<YOUR_AUDIO_URL>';\n\n// Option 2: File Upload\n// $data['audio_file'] = new CURLFile('input_audio.mp3');\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_POST, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, $headers);\ncurl_setopt($ch, CURLOPT_POSTFIELDS, $data);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n$response = curl_exec($ch);\ncurl_close($ch);\necho $response;"
-  },
-  {
-    "lang": "Go",
-    "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"fmt\"\n\t\"io\"\n\t\"mime/multipart\"\n\t\"net/http\"\n\t\"os\"\n)\n\nfunc main() {\n\turl := \"https://api.wav.com/api/public/v1/audio_speed_changer\"\n\tapiKey := \"<API_KEY>\"\n\n\tbody := &bytes.Buffer{}\n\twriter := multipart.NewWriter(body)\n\n\twriter.WriteField(\"speed_change_factor\", \"1.5\")\n\twriter.WriteField(\"output_extension\", \"mp3\")\n\n\t// Option 1: audio_url\n\twriter.WriteField(\"audio_url\", \"<YOUR_AUDIO_URL>\")\n\n\t// Option 2: File Upload\n\t// file, _ := os.Open(\"input_audio.mp3\")\n\t// defer file.Close()\n\t// part, _ := writer.CreateFormFile(\"audio_file\", \"input_audio.mp3\")\n\t// io.Copy(part, file)\n\n\twriter.Close()\n\n\treq, _ := http.NewRequest(\"POST\", url, body)\n\treq.Header.Add(\"Authorization\", apiKey)\n\treq.Header.Add(\"Content-Type\", writer.FormDataContentType())\n\n\tresp, _ := http.DefaultClient.Do(req)\n\tdefer resp.Body.Close()\n\tresponse, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(response))\n}"
-  },
-  {
-    "lang": "Java",
-    "source": "// Java version omitted for brevity; request if needed."
   }
 ]
   }
@@ -2506,8 +2448,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -2631,8 +2572,7 @@
               },
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://mybucket.s3.amazonaws.com/song.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "prompt": {
                 "type": "string",
@@ -2809,8 +2749,7 @@
               },
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://mybucket.s3.amazonaws.com/song.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "extend_after": {
                 "type": "number",
@@ -2979,8 +2918,7 @@
               },
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://mybucket.s3.amazonaws.com/song.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "prompt": {
                 "type": "string",
@@ -3152,8 +3090,7 @@
               },
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://bucket.s3.amazonaws.com/audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "prompt": {
                 "type": "string",
@@ -3301,8 +3238,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Input audio URL (supported format: YouTube URL).",
-                "example": "https://example.com/audio.mp3"
+                "description": "Input audio URL (supported format: YouTube URL)."
               },
               "audio_file": {
                 "type": "string",
@@ -3645,8 +3581,7 @@
             "properties": {
               "audio_url": {
                 "type": "string",
-                "description": "Publicly accessible or S3 URL of the vocal audio.",
-                "example": "https://example.com/vocal.wav"
+                "description": "Publicly accessible or S3 URL of the vocal audio."
               },
               "audio_file": {
                 "type": "string",
@@ -3839,8 +3774,7 @@
                 },
                 "image_url": {
                   "type": "string",
-                  "description": "URL of the image to analyze. Either this or image_file must be provided.",
-                  "example": "https://mybucket.s3.amazonaws.com/image.png"
+                  "description": "URL of the image to analyze. Either this or image_file must be provided."
                 },
                 "prompt": {
                   "type": "string",
@@ -3961,7 +3895,7 @@
       "x-codeSamples": [
         {
           "lang": "Python",
-          "source": "import requests\n\nurl = \"https://api.wav.com/api/public/v1/image_to_song\"\nheaders = {\"Authorization\": \"<API_KEY>\"}\ndata = {\n    \"image_url\": \"https://mybucket.s3.amazonaws.com/image.png\",\n    \"prompt\": \"Generate a relaxing acoustic track inspired by this scene.\",\n    \"lyrics\": \"Let the colors of the sunset fill your heart.\",\n    \"make_instrumental\": False,\n    \"vocal_only\": False,\n    \"key\": \"C major\",\n    \"bpm\": 120,\n    \"webhook_url\": \"https://example.com/webhook\",\n    \"voice_id\": \"voice_123\"\n}\n\n# Option 1: Using image URL\nresponse = requests.post(url, headers=headers, data=data)\nprint(response.json())\n\n# Option 2: Uploading a local image file\n# with open(\"image.png\", \"rb\") as f:\n#     files = {\"image_file\": f}\n#     response = requests.post(url, headers=headers, data=data, files=files)\n#     print(response.json())"
+          "source": "import requests\n\nurl = \"https://api.wav.com/api/public/v1/image_to_song\"\nheaders = {\"Authorization\": \"<API_KEY>\"}\ndata = {\n    \"image_url\": \"<YOUR_IMAGE_URL>\",\n    \"prompt\": \"Generate a relaxing acoustic track inspired by this scene.\",\n    \"lyrics\": \"Let the colors of the sunset fill your heart.\",\n    \"make_instrumental\": False,\n    \"vocal_only\": False,\n    \"key\": \"C major\",\n    \"bpm\": 120,\n    \"webhook_url\": \"https://example.com/webhook\",\n    \"voice_id\": \"voice_123\"\n}\n\n# Option 1: Using image URL\nresponse = requests.post(url, headers=headers, data=data)\nprint(response.json())\n\n# Option 2: Uploading a local image file\n# with open(\"image.png\", \"rb\") as f:\n#     files = {\"image_file\": f}\n#     response = requests.post(url, headers=headers, data=data, files=files)\n#     print(response.json())"
         }
       ]
     }
