@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "WAV API Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#FF6200",
+    "light": "#FF6200",
+    "dark": "#FF6200"
   },
   "favicon": {
     "light": "/wav-logo/app-icon-black.png",
@@ -161,6 +161,12 @@
     "type": "button",
     "label": "API Key",
     "href": "https://wav.com/api-dashboard"
+  }
+},
+"background": {
+  "color": {
+    "light": "#FFFFFF",
+    "dark": "#0A0C0D"
   }
 }
 }
