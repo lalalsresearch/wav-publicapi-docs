@@ -2,7 +2,7 @@
 
 ## About this project
 
-- This is the WAV Public API documentation site, built on [Mintlify](https://mintlify.com)
+- This is the Wav Public API documentation site, built on [Mintlify](https://mintlify.com)
 - Pages are MDX files with YAML frontmatter
 - Configuration lives in `docs.json`
 - Shared component styles live in `styles.css`, using the `wav-` class prefix
@@ -12,7 +12,11 @@
 
 ## Terminology
 
-- The product is **WAV** (wav.com). Write it as `WAV` in prose, headings, and frontmatter.
+- The product is **Wav** (wav.com). Write it as `Wav` in prose, headings, and frontmatter.
+- Do not confuse the product with the audio format. The format is `WAV` (alongside `MP3`,
+  `FLAC`), and literal file extensions are lowercase: `.wav`, `.mp3`. API field values
+  such as `output_extension: "wav"` stay lowercase because they are literal values.
+- The `wav-` CSS class prefix in `styles.css` is a code identifier — leave it lowercase.
 - Hosts, all on `wav.com` — keep them consistent and do not invent new ones:
   - `api.wav.com` — API request host, used in every curl and SDK sample
   - `cdn1.wav.com` — delivery host for all generated output and sample audio
@@ -21,7 +25,7 @@
   *caller's* own storage. Leave them generic — they are not our infrastructure.
 - Say "conversion" for an API job, "API Key" (capitalized) for credentials.
 - SDK and integration links are withheld until those packages are republished under the
-  WAV name; see `api-documentation/index/sdk.mdx`.
+  Wav name.
 
 ## Style preferences
 

@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",  
   "info": {
-    "title": "wav API",
+    "title": "Wav API",
     "version": "1.0.0",
     "description": "API for retrieving conversion details by ID."
   },
@@ -401,15 +401,18 @@
                 "properties": {
                   "prompt": {
                     "type": "string",
+                    "maxLength": 1000,
                     "description": "A natural language prompt for music generation. Keep it under 1000 characters. Be clear and descriptive for better results."
                   },
                   "music_style": {
                     "type": "string",
+                    "maxLength": 1000,
                     "description": "Style of music to generate (e.g., Rock, Pop)",
                     "example": "Lo-fi"
                   },
                   "lyrics": {
                     "type": "string",
+                    "maxLength": 5000,
                     "description": "Custom lyrics for the generated music"
                   },
                   "title": {
@@ -556,15 +559,18 @@
                 "properties": {
                   "prompt": {
                     "type": "string",
+                    "maxLength": 1000,
                     "description": "A natural language prompt for music generation. Keep it under 1000 characters. Be clear and descriptive for better results."
                   },
                   "music_style": {
                     "type": "string",
+                    "maxLength": 1000,
                     "description": "Style of music to generate (e.g., Rock, Pop)",
                     "example": "Lo-fi"
                   },
                   "lyrics": {
                     "type": "string",
+                    "maxLength": 5000,
                     "description": "Custom lyrics for the generated music"
                   },
                   "make_instrumental": {
@@ -1853,6 +1859,7 @@
             "properties": {
               "prompt": {
                 "type": "string",
+                "maxLength": 300,
                 "description": "Text prompt guiding the sound generation.",
                 "example": "Generate a soothing ambient soundscape."
               },
@@ -2576,6 +2583,7 @@
               },
               "prompt": {
                 "type": "string",
+                "maxLength": 1000,
                 "description": "Describes how the audio should be transformed.",
                 "example": "Make it sound like Lo-fi with chill beats"
               },
@@ -2759,6 +2767,7 @@
               },
               "prompt": {
                 "type": "string",
+                "maxLength": 1000,
                 "description": "Describes how the extended section should sound.",
                 "example": "Add a calming piano outro"
               },
@@ -2766,7 +2775,7 @@
                 "type": "string",
                 "description": "Original lyrics of song",
                 "example": "Let the journey fade away",
-                "maxLength": 3000
+                "maxLength": 5000
               },
               "lyrics_section_to_extend":{
                 "type": "string",
@@ -2922,6 +2931,7 @@
               },
               "prompt": {
                 "type": "string",
+                "maxLength": 1000,
                 "description": "A description of how the replacement should sound.",
                 "example": "Replace this part with an opera-style vocal."
               },
@@ -2939,6 +2949,7 @@
               },
               "lyrics": {
                 "type": "string",
+                "maxLength": 5000,
                 "description": "Lyrics to be used for inpainting.",
                 "example": "This is where my story begins"
  
@@ -3094,6 +3105,7 @@
               },
               "prompt": {
                 "type": "string",
+                "maxLength": 1000,
                 "description": "Description of the singing style, tone, or genre.",
                 "example": "Sing emotional vocals over a soft piano instrumental."
               },
@@ -3445,6 +3457,7 @@
               },
               "prompt": {
                 "type": "string",
+                "maxLength": 1000,
                 "description": "Text prompt guiding the image generation.",
                 "example": "A futuristic cyberpunk city at sunset with flying cars."
               },
@@ -3590,11 +3603,13 @@
               },
               "lyrics": {
                 "type": "string",
+                "maxLength": 5000,
                 "description": "Lyrics to be sung over the vocal track.",
                 "example": "We're dancing through the night..."
               },
               "prompt": {
                 "type": "string",
+                "maxLength": 1000,
                 "description": "Describe the desired vocal tone, genre, or singing style.",
                 "example": "Energetic pop vocal with female singer."
               },
