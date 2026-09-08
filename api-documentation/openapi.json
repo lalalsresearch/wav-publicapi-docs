@@ -401,7 +401,7 @@
                 "properties": {
                   "prompt": {
                     "type": "string",
-                    "description": "A natural language prompt for music generation. Keep it under 300 characters. Be clear and descriptive for better results."
+                    "description": "A natural language prompt for music generation. Keep it under 1000 characters. Be clear and descriptive for better results."
                   },
                   "music_style": {
                     "type": "string",
@@ -556,7 +556,7 @@
                 "properties": {
                   "prompt": {
                     "type": "string",
-                    "description": "A natural language prompt for music generation. Keep it under 300 characters. Be clear and descriptive for better results."
+                    "description": "A natural language prompt for music generation. Keep it under 1000 characters. Be clear and descriptive for better results."
                   },
                   "music_style": {
                     "type": "string",
@@ -2583,7 +2583,7 @@
                 "type": "string",
                 "description": "Optional lyrics to guide vocal generation.",
                 "example": "It's a brand new day",
-                "maxLength": 2000
+                "maxLength": 5000
               },
               "title": {
                     "type": "string",
@@ -2766,7 +2766,7 @@
                 "type": "string",
                 "description": "Original lyrics of song",
                 "example": "Let the journey fade away",
-                "maxLength": 2000
+                "maxLength": 3000
               },
               "lyrics_section_to_extend":{
                 "type": "string",
@@ -2946,7 +2946,7 @@
               "lyrics_section_to_replace":{
                 "type": "string",
                 "description":"Lyrics to be used for the replaced portion(optional, max 3000 characters)",
-                "maxLength": 2000
+                "maxLength": 3000
               },
               "gender": {
                 "type": "string",
@@ -3101,7 +3101,7 @@
                 "type": "string",
                 "description": "The lyrics to be sung over the instrumental.",
                 "example": "Never mind I'll find someone like you...",
-                "maxLength": 2000
+                "maxLength": 5000
               },
               "gender": {
                 "type": "string",
@@ -3779,13 +3779,13 @@
                 "prompt": {
                   "type": "string",
                   "description": "Additional prompt to guide the song generation from the image.",
-                  "maxLength": 300,
+                  "maxLength": 1000,
                   "example": "Generate a relaxing acoustic track inspired by this scene."
                 },
                 "lyrics": {
                   "type": "string",
                   "description": "Custom lyrics to include in the generated audio.",
-                  "maxLength": 3000,
+                  "maxLength": 5000,
                   "example": "Let the colors of the sunset fill your heart."
                 },
                 "negative_tags": {

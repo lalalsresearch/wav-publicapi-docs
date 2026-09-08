@@ -22,8 +22,8 @@ This endpoint processes an image (uploaded or via URL) to generate a song. The i
 | ------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------- |
 | `image_file`        | `File` | Optional | Upload the image to analyze. Required if `image_url` is not provided.                             |
 | `image_url`         | `String`     | Optional | URL to the audio file. Required if `image_file` is not provided.                    |
-| `prompt`            | `String`     | Optional | Additional text to guide the song generation (max 300 characters).                                 |
-| `lyrics`            | `String`     | Optional | Custom lyrics to include in the generated audio (max 3000 characters).                             |
+| `prompt`            | `String`     | Optional | Additional text to guide the song generation (max 1000 characters).                                 |
+| `lyrics`            | `String`     | Optional | Custom lyrics to include in the generated audio (max 5000 characters).                             |
 | `negative_tags`     | `String`     | Optional | Tags or themes to avoid in the song.                                                              |
 | `make_instrumental` | `Boolean`    | Optional | If true, generates an instrumental version. Defaults to false.                                     |
 | `vocal_only`        | `Boolean`    | Optional | If true, generates a vocal-only version. Defaults to false.                                        |
