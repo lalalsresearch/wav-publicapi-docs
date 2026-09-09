@@ -1,15 +1,15 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "WAV API Documentation",
+  "name": "Wav API Documentation",
   "colors": {
     "primary": "#FF6200",
     "light": "#FF6200",
     "dark": "#FF6200"
   },
   "favicon": {
-    "light": "/wav-logo/app-icon-black.png",
-    "dark": "/wav-logo/app-icon-white.png"
+    "light": "/wav-logo/favicon.png",
+    "dark": "/wav-logo/favicon.png"
   },
   "navigation": {
     "tabs": [
@@ -37,12 +37,7 @@
 
             ]
           },
-          {
-          "group": "Resources",
-            "pages": [
-              "api-documentation/index/sdk"
-            ]
-          },
+        
           {
             "group": "Keep in mind",
             "pages": [
@@ -140,14 +135,14 @@
     }
   },
   "logo": {
-    "light": "/wav-logo/wordmark-black.png",
-    "dark": "/wav-logo/wordmark-white.png",
+    "light": "/wav-logo/wav-logo-black.png",
+    "dark": "/wav-logo/wav-logo-white.png",
     "href": "https://wav.com"
   },
   "navbar": {
   "links": [
     {
-      "label": "WAV",
+      "label": "Wav",
       "href": "https://wav.com"
     },
     {

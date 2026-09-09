@@ -4,14 +4,14 @@ title: Webhook Integration
 
 When working with asynchronous processes like music generation, voice cloning, or instrumental extraction, waiting for a task to complete can slow down your workflow. That’s where **webhooks** come in handy.
 
-Webhooks allow WAV to notify your application the moment a task is completed. You’ll get all the necessary data including the audio URL without needing to constantly poll our API.
+Webhooks allow Wav to notify your application the moment a task is completed. You’ll get all the necessary data including the audio URL without needing to constantly poll our API.
 
 ---
 
 ### How It Works
 
 1. **Set the `webhook_url`** when submitting your conversion request.
-2. WAV will **send a POST request** to that URL when the task is completed.
+2. Wav will **send a POST request** to that URL when the task is completed.
 3. Your server can then parse the response and proceed with post-processing or user notifications.
 
 ---
@@ -33,12 +33,12 @@ Here's what a typical webhook payload looks like:
 }
 ```
 
-> 🔗 Set the `webhook_url` to an endpoint on your server — this is where WAV will notify you once the generation is done.
+> 🔗 Set the `webhook_url` to an endpoint on your server — this is where Wav will notify you once the generation is done.
 
 ---
 
 ### Preliminary Response
-When you initiate a conversion request, WAV will immediately respond with a **preliminary response** that includes:
+When you initiate a conversion request, Wav will immediately respond with a **preliminary response** that includes:
 - `success`: whether the task was successfully initiated
 - `task_id`: a unique ID you can use to track the conversion
 
@@ -68,5 +68,5 @@ No problem — if you’re running code on a client device or you don’t have a
 - Instantly delivers results
 - Ideal for automations and server workflows
 
-Set it once, and let WAV notify you when the magic happens. 🎶
+Set it once, and let Wav notify you when the magic happens. 🎶
 

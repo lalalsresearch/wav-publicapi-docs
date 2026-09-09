@@ -18,7 +18,7 @@ GET /v1/prompt_to_lyrics
 | `prompt`  | `String` | ✅ Yes    | The theme or idea you'd like lyrics generated for. |
 |           |          |          | e.g., "A hopeful song about starting over"         |
 
->**Note:** The prompt must be between 1 and 300 characters.
+>**Note:** The prompt must be between 1 and 1000 characters.
 
 ---
 
@@ -74,7 +74,7 @@ print(response.text)
 ```json
 {
   "success": false,
-  "error": "Prompt must be between 1 and 300 characters."
+  "error": "Prompt must be between 1 and 1000 characters."
 }
 ```
 

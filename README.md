@@ -1,6 +1,6 @@
-# WAV Public API Documentation
+# Wav Public API Documentation
 
-The source for the [WAV](https://wav.com) Public API documentation, published with [Mintlify](https://mintlify.com) at [docs.wav.com](https://docs.wav.com).
+The source for the [Wav](https://wav.com) Public API documentation, published with [Mintlify](https://mintlify.com) at [docs.wav.com](https://docs.wav.com).
 
 ## Repository layout
 
@@ -17,7 +17,9 @@ The source for the [WAV](https://wav.com) Public API documentation, published wi
 
 ## Branding
 
-- The product is **WAV**. Write it as `WAV` in prose and headings.
+- The product is **Wav**. Write it as `Wav` in prose and headings.
+- The audio format is a separate thing: write it `WAV` (like `MP3`, `FLAC`) and use
+  `.wav` / `.mp3` for literal file extensions. Never write the format as `Wav`.
 - All hosts live on `wav.com`: `api.wav.com` for requests, `cdn1.wav.com` for generated
   output and sample audio, `docs.wav.com` for this site.
 - Placeholder buckets in request examples (`mybucket.s3.amazonaws.com`) belong to the

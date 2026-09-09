@@ -31,8 +31,8 @@ This endpoint processes an input audio file along with a prompt, timestamp range
 | `lyrics_section_to_replace`      | `String`     | Optional     | Lyrics to be used for the replaced portion(optional, max 3000 characters)           |
 | `gender`           | `String`     | Optional | Voice style for vocal generation. One of: `male`, `female`, `neutral`. 
 | `num_outputs`     | `int`  | Optional |The number of outputs to generate (1 or 2 only default : 2).         |
-| `generate_album_cover` | Boolean | Optional | false | If `true`, generate an album cover for the generated audio |
-| `lyrics_timestamps`  | Boolean | Optional | false | If true, generates lyric timestamps for the output track |                                    |
+| `generate_album_cover` | Boolean | Optional |  If `true`, generate an album cover for the generated audio |
+| `lyrics_timestamps`  | Boolean | Optional |  If true, generates lyric timestamps for the output track |                                    |
 | `webhook_url`      | `String`     | Optional | Callback URL for async response.                                                                            |
 
 >**Note:** Either audio_file or audio_url must be provided.
