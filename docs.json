@@ -8,8 +8,8 @@
     "dark": "#15803D"
   },
   "favicon": {
-    "light": "/wav-logo/wav-icon-rounded.png",
-    "dark": "/wav-logo/wav-icon-rounded.png"
+    "light": "/wav-logo/favicon.png",
+    "dark": "/wav-logo/favicon.png"
   },
   "navigation": {
     "tabs": [
