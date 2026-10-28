@@ -23,7 +23,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["MUSIC_AI", "TEXT_TO_SPEECH", "VOICE_CONVERSION", "EXTRACTION", "COVER", "STEMS_SEPARATION", "VOCAL_EXTRACTION", "DENOISING", "DEECHO", "DEREVERB", "SOUND_GENERATOR", "AUDIO_TRANSCRIPTION", "AUDIO_SPEED_CHANGER", "AUDIO_MASTERING", "AUDIO_CUTTER", "REMIX","FILE_CONVERT","KEY_BPM_EXTRACTION","AUDIO_TO_MIDI","EXTEND","INPAINT","SING_OVER_INSTRUMENTAL","LYRICS_GENERATOR" ]                  
+              "enum": ["MUSIC_AI", "TEXT_TO_SPEECH", "VOICE_CONVERSION", "EXTRACTION", "COVER", "STEMS_SEPARATION", "VOCAL_EXTRACTION", "DENOISING", "DEECHO", "DEREVERB", "SOUND_GENERATOR", "AUDIO_TRANSCRIPTION", "AUDIO_SPEED_CHANGER", "AUDIO_MASTERING", "AUDIO_CUTTER", "REMIX","FILE_CONVERSION","KEY_BPM_EXTRACTION","AUDIO_TO_MIDI","EXTEND","INPAINT","SING_OVER_INSTRUMENTAL","LYRICS_GENERATOR" ]                  
             },
             "description": "The type of Conversion you want to get your details from.",
             "example": "MUSIC_AI"
@@ -613,8 +613,11 @@
                   "music_style": {
                     "type": "string",
                     "maxLength": 1000,
-                    "description": "Style of music to generate (e.g., Rock, Pop)",
-                    "example": ""
+                    "description": "Style of music to generate (e.g., Rock, Pop)"
+                  },
+                  "negative_tags": {
+                    "type": "string",
+                    "description": "Tags or themes you want to avoid in the song (e.g., sad, slow)"
                   },
                   "lyrics": {
                     "type": "string",
@@ -1493,7 +1496,7 @@
       "x-codeSamples": [
   {
     "lang": "Python",
-    "source": "import requests\nimport json\n\nurl = \"https://api.wav.com/api/public/v2/Extraction\"\n\nheaders = {\n    \"Authorization\": \"<API_KEY>\"\n}\n\ndata = {\n    \"stems\": json.dumps([\"vocals\", \"drums\"]),\n    \"preprocessing_options\": json.dumps([\"Denoise\"]),\n    \"webhook_url\": \"https://example.com/my-webhook\"\n}\n\n# Option 1: audio_url\ndata[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=data)\n\n# Option 2: File Upload\n# with open(\"song.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=data, files=files)\n\nprint(response.json())"
+    "source": "import requests\nimport json\n\nurl = \"https://api.wav.com/api/public/v2/Extraction\"\n\nheaders = {\n    \"Authorization\": \"<API_KEY>\"\n}\n\ndata = {\n    \"stems\": json.dumps([\"vocals\", \"drums\"]),\n    \"preprocessing_options\": json.dumps([\"Denoise\"]),\n    \"eco_mode\": False,\n    \"webhook_url\": \"https://example.com/my-webhook\"\n}\n\n# Option 1: audio_url\ndata[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=data)\n\n# Option 2: File Upload\n# with open(\"song.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=data, files=files)\n\nprint(response.json())"
   }
 ]
     }
@@ -3597,13 +3600,13 @@
                 "type": "number",
                 "format": "float",
                 "description": "Time in seconds to start replacing audio.",
-                "example": 12.5
+                "example": 15.0
               },
               "replace_end_at": {
                 "type": "number",
                 "format": "float",
                 "description": "Time in seconds to stop replacing audio.",
-                "example": 20.0
+                "example": 60.0
               },
               "lyrics": {
                 "type": "string",

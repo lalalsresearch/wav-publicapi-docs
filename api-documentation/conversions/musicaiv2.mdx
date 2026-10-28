@@ -75,9 +75,9 @@ This is the primary endpoint for initiating music generation.
 Listen to a real sample output:
 
 Prompt: a song about greenery, nature and forest.
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/2872d9a6-4abe-4a8f-a04f-5540c4ef0a1a.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.musicgpt.com/conversions/api/standard/f6164ad3-ac5d-50a5-a446-2fb882087fd4/f6164ad3-ac5d-50a5-a446-2fb882087fd4.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/2872d9a6-4abe-4a8f-a04f-5540c4ef0a1a.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.musicgpt.com/conversions/api/standard/f6164ad3-ac5d-50a5-a446-2fb882087fd4/f6164ad3-ac5d-50a5-a446-2fb882087fd4.mp3" target="_blank">Download Audio</a>
 
 ---
 
@@ -96,6 +96,7 @@ Use the [MusicAI Endpoint Explorer](/api-documentation/endpoint/MusicAiv2) to te
 | `prompt`            | String  | Optional | -      | A natural language prompt for music generation  |
 | `title`             | String  | Optional | -       | Title of the generated music                    |
 | `music_style`       | String  | Optional | -       | Musical style or genre (e.g., Rock, Pop, Lo-fi) |
+| `negative_tags`     | String  | Optional | ""      | Tags or themes you want to avoid in the song (e.g., "sad", "slow") |
 | `lyrics`            | String  | Optional | ""      | Custom lyrics to use in the song                |
 | `make_instrumental` | Boolean | Optional | false   | If true, generate instrumental-only audio       |
 | `vocal_only`        | Boolean | Optional | false   | If true, generate vocals without instruments    |
@@ -124,7 +125,6 @@ Provide your own `lyrics` and use `prompt` to describe the genre, vibe, instrume
 
 Supply only a `prompt` and let the system generate everything: lyrics, style, vocals, and more.
 
-> `make_instrumental`, `vocal_only`, and Music AI generation with custom `voice_id` are supported in both modes.
 
 ---
 
@@ -162,6 +162,7 @@ headers = {
 payload = {
     "prompt": "Create a relaxing lo-fi song for studying",
     "lyrics": "It's a brand new day",
+    "negative_tags" : "sad",
     "make_instrumental": False,
     "vocal_only": False,
     "voice_id": "e1cb7380-e3db-433a-b186-a996d7545986",
