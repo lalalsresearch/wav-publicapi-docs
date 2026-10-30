@@ -20,6 +20,7 @@
             "group": "API Documentation",
             "pages": [
                 "api-documentation/index/introduction",
+                "api-documentation/conversions/extraction-free-stems-guide",
                 "api-documentation/index/createapiaccount",
                 "api-documentation/index/keystocastle",
                 "api-documentation/index/yourfirstrequest",
@@ -58,7 +59,6 @@
               "api-documentation/conversions/texttospeech",
               "api-documentation/conversions/soundgenerator",
               "api-documentation/conversions/extraction",
-              "api-documentation/conversions/extraction-free-stems-guide",
               "api-documentation/conversions/voicechanger",
               "api-documentation/conversions/sing_over_instrumental",
               "api-documentation/conversions/lyrics_generator",              
