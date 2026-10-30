@@ -1,5 +1,8 @@
-<Update label="October 2026" description="Stem Separation">
-  **Stem Separation** will be **free for the month of November**, with up to **10 generations/hour, 100/day**. Covers **2-stem** (vocals, instrumental) and **6-stem** (vocals, instrumental, piano, guitar, bass, drums) separation.
+<Update label="November 2026" description="Stem presets, free stem separation">
+  **New `stem_preset` field on [Extraction](/api-documentation/conversions/extraction).** Send `stem_preset=2_stems` (vocals, instrumental) or `stem_preset=6_stems` (vocals, instrumental, piano, bass, drums, guitar) instead of a `stems` list. Sending both `stem_preset` and a non-empty `stems` list returns `422`. <br />
+  **Stem presets are free for the whole month of November** on paid plans, up to **10 requests/hour and 100/day** (UTC). Requests that list `stems`, Free plan requests, and requests past the limits are charged as usual. <br />
+  Extraction responses now include `is_free_promo`, `free_generations_remaining_hour`, `free_generations_remaining_day`, and `free_quota_resets_at`. These fields are additive, so existing integrations keep working. See the [free stem presets guide](/api-documentation/conversions/extraction-free-stems-guide). <br />
+  The **Sound Generator** free period ended on October 31. Sound Generator keeps its lower pricing, from **\$0.012/generation** on the Pro plan.
 </Update>
 
 <Update label="September 2026" description="Sound Generator Pro">

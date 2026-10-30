@@ -58,6 +58,7 @@
               "api-documentation/conversions/texttospeech",
               "api-documentation/conversions/soundgenerator",
               "api-documentation/conversions/extraction",
+              "api-documentation/conversions/extraction-free-stems-guide",
               "api-documentation/conversions/voicechanger",
               "api-documentation/conversions/sing_over_instrumental",
               "api-documentation/conversions/lyrics_generator",              

@@ -1332,7 +1332,7 @@
 "/v2/Extraction": {
     "post": {
       "summary": "Extract stems from an audio file or URL",
-      "description": "Process an audio file to extract specified stems (vocals, instrumental, or other components) with optional preprocessing. Supports file upload or URL with webhook callback.",
+      "description": "Process an audio file to extract specified stems (vocals, instrumental, or other components) with optional preprocessing. Supports file upload or URL with webhook callback. Send either `stems` or `stem_preset`. During November 2026 (UTC), `stem_preset` requests from paid plans are free, up to 10 per clock hour and 100 per day.",
       "requestBody": {
         "required": true,
         "content": {
@@ -1349,10 +1349,16 @@
                   "format": "binary",
                   "description": "Audio file to upload and process."
                 },
+                "stem_preset": {
+                  "type": "string",
+                  "enum": ["2_stems", "6_stems"],
+                  "description": "Quick preset instead of `stems`. `2_stems`: vocals, instrumental. `6_stems`: vocals, instrumental, piano, bass, drums, guitar. Do not send with a non-empty `stems` list. Free on paid plans during November 2026 (UTC), up to 10 requests per clock hour and 100 per day.",
+                  "example": "6_stems"
+                },
                 "stems": {
                   "type": "string",
                   "default": "[]",
-                  "description": "JSON string list of required output stems. Available options: vocals, instrumental, male_vocal, female_vocal, lead_vocal, back_vocal, bass, drums, guitar, piano, keys, strings, winds, rhythm_guitar, solo_guitar, acoustic_guitar, electric_guitar, kick_drum, snare_drum, toms, hi_hat, ride, crash.",
+                  "description": "JSON string list of required output stems. Required unless `stem_preset` is sent. Available options: vocals, instrumental, male_vocal, female_vocal, lead_vocal, back_vocal, bass, drums, guitar, piano, keys, strings, winds, rhythm_guitar, solo_guitar, acoustic_guitar, electric_guitar, kick_drum, snare_drum, toms, hi_hat, ride, crash.",
                   "example": "[\"vocals\", \"drums\"]"
                 },
                 "preprocessing_options": {
@@ -1394,16 +1400,37 @@
                   "eta": { "type": "integer" },
                   "credit_estimate": { "type": "number" },
                   "message": { "type": "string" },
-                  "status": { "type": "string" }
+                  "status": { "type": "string" },
+                  "is_free_promo": {
+                    "type": "boolean",
+                    "description": "True when this extraction is free under an active promotion. `credit_estimate` is then 0.0 and no credits are charged."
+                  },
+                  "free_generations_remaining_hour": {
+                    "type": ["integer", "null"],
+                    "description": "Free extractions left in the current UTC clock hour, or null when no promotion applies."
+                  },
+                  "free_generations_remaining_day": {
+                    "type": ["integer", "null"],
+                    "description": "Free extractions left today (UTC), or null when no promotion applies."
+                  },
+                  "free_quota_resets_at": {
+                    "type": ["string", "null"],
+                    "format": "date-time",
+                    "description": "UTC time when more free extractions become available, or null when no promotion applies."
+                  }
                 },
                 "example": {
                   "success": true,
                   "task_id": "98bb0a78-854b-4ca7-a145-834c1ac73901",
                   "conversion_id": "7c38aa60-e0c8-4113-983a-f2c6d4e6d257",
                   "eta": 57,
-                  "credit_estimate": 0.09,
+                  "credit_estimate": 0.0,
                   "message": "Message published to queue",
-                  "status": "IN_QUEUE"
+                  "status": "IN_QUEUE",
+                  "is_free_promo": true,
+                  "free_generations_remaining_hour": 9,
+                  "free_generations_remaining_day": 99,
+                  "free_quota_resets_at": "2026-11-03T15:00:00Z"
                 }
               }
             }
@@ -1494,6 +1521,11 @@
         }
       ],
       "x-codeSamples": [
+  {
+    "lang": "cURL",
+    "label": "Stem preset (free in November)",
+    "source": "curl -X POST \"https://api.wav.com/api/public/v2/Extraction\" \\\n-H \"Authorization: <API_KEY>\" \\\n-F \"audio_url=<YOUR_AUDIO_URL>\" \\\n-F \"stem_preset=6_stems\" \\\n-F \"webhook_url=https://example.com/webhook\""
+  },
   {
     "lang": "Python",
     "source": "import requests\nimport json\n\nurl = \"https://api.wav.com/api/public/v2/Extraction\"\n\nheaders = {\n    \"Authorization\": \"<API_KEY>\"\n}\n\ndata = {\n    \"stems\": json.dumps([\"vocals\", \"drums\"]),\n    \"preprocessing_options\": json.dumps([\"Denoise\"]),\n    \"eco_mode\": False,\n    \"webhook_url\": \"https://example.com/my-webhook\"\n}\n\n# Option 1: audio_url\ndata[\"audio_url\"] = \"<YOUR_AUDIO_URL>\"\nresponse = requests.post(url, headers=headers, data=data)\n\n# Option 2: File Upload\n# with open(\"song.mp3\", \"rb\") as f:\n#     files = {\"audio_file\": f}\n#     response = requests.post(url, headers=headers, data=data, files=files)\n\nprint(response.json())"
