@@ -125,7 +125,7 @@ What the fields look like in each situation:
 
 ## Batch tracks inside the free quota
 
-These examples send one preset request per track. After each response they check the remaining counts, and wait until `free_quota_resets_at` when either one reaches `0`, so no request is charged because of the limits.
+These examples send one preset request per track. After each response they check the remaining counts, wait until `free_quota_resets_at` when either one reaches `0`, and stop if a request comes back charged.
 
 <CodeGroup>
 
@@ -160,15 +160,13 @@ def extract_all_free(audio_urls, preset="6_stems", webhook_url=None):
     for audio_url in audio_urls:
         result = extract(audio_url, preset, webhook_url)
         results.append(result)
-        if result["is_free_promo"]:
-            print(f"{result['task_id']}: free")
-        else:
-            print(f"{result['task_id']}: charged {result['credit_estimate']}")
+        if not result["is_free_promo"]:
+            print(f"{result['task_id']}: charged {result['credit_estimate']}. Stopping.")
+            break  # Free quota used elsewhere, or no promotion applies.
+        print(f"{result['task_id']}: free")
 
-        hour_left = result.get("free_generations_remaining_hour")
-        day_left = result.get("free_generations_remaining_day")
-        if hour_left is None:
-            continue  # No promotion applies to this account or date.
+        hour_left = result["free_generations_remaining_hour"]
+        day_left = result["free_generations_remaining_day"]
         if hour_left == 0 or day_left == 0:
             wait = seconds_until(result["free_quota_resets_at"])
             print(f"Free quota used up. Waiting {wait:.0f}s.")
@@ -208,13 +206,14 @@ async function extractAllFree(audioUrls, preset = "6_stems", webhookUrl) {
   for (const audioUrl of audioUrls) {
     const result = await extract(audioUrl, preset, webhookUrl);
     results.push(result);
-    console.log(
-      `${result.task_id}: ${result.is_free_promo ? "free" : `charged ${result.credit_estimate}`}`
-    );
+    if (!result.is_free_promo) {
+      console.log(`${result.task_id}: charged ${result.credit_estimate}. Stopping.`);
+      break; // Free quota used elsewhere, or no promotion applies.
+    }
+    console.log(`${result.task_id}: free`);
 
     const hourLeft = result.free_generations_remaining_hour;
     const dayLeft = result.free_generations_remaining_day;
-    if (hourLeft == null) continue; // No promotion applies to this account or date.
     if (hourLeft === 0 || dayLeft === 0) {
       const wait = Math.max(Date.parse(result.free_quota_resets_at) - Date.now(), 0) + 1000;
       console.log(`Free quota used up. Waiting ${Math.round(wait / 1000)}s.`);
@@ -234,7 +233,7 @@ extractAllFree(
 </CodeGroup>
 
 <Tip>
-  If several workers or services share one account, they share one quota. Run the batch from a single worker, or have each worker read the quota fields from every response before it sends the next request.
+  If several workers or services share one account, they share one quota. Run the batch from a single worker. Requests sent elsewhere on the account can use a free slot first, so the next request may be charged.
 </Tip>
 
 ## Errors
