@@ -49,9 +49,9 @@ This endpoint processes an input audio file along with a prompt, timestamp range
 Listen to a real output:
 
 Prompt: inpaint from 60 to 120 seconds in classical slow vibe - audio input : Moana How Far We will Go.
-<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://lalals.s3.amazonaws.com/conversions/2104a105-2572-4412-b6fb-f67b0382582a.mp3">Your browser does not support the audio playback.</audio>
+<audio controls="1" controlslist="nodownload nofullscreen noremoteplayback" src="https://cdn1.musicgpt.com/conversions/api/standard/e9e811df-9f57-45d7-8c7b-1f307e7b390d/e9e811df-9f57-45d7-8c7b-1f307e7b390d.mp3">Your browser does not support the audio playback.</audio>
 
-<a href="https://lalals.s3.amazonaws.com/conversions/2104a105-2572-4412-b6fb-f67b0382582a.wav" target="_blank">Download Audio</a>
+<a href="https://cdn1.musicgpt.com/conversions/api/standard/e9e811df-9f57-45d7-8c7b-1f307e7b390d/e9e811df-9f57-45d7-8c7b-1f307e7b390d.mp3" target="_blank">Download Audio</a>
 
 ---
 
@@ -86,8 +86,8 @@ curl -X POST "https://api.wav.com/api/public/v1/inpaint" \
 -H "Authorization: <api_key>" \
 -F "audio_file=@/path/to/audio.mp3" \
 -F "prompt=Add a soft guitar solo here" \
--F "replace_start_at=12.5" \
--F "replace_end_at=20.0" \
+-F "replace_start_at=15" \
+-F "replace_end_at=60" \
 -F "lyrics=This is where my story begins" \
 -F "gender=male" \
 -F "webhook_url=https://example.com/webhook"
@@ -102,8 +102,8 @@ url = "https://api.wav.com/api/public/v1/inpaint"
 headers = {"Authorization": "<API_KEY>"}
 data = {
   "prompt": "Add a soft guitar solo here",
-  "replace_start_at": 12.5,
-  "replace_end_at": 20.0,
+  "replace_start_at": 15,
+  "replace_end_at": 45,
   "lyrics": "This is where my story begins",
   "lyrics_section_to_replace": "New lyrics",
   "gender": "male",
