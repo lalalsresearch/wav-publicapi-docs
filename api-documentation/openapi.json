@@ -1332,7 +1332,7 @@
 "/v2/Extraction": {
     "post": {
       "summary": "Extract stems from an audio file or URL",
-      "description": "Process an audio file to extract specified stems (vocals, instrumental, or other components) with optional preprocessing. Supports file upload or URL with webhook callback. Send either `stems` or `stem_preset`. During November 2026 (UTC), `stem_preset` requests from paid plans are free, up to 10 per clock hour and 100 per day.",
+      "description": "Process an audio file to extract specified stems (vocals, instrumental, or other components) with optional preprocessing. Supports file upload or URL with webhook callback. Send either `stems` or `stem_preset`. During November 2026 (UTC), `stem_preset` requests from paid plans are free, up to 20 stems per clock hour and 100 stems per day (`2_stems` uses 2, `6_stems` uses 6).",
       "requestBody": {
         "required": true,
         "content": {
@@ -1352,7 +1352,7 @@
                 "stem_preset": {
                   "type": "string",
                   "enum": ["2_stems", "6_stems"],
-                  "description": "Quick preset instead of `stems`. `2_stems`: vocals, instrumental. `6_stems`: vocals, instrumental, piano, bass, drums, guitar. Do not send with a non-empty `stems` list. Free on paid plans during November 2026 (UTC), up to 10 requests per clock hour and 100 per day.",
+                  "description": "Quick preset instead of `stems`. `2_stems`: vocals, instrumental. `6_stems`: vocals, instrumental, piano, bass, drums, guitar. Do not send with a non-empty `stems` list. Free on paid plans during November 2026 (UTC), up to 20 stems per clock hour and 100 stems per day; each preset uses one slot per stem (2 or 6).",
                   "example": "6_stems"
                 },
                 "stems": {
@@ -1407,16 +1407,16 @@
                   },
                   "free_generations_remaining_hour": {
                     "type": ["integer", "null"],
-                    "description": "Free extractions left in the current UTC clock hour, or null when no promotion applies."
+                    "description": "Free stems left in the current UTC clock hour, or null when no promotion applies."
                   },
                   "free_generations_remaining_day": {
                     "type": ["integer", "null"],
-                    "description": "Free extractions left today (UTC), or null when no promotion applies."
+                    "description": "Free stems left today (UTC), or null when no promotion applies."
                   },
                   "free_quota_resets_at": {
                     "type": ["string", "null"],
                     "format": "date-time",
-                    "description": "UTC time when more free extractions become available, or null when no promotion applies."
+                    "description": "UTC time when more free stems become available, or null when no promotion applies."
                   }
                 },
                 "example": {
@@ -1428,8 +1428,8 @@
                   "message": "Message published to queue",
                   "status": "IN_QUEUE",
                   "is_free_promo": true,
-                  "free_generations_remaining_hour": 9,
-                  "free_generations_remaining_day": 99,
+                  "free_generations_remaining_hour": 14,
+                  "free_generations_remaining_day": 94,
                   "free_quota_resets_at": "2026-11-03T15:00:00Z"
                 }
               }

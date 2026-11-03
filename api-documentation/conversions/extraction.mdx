@@ -242,8 +242,8 @@ print(response.json())
   "message": "Message published to queue",
   "status": "IN_QUEUE",
   "is_free_promo": true,
-  "free_generations_remaining_hour": 9,
-  "free_generations_remaining_day": 99,
+  "free_generations_remaining_hour": 14,
+  "free_generations_remaining_day": 94,
   "free_quota_resets_at": "2026-11-03T15:00:00Z"
 }
 ```
@@ -252,9 +252,9 @@ print(response.json())
 | ----- | ---- | ----------- |
 | `credit_estimate` | `number` | Estimated cost of this conversion. `0.0` when it is free under a promotion. |
 | `is_free_promo` | `boolean` | `true` when this conversion is free under an active promotion. No credits are charged. |
-| `free_generations_remaining_hour` | `integer \| null` | Free preset requests you have left in the current UTC clock hour. `null` when no promotion applies to the request. |
-| `free_generations_remaining_day` | `integer \| null` | Free preset requests you have left today (UTC). `null` when no promotion applies to the request. |
-| `free_quota_resets_at` | `string \| null` | UTC time when more free requests become available: the next hour, or the next day once the daily limit is used up. `null` when no promotion applies to the request. |
+| `free_generations_remaining_hour` | `integer \| null` | Free stems you have left in the current UTC clock hour (a preset uses one per stem). `null` when no promotion applies to the request. |
+| `free_generations_remaining_day` | `integer \| null` | Free stems you have left today (UTC). `null` when no promotion applies to the request. |
+| `free_quota_resets_at` | `string \| null` | UTC time when more free stems become available: the next hour, or the next day once today has too few stems left for this preset. `null` when no promotion applies to the request. |
 
 ---
 
