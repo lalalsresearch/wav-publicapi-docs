@@ -32,9 +32,17 @@ During November 2026, [Extraction](/api-documentation/conversions/extraction) re
   <Step title="Send stem_preset instead of stems">
     Replace your `stems` field with `stem_preset`. Leave `stems` out, or send `[]`.
 
-    Send a YouTube link as `audio_url`. For any other track, upload the file as `audio_file`. If the track is at a public URL, download it first. Send one of the two, not both.
+    Send the track's URL as `audio_url`: a YouTube link, or a direct public link that ends in `.mp3`, `.wav`, or `.flac`. To send a file from your computer, or a link the API can't read (such as a signed URL with query parameters), upload the file as `audio_file`. Send one of the two, not both.
 
     <CodeGroup>
+
+    ```bash Audio URL
+    curl -X POST "https://api.wav.com/api/public/v2/Extraction" \
+    -H "Authorization: <api_key>" \
+    -F "audio_url=https://example.com/song.mp3" \
+    -F "stem_preset=6_stems" \
+    -F "webhook_url=https://example.com/webhook"
+    ```
 
     ```bash Audio file
     curl -X POST "https://api.wav.com/api/public/v2/Extraction" \
@@ -139,47 +147,40 @@ What the fields look like in each situation:
 
 ## Batch tracks inside the free quota
 
-These examples send one preset request per track. A YouTube link is sent as `audio_url`; any other public URL is downloaded and uploaded as `audio_file`. After each response they check the remaining counts, wait until `free_quota_resets_at` when either one is lower than the preset's stem count, and stop if a request comes back charged.
+These examples send one preset request per track. Each track is either a URL, sent as `audio_url`, or the path to a local file, uploaded as `audio_file`. After each response they check the remaining counts, wait until `free_quota_resets_at` when either one is lower than the preset's stem count, and stop if a request comes back charged.
 
 <CodeGroup>
 
 ```python Python
-import os
-import re
 import time
 from datetime import datetime, timezone
-from urllib.parse import urlparse
 
 import requests
 
 STEMS_PER_PRESET = {"2_stems": 2, "6_stems": 6}
 API_URL = "https://api.wav.com/api/public/v2/Extraction"
 API_KEY = "<API_KEY>"
-YOUTUBE_URL = re.compile(r"^(https?://)?(www\.|m\.)?(youtube\.com|youtu\.be)/")
 
 
-def extract(track_url, preset="6_stems", webhook_url=None):
+def extract(track, preset="6_stems", webhook_url=None):
     data = {"stem_preset": preset}
     if webhook_url:
         data["webhook_url"] = webhook_url
-    files = None
-    if YOUTUBE_URL.match(track_url):
-        data["audio_url"] = track_url
+    headers = {"Authorization": API_KEY}
+    if track.startswith(("http://", "https://")):
+        # YouTube link, or a direct link ending in .mp3, .wav, or .flac.
+        data["audio_url"] = track
+        response = requests.post(API_URL, headers=headers, data=data, timeout=60)
     else:
-        # Download the public file, then upload it. Keep the file extension.
-        download = requests.get(track_url, timeout=120)
-        download.raise_for_status()
-        filename = os.path.basename(urlparse(track_url).path)
-        if "." not in filename:
-            filename = "audio.mp3"
-        files = {"audio_file": (filename, download.content)}
-    response = requests.post(
-        API_URL,
-        headers={"Authorization": API_KEY},
-        data=data,
-        files=files,
-        timeout=300,
-    )
+        # Local file.
+        with open(track, "rb") as audio_file:
+            response = requests.post(
+                API_URL,
+                headers=headers,
+                data=data,
+                files={"audio_file": audio_file},
+                timeout=300,
+            )
     response.raise_for_status()
     return response.json()
 
@@ -189,10 +190,10 @@ def seconds_until(timestamp):
     return max((reset_at - datetime.now(timezone.utc)).total_seconds(), 0) + 1
 
 
-def extract_all_free(track_urls, preset="6_stems", webhook_url=None):
+def extract_all_free(tracks, preset="6_stems", webhook_url=None):
     results = []
-    for track_url in track_urls:
-        result = extract(track_url, preset, webhook_url)
+    for track in tracks:
+        result = extract(track, preset, webhook_url)
         results.append(result)
         if not result["is_free_promo"]:
             print(f"{result['task_id']}: charged {result['credit_estimate']}. Stopping.")
@@ -212,28 +213,28 @@ extract_all_free(
     [
         "https://www.youtube.com/watch?v=<VIDEO_ID>",
         "https://example.com/track-2.mp3",
-        "https://example.com/track-3.wav",
+        "track-3.wav",
     ],
     webhook_url="https://example.com/webhook",
 )
 ```
 
 ```javascript Node.js
+import { openAsBlob } from "node:fs";
+import { basename } from "node:path";
+
 const API_URL = "https://api.wav.com/api/public/v2/Extraction";
 const API_KEY = "<API_KEY>";
 const STEMS_PER_PRESET = { "2_stems": 2, "6_stems": 6 };
-const YOUTUBE_URL = /^(https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be)\//;
 
-async function extract(trackUrl, preset = "6_stems", webhookUrl) {
+async function extract(track, preset = "6_stems", webhookUrl) {
   const form = new FormData();
-  if (YOUTUBE_URL.test(trackUrl)) {
-    form.append("audio_url", trackUrl);
+  if (/^https?:\/\//.test(track)) {
+    // YouTube link, or a direct link ending in .mp3, .wav, or .flac.
+    form.append("audio_url", track);
   } else {
-    // Download the public file, then upload it. Keep the file extension.
-    const download = await fetch(trackUrl);
-    if (!download.ok) throw new Error(`Download failed (${download.status}): ${trackUrl}`);
-    const name = new URL(trackUrl).pathname.split("/").pop();
-    form.append("audio_file", await download.blob(), name.includes(".") ? name : "audio.mp3");
+    // Local file.
+    form.append("audio_file", await openAsBlob(track), basename(track));
   }
   form.append("stem_preset", preset);
   if (webhookUrl) form.append("webhook_url", webhookUrl);
@@ -249,10 +250,10 @@ async function extract(trackUrl, preset = "6_stems", webhookUrl) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function extractAllFree(trackUrls, preset = "6_stems", webhookUrl) {
+async function extractAllFree(tracks, preset = "6_stems", webhookUrl) {
   const results = [];
-  for (const trackUrl of trackUrls) {
-    const result = await extract(trackUrl, preset, webhookUrl);
+  for (const track of tracks) {
+    const result = await extract(track, preset, webhookUrl);
     results.push(result);
     if (!result.is_free_promo) {
       console.log(`${result.task_id}: charged ${result.credit_estimate}. Stopping.`);
@@ -275,7 +276,7 @@ extractAllFree(
   [
     "https://www.youtube.com/watch?v=<VIDEO_ID>",
     "https://example.com/track-2.mp3",
-    "https://example.com/track-3.wav",
+    "track-3.wav",
   ],
   "6_stems",
   "https://example.com/webhook"
