@@ -12,8 +12,8 @@ openapi: 'POST /v2/Extraction'
   <p className="wav-pro-card-text">Throughout November, every extraction you send with <code>stem_preset</code> is free on paid plans. Pick <code>2_stems</code> or <code>6_stems</code> and pull vocals, instrumental, drums, bass, piano, and guitar out of any track at no cost.</p>
   <div className="wav-stats">
     <div className="wav-stat"><span className="wav-stat-value">$0</span><span className="wav-stat-label">per preset request</span></div>
-    <div className="wav-stat"><span className="wav-stat-value">10</span><span className="wav-stat-label">free / hour</span></div>
-    <div className="wav-stat"><span className="wav-stat-value">100</span><span className="wav-stat-label">free / day</span></div>
+    <div className="wav-stat"><span className="wav-stat-value">20</span><span className="wav-stat-label">free stems/ hour</span></div>
+    <div className="wav-stat"><span className="wav-stat-value">100</span><span className="wav-stat-label">free stems / day</span></div>
     <div className="wav-stat"><span className="wav-stat-value">6</span><span className="wav-stat-label">stems per request</span></div>
   </div>
   <div className="wav-pro-card-actions">
@@ -40,8 +40,8 @@ Use this endpoint to extract stems like vocals, drums, guitar, or more from an a
 
 | Parameter               | Type         | Required | Description                                                                                 |
 | ----------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------- |
-| `audio_url`             | `string`     | Optional | URL of the audio file to extract from. Either `audio_url` or `audio_file` must be provided. |
-| `audio_file`            | `File` | Optional | Audio file to upload and process. Either `audio_url` or `audio_file` must be provided.      |
+| `audio_url`             | `string`     | Optional | YouTube link of the track. For any other audio, send `audio_file`. Either `audio_url` or `audio_file` must be provided. |
+| `audio_file`            | `File` | Optional | Audio file to upload and process. For a file hosted at a URL, download it and upload it here. Either `audio_url` or `audio_file` must be provided. |
 | `stem_preset`           | `string`     | Optional | Quick preset instead of `stems`: `2_stems` or `6_stems`. See [Stem presets](#stem-presets). Free on paid plans in November 2026. |
 | `stems`                 | `string`     | Optional | JSON string list of required stems. e.g., `["vocals", "drums"]`. Required unless you send `stem_preset`. See all options below. |
 | `preprocessing_options` | `string`     | Optional | JSON string list of preprocessing options. e.g., `["Denoise"]`. See all options below.      |
@@ -68,7 +68,7 @@ Use `stem_preset` to request a common split without listing stems. The preset re
 You can combine a preset with `preprocessing_options` and `eco_mode`. The webhook returns one URL per stem, exactly as a `stems` request does.
 
 <Tip>
-  **Free in November 2026.** From Nov 1 00:00 to Nov 30 23:59:59 UTC, preset requests from paid plans are free, up to **10 per clock hour** and **100 per day** (UTC). The response tells you whether a request was free and how many free requests you have left. See the [free stem presets guide](/api-documentation/conversions/extraction-free-stems-guide) to get the most out of it.
+  **Free in November 2026.** From Nov 1 00:00 to Nov 30 23:59:59 UTC, preset requests from paid plans are free, up to **20 stems per clock hour** and **100 stems per day** (UTC). The response tells you whether a request was free and how many free stems you have left. See the [free stem presets guide](/api-documentation/conversions/extraction-free-stems-guide) to get the most out of it.
 </Tip>
 
 ---
@@ -153,16 +153,29 @@ Sample Output : Instrumental
 
 ### cURL with a stem preset
 
-Free on paid plans during November 2026.
+Free on paid plans during November 2026. Upload the track as `audio_file`, or send a YouTube link as `audio_url`.
 
-```bash
+<CodeGroup>
+
+```bash Audio file
 curl -X POST "https://api.wav.com/api/public/v2/Extraction" \
 -H "accept: application/json" \
 -H "Authorization: <api_key>" \
--F "audio_url=<YOUR_AUDIO_URL>" \
+-F "audio_file=@song.mp3" \
 -F "stem_preset=6_stems" \
 -F "webhook_url=https://example.com/webhook"
 ```
+
+```bash YouTube URL
+curl -X POST "https://api.wav.com/api/public/v2/Extraction" \
+-H "accept: application/json" \
+-H "Authorization: <api_key>" \
+-F "audio_url=https://www.youtube.com/watch?v=<VIDEO_ID>" \
+-F "stem_preset=6_stems" \
+-F "webhook_url=https://example.com/webhook"
+```
+
+</CodeGroup>
 
 ### cURL with a stems list
 
@@ -197,14 +210,20 @@ data = {
     "webhook_url": "https://example.com/my-webhook"
 }
 
-# Option 1: audio_url
-data["audio_url"] = "<YOUR_AUDIO_URL>"
+# Option 1: audio_url, for YouTube links
+data["audio_url"] = "https://www.youtube.com/watch?v=<VIDEO_ID>"
 response = requests.post(url, headers=headers, data=data)
 
-# Option 2: File Upload
+# Option 2: upload a local file as audio_file
 # with open("song.mp3", "rb") as f:
 #     files = {"audio_file": f}
 #     response = requests.post(url, headers=headers, data=data, files=files)
+
+# Option 3: a file hosted at a URL: download it, then upload it as audio_file
+# download = requests.get("https://example.com/song.mp3", timeout=120)
+# download.raise_for_status()
+# files = {"audio_file": ("song.mp3", download.content)}
+# response = requests.post(url, headers=headers, data=data, files=files)
 
 print(response.json())
 ```
@@ -242,8 +261,8 @@ print(response.json())
   "message": "Message published to queue",
   "status": "IN_QUEUE",
   "is_free_promo": true,
-  "free_generations_remaining_hour": 9,
-  "free_generations_remaining_day": 99,
+  "free_generations_remaining_hour": 14,
+  "free_generations_remaining_day": 94,
   "free_quota_resets_at": "2026-11-03T15:00:00Z"
 }
 ```
@@ -252,9 +271,9 @@ print(response.json())
 | ----- | ---- | ----------- |
 | `credit_estimate` | `number` | Estimated cost of this conversion. `0.0` when it is free under a promotion. |
 | `is_free_promo` | `boolean` | `true` when this conversion is free under an active promotion. No credits are charged. |
-| `free_generations_remaining_hour` | `integer \| null` | Free preset requests you have left in the current UTC clock hour. `null` when no promotion applies to the request. |
-| `free_generations_remaining_day` | `integer \| null` | Free preset requests you have left today (UTC). `null` when no promotion applies to the request. |
-| `free_quota_resets_at` | `string \| null` | UTC time when more free requests become available: the next hour, or the next day once the daily limit is used up. `null` when no promotion applies to the request. |
+| `free_generations_remaining_hour` | `integer \| null` | Free stems you have left in the current UTC clock hour (a preset uses one per stem). `null` when no promotion applies to the request. |
+| `free_generations_remaining_day` | `integer \| null` | Free stems you have left today (UTC). `null` when no promotion applies to the request. |
+| `free_quota_resets_at` | `string \| null` | UTC time when more free stems become available: the next hour, or the next day once today has too few stems left for this preset. `null` when no promotion applies to the request. |
 
 ---
 

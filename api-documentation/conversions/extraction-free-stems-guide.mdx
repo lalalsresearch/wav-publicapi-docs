@@ -6,7 +6,7 @@ description: 'Integrate stem_preset and get the most out of free stem separation
 
 <div className="wav-mini-banner">
   <span className="wav-pro-badge">No Cost November</span>
-  <p className="wav-mini-banner-text"><strong>Stem presets are free on paid plans until Nov 30, 23:59:59 UTC.</strong> Up to 10 free requests per hour and 100 per day.</p>
+  <p className="wav-mini-banner-text"><strong>Stem presets are free on paid plans until Nov 30, 23:59:59 UTC.</strong> Up to 20 free stems per hour and 100 stems per day.</p>
   <a href="/api-documentation/conversions/extraction" className="wav-mini-banner-link">Extraction reference →</a>
 </div>
 
@@ -19,7 +19,7 @@ During November 2026, [Extraction](/api-documentation/conversions/extraction) re
 | **Window** | `2026-11-01T00:00:00Z` to `2026-11-30T23:59:59Z` |
 | **Who** | Pay as you go, API Plus, API Pro, and Enterprise accounts. The Free plan is not included. |
 | **What is free** | `POST /v2/Extraction` requests that use `stem_preset` (`2_stems` or `6_stems`). The whole request is free, including `preprocessing_options` and `eco_mode`. |
-| **Limits** | 10 free requests per UTC clock hour and 100 per UTC day, shared by all API Keys on your account. |
+| **Limits** | 20 free stems per UTC clock hour and 100 per UTC day, shared by all API Keys on your account. Each request uses one slot per stem it returns: `2_stems` uses 2, `6_stems` uses 6. |
 | **Past the limits** | The request still runs. It is charged at the usual [stem splitter rates](/api-documentation/index/pricing#stem-splitter-features-pricing). |
 | **Not included** | Requests that list `stems`, even a list that matches a preset exactly. |
 
@@ -32,16 +32,30 @@ During November 2026, [Extraction](/api-documentation/conversions/extraction) re
   <Step title="Send stem_preset instead of stems">
     Replace your `stems` field with `stem_preset`. Leave `stems` out, or send `[]`.
 
-    ```bash
+    For a YouTube video, send the link as `audio_url`. For any other track, upload the audio file as `audio_file`; if the track is hosted at a URL, download it first. Send one of the two, not both.
+
+    <CodeGroup>
+
+    ```bash Audio file
     curl -X POST "https://api.wav.com/api/public/v2/Extraction" \
     -H "Authorization: <api_key>" \
-    -F "audio_url=<YOUR_AUDIO_URL>" \
+    -F "audio_file=@song.mp3" \
     -F "stem_preset=6_stems" \
     -F "webhook_url=https://example.com/webhook"
     ```
+
+    ```bash YouTube URL
+    curl -X POST "https://api.wav.com/api/public/v2/Extraction" \
+    -H "Authorization: <api_key>" \
+    -F "audio_url=https://www.youtube.com/watch?v=<VIDEO_ID>" \
+    -F "stem_preset=6_stems" \
+    -F "webhook_url=https://example.com/webhook"
+    ```
+
+    </CodeGroup>
   </Step>
   <Step title="Check that the request was free">
-    A free request returns `"is_free_promo": true` and `"credit_estimate": 0.0`, plus the free requests you have left.
+    A free request returns `"is_free_promo": true` and `"credit_estimate": 0.0`, plus the free stems you have left.
 
     ```json
     {
@@ -53,8 +67,8 @@ During November 2026, [Extraction](/api-documentation/conversions/extraction) re
       "message": "Message published to queue",
       "status": "IN_QUEUE",
       "is_free_promo": true,
-      "free_generations_remaining_hour": 9,
-      "free_generations_remaining_day": 99,
+      "free_generations_remaining_hour": 14,
+      "free_generations_remaining_day": 94,
       "free_quota_resets_at": "2026-11-03T15:00:00Z"
     }
     ```
@@ -66,7 +80,7 @@ During November 2026, [Extraction](/api-documentation/conversions/extraction) re
 
 ## Pick the right preset
 
-Each preset counts as one request against your free quota, however many stems it returns.
+Each preset uses one free stem slot per stem it returns: `2_stems` uses 2 and `6_stems` uses 6.
 
 | `stem_preset` | Stems you get back | Use it when you need |
 | ------------- | ------------------ | -------------------- |
@@ -84,20 +98,20 @@ Every Extraction response now includes four promotion fields. Use them instead o
 | Field | Type | Meaning |
 | ----- | ---- | ------- |
 | `is_free_promo` | `boolean` | `true` when this request is free. No credits are charged. |
-| `free_generations_remaining_hour` | `integer \| null` | Free requests left in the current UTC clock hour. |
-| `free_generations_remaining_day` | `integer \| null` | Free requests left today (UTC). |
-| `free_quota_resets_at` | `string \| null` | When more free requests become available: the start of the next UTC hour, or of the next UTC day once the daily limit is used up. |
+| `free_generations_remaining_hour` | `integer \| null` | Free stems left in the current UTC clock hour. |
+| `free_generations_remaining_day` | `integer \| null` | Free stems left today (UTC). |
+| `free_quota_resets_at` | `string \| null` | When more free stems become available: the start of the next UTC hour, or of the next UTC day once today has too few stems left for this preset. |
 
 What the fields look like in each situation:
 
 | Situation | `is_free_promo` | `credit_estimate` | Quota fields |
 | --------- | --------------- | ----------------- | ------------ |
 | Paid plan, `stem_preset`, quota left | `true` | `0.0` | Counts after this request, and the next reset time |
-| Paid plan, `stem_preset`, hourly or daily limit reached | `false` | Usual price | The used-up count is `0`. `free_quota_resets_at` says when to retry for free |
+| Paid plan, `stem_preset`, fewer stems left than the preset returns | `false` | Usual price | The stems still left. `free_quota_resets_at` says when to retry for free |
 | `stems` list, Free plan, or outside November | `false` | Usual price | All `null` |
 
 <Warning>
-  Requests past the limits are **charged, not rejected**. If you want to stay free, stop sending preset requests when a remaining count reaches `0`, and resume at `free_quota_resets_at`.
+  Requests past the limits are **charged, not rejected**. A preset is free only when all of its stems fit: with 4 stems left this hour, a `6_stems` request is charged in full. To stay free, stop sending preset requests when a remaining count drops below your preset's stem count, and resume at `free_quota_resets_at`.
 </Warning>
 
 ## Get the most out of the promotion
@@ -107,13 +121,13 @@ What the fields look like in each situation:
     The promotion is tied to the `stem_preset` field. A request with `stems=["vocals","instrumental"]` returns the same stems as `2_stems` but is charged.
   </Accordion>
   <Accordion title="Use 6_stems when you need more than vocals" icon="layer-group">
-    One `6_stems` request uses one free slot and returns six stems. Splitting the same track with several smaller requests uses more of your quota.
+    The quota counts stems, so a `6_stems` request uses six slots and a `2_stems` request uses two. Ask only for the preset you need: if you only need vocals and instrumental, `2_stems` leaves room for three times as many tracks.
   </Accordion>
   <Accordion title="Add preprocessing and keep full quality" icon="wand-magic-sparkles">
     The whole request is free, so `preprocessing_options` such as `["Denoise", "Dereverb"]` cost nothing extra. Leave `eco_mode` at `false` for the highest quality output.
   </Accordion>
   <Accordion title="Pace your batch with free_quota_resets_at" icon="clock">
-    Up to 10 free requests per hour adds up to 100 a day. Queue your tracks and send them as the quota resets instead of all at once. The code below does this for you.
+    Up to 20 free stems per hour adds up to 100 a day: ten `2_stems` or three `6_stems` requests an hour. Queue your tracks and send them as the quota resets instead of all at once. The code below does this for you.
   </Accordion>
   <Accordion title="Use webhooks instead of polling" icon="bell">
     Pass `webhook_url` so results arrive as soon as each conversion finishes. Extraction counts towards your [parallel request limit](/api-documentation/utilities/ratelimits), so avoid holding slots open with long polling loops.
@@ -125,7 +139,7 @@ What the fields look like in each situation:
 
 ## Batch tracks inside the free quota
 
-These examples send one preset request per track. After each response they check the remaining counts, wait until `free_quota_resets_at` when either one reaches `0`, and stop if a request comes back charged.
+These examples send one preset request per track. Each track is either a YouTube link, sent as `audio_url`, or an audio file on disk, uploaded as `audio_file`. Download any hosted files before you start the batch. After each response they check the remaining counts, wait until `free_quota_resets_at` when either one is lower than the preset's stem count, and stop if a request comes back charged.
 
 <CodeGroup>
 
@@ -135,17 +149,29 @@ from datetime import datetime, timezone
 
 import requests
 
+STEMS_PER_PRESET = {"2_stems": 2, "6_stems": 6}
 API_URL = "https://api.wav.com/api/public/v2/Extraction"
 API_KEY = "<API_KEY>"
 
 
-def extract(audio_url, preset="6_stems", webhook_url=None):
-    data = {"audio_url": audio_url, "stem_preset": preset}
+def extract(track, preset="6_stems", webhook_url=None):
+    """Send one track: {"audio_url": <YouTube link>} or {"audio_file": <file path>}."""
+    data = {"stem_preset": preset}
     if webhook_url:
         data["webhook_url"] = webhook_url
-    response = requests.post(
-        API_URL, headers={"Authorization": API_KEY}, data=data, timeout=60
-    )
+    headers = {"Authorization": API_KEY}
+    if "audio_url" in track:
+        data["audio_url"] = track["audio_url"]
+        response = requests.post(API_URL, headers=headers, data=data, timeout=60)
+    else:
+        with open(track["audio_file"], "rb") as audio_file:
+            response = requests.post(
+                API_URL,
+                headers=headers,
+                data=data,
+                files={"audio_file": audio_file},
+                timeout=300,
+            )
     response.raise_for_status()
     return response.json()
 
@@ -155,10 +181,10 @@ def seconds_until(timestamp):
     return max((reset_at - datetime.now(timezone.utc)).total_seconds(), 0) + 1
 
 
-def extract_all_free(audio_urls, preset="6_stems", webhook_url=None):
+def extract_all_free(tracks, preset="6_stems", webhook_url=None):
     results = []
-    for audio_url in audio_urls:
-        result = extract(audio_url, preset, webhook_url)
+    for track in tracks:
+        result = extract(track, preset, webhook_url)
         results.append(result)
         if not result["is_free_promo"]:
             print(f"{result['task_id']}: charged {result['credit_estimate']}. Stopping.")
@@ -167,7 +193,7 @@ def extract_all_free(audio_urls, preset="6_stems", webhook_url=None):
 
         hour_left = result["free_generations_remaining_hour"]
         day_left = result["free_generations_remaining_day"]
-        if hour_left == 0 or day_left == 0:
+        if min(hour_left, day_left) < STEMS_PER_PRESET[preset]:
             wait = seconds_until(result["free_quota_resets_at"])
             print(f"Free quota used up. Waiting {wait:.0f}s.")
             time.sleep(wait)
@@ -175,18 +201,31 @@ def extract_all_free(audio_urls, preset="6_stems", webhook_url=None):
 
 
 extract_all_free(
-    ["<TRACK_1_URL>", "<TRACK_2_URL>", "<TRACK_3_URL>"],
+    [
+        {"audio_url": "https://www.youtube.com/watch?v=<VIDEO_ID>"},
+        {"audio_file": "track-2.mp3"},
+        {"audio_file": "track-3.wav"},
+    ],
     webhook_url="https://example.com/webhook",
 )
 ```
 
 ```javascript Node.js
+import { openAsBlob } from "node:fs";
+import { basename } from "node:path";
+
 const API_URL = "https://api.wav.com/api/public/v2/Extraction";
 const API_KEY = "<API_KEY>";
+const STEMS_PER_PRESET = { "2_stems": 2, "6_stems": 6 };
 
-async function extract(audioUrl, preset = "6_stems", webhookUrl) {
+// Send one track: { audio_url: <YouTube link> } or { audio_file: <file path> }.
+async function extract(track, preset = "6_stems", webhookUrl) {
   const form = new FormData();
-  form.append("audio_url", audioUrl);
+  if (track.audio_url) {
+    form.append("audio_url", track.audio_url);
+  } else {
+    form.append("audio_file", await openAsBlob(track.audio_file), basename(track.audio_file));
+  }
   form.append("stem_preset", preset);
   if (webhookUrl) form.append("webhook_url", webhookUrl);
 
@@ -201,10 +240,10 @@ async function extract(audioUrl, preset = "6_stems", webhookUrl) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function extractAllFree(audioUrls, preset = "6_stems", webhookUrl) {
+async function extractAllFree(tracks, preset = "6_stems", webhookUrl) {
   const results = [];
-  for (const audioUrl of audioUrls) {
-    const result = await extract(audioUrl, preset, webhookUrl);
+  for (const track of tracks) {
+    const result = await extract(track, preset, webhookUrl);
     results.push(result);
     if (!result.is_free_promo) {
       console.log(`${result.task_id}: charged ${result.credit_estimate}. Stopping.`);
@@ -214,7 +253,7 @@ async function extractAllFree(audioUrls, preset = "6_stems", webhookUrl) {
 
     const hourLeft = result.free_generations_remaining_hour;
     const dayLeft = result.free_generations_remaining_day;
-    if (hourLeft === 0 || dayLeft === 0) {
+    if (Math.min(hourLeft, dayLeft) < STEMS_PER_PRESET[preset]) {
       const wait = Math.max(Date.parse(result.free_quota_resets_at) - Date.now(), 0) + 1000;
       console.log(`Free quota used up. Waiting ${Math.round(wait / 1000)}s.`);
       await sleep(wait);
@@ -224,7 +263,11 @@ async function extractAllFree(audioUrls, preset = "6_stems", webhookUrl) {
 }
 
 extractAllFree(
-  ["<TRACK_1_URL>", "<TRACK_2_URL>", "<TRACK_3_URL>"],
+  [
+    { audio_url: "https://www.youtube.com/watch?v=<VIDEO_ID>" },
+    { audio_file: "track-2.mp3" },
+    { audio_file: "track-3.wav" },
+  ],
   "6_stems",
   "https://example.com/webhook"
 ).catch(console.error);
@@ -253,13 +296,13 @@ Requests rejected with `422` don't use a free slot. Neither do requests that fai
     Only requests that use the `stem_preset` field are free. Send `stem_preset=2_stems` instead.
   </Accordion>
   <Accordion title="Is the limit per API Key?">
-    No. The 10 per hour and 100 per day limits apply to your account, across all of its API Keys.
+    No. The 20 stems per hour and 100 stems per day limits apply to your account, across all of its API Keys.
   </Accordion>
   <Accordion title="When does the hourly limit reset?">
     At the start of every UTC clock hour, for example at 15:00:00Z. It is not a rolling 60-minute window. The daily limit resets at 00:00:00Z.
   </Accordion>
-  <Accordion title="What happens to my 11th request in an hour?">
-    It runs and is charged at the usual stem splitter rate. The response shows `"is_free_promo": false` and `"free_generations_remaining_hour": 0`.
+  <Accordion title="What happens when a preset needs more stems than I have left?">
+    It runs and is charged in full at the usual stem splitter rate; it never uses part of your free stems. For example, with 4 stems left this hour, a `6_stems` request is charged and the response shows `"is_free_promo": false` and `"free_generations_remaining_hour": 4`. A `2_stems` request would still be free.
   </Accordion>
   <Accordion title="I'm on the Free plan. Can I use stem_preset?">
     Yes. Presets work on every plan, but only paid plans get them free. See [Pricing](/api-documentation/index/pricing) to upgrade.
